@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export default class Genres extends PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired
-  }
+  };
   state = {
     genresList: []
   };
@@ -31,16 +31,17 @@ export default class Genres extends PureComponent {
   };
   // ФИЛЬТРУЕМ ПО ВЫБРАНЫМ ЖАНРАМ
   checkedGenges = event => {
+    const value = event.target.checked
+      ? [...this.props.with_genres, event.target.value]
+      : [
+          ...this.props.with_genres.filter(
+            genre => genre !== event.target.value
+          )
+        ];
     this.props.onChangeFilters({
       target: {
         name: "with_genres",
-        value: event.target.checked
-          ? [...this.props.with_genres, event.target.value]
-          : [
-              ...this.props.with_genres.filter(
-                genre => genre !== event.target.value
-              )
-            ]
+        value: value
       }
     });
   };
@@ -69,7 +70,7 @@ export default class Genres extends PureComponent {
               value={genre.id}
               id={`id${genre.id}`}
               onChange={this.checkedGenges}
-              checked={with_genres.includes(String(genre.id))}
+              checked={with_genres.indexOf(String(genre.id)) !== -1}
             />
             <label htmlFor={`id${genre.id}`}>{genre.name}</label>
           </div>

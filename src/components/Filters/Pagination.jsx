@@ -5,11 +5,8 @@ export default class Pagination extends PureComponent {
   static propTypes = {
     onChangePage: PropTypes.func.isRequired,
     page: PropTypes.number,
-    total_pages:PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ])
-  }
+    total_pages: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  };
   render() {
     const { onChangePage, page, total_pages } = this.props;
     console.log("pagination");

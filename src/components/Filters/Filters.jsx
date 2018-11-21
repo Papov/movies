@@ -12,10 +12,7 @@ export default class Filters extends Component {
     onReset: PropTypes.func.isRequired,
     filters: PropTypes.object.isRequired,
     page: PropTypes.number,
-    total_pages:PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.number
-    ])
+    total_pages: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
   render() {
     // PROPS
