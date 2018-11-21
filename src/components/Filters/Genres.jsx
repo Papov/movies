@@ -1,7 +1,11 @@
-import React, { Component, Fragment } from "react";
+import React, { PureComponent, Fragment } from "react";
 import { API_URL, API_KEY_3 } from "../../api/api";
+import PropTypes from "prop-types";
 
-export default class Genres extends Component {
+export default class Genres extends PureComponent {
+  static propTypes = {
+    onChangeFilters: PropTypes.func.isRequired
+  }
   state = {
     genresList: []
   };
@@ -44,6 +48,7 @@ export default class Genres extends Component {
   render() {
     const { genresList } = this.state;
     const { with_genres } = this.props;
+    console.log("genres");
     return (
       <Fragment>
         {/*СБРОСИТЬ ВЫБРАННЫЕ ЖАНРЫ*/}

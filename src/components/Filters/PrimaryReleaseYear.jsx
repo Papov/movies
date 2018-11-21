@@ -1,6 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
+import PropTypes from 'prop-types';
 
-export default class PrimaryReleaseYear extends Component {
+export default class PrimaryReleaseYear extends PureComponent {
+  static propTypes = {
+    onChangeFilters: PropTypes.func.isRequired,
+    primary_release_year: PropTypes.string.isRequired
+  }
   static defaultProps = {
     years: [
       {
@@ -27,6 +32,7 @@ export default class PrimaryReleaseYear extends Component {
   };
   render() {
     const { years, primary_release_year, onChangeFilters } = this.props;
+    console.log("year");
     return (
       <div className="form-group">
         <label htmlFor="primary_release_year">Год релиза: </label>

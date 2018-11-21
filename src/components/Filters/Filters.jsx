@@ -3,8 +3,20 @@ import SortBy from "./SortBy";
 import Pagination from "./Pagination";
 import PrimaryReleaseYear from "./PrimaryReleaseYear";
 import Genres from "./Genres";
+import PropTypes from "prop-types";
 
 export default class Filters extends Component {
+  static propTypes = {
+    onChangeFilters: PropTypes.func.isRequired,
+    onChangePage: PropTypes.func.isRequired,
+    onReset: PropTypes.func.isRequired,
+    filters: PropTypes.object.isRequired,
+    page: PropTypes.number,
+    total_pages:PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number
+    ])
+  };
   render() {
     // PROPS
     const {
