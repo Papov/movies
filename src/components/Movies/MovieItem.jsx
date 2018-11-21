@@ -1,19 +1,19 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-const styles = {
-  card: {
-    width: "100%"
-  }
-};
+// ЕСЛИ НЕТУ КАРТИНКИ ИЗ API, ИСПОЛЬЗУЕМ ЭТУ
 const noImageUrl =
   "https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png";
 
 export default class MovieItem extends Component {
+  static propTypes = {
+    item: PropTypes.object.isRequired
+  };
   render() {
     const { item } = this.props;
     const image_available = !!(item.backdrop_path || item.poster_path);
     return (
-      <div className="card" style={styles.card}>
+      <div className="card">
         <img
           className="card-img-top card-img--height"
           src={

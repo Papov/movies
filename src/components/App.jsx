@@ -2,21 +2,17 @@ import React, { Component } from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 
-const style = {
-  card: {
-    width: "100%"
-  }
-};
-
 export default class App extends Component {
   state = {
     filters: {
-      sort_by: "popularity.desc"
+      sort_by: "popularity.desc",
+      primary_release_year: "",
+      with_genres: []
     },
     page: 1,
-    total_pages: "..."
+    total_pages: ""
   };
-
+  // МЕНЯЕМ СТЕЙТ ПРИ ИЗМЕНЕНИИ ФИЛЬТОВ
   onChangeFilters = event => {
     const { name, value } = event.target;
     this.setState(prevState => ({
@@ -26,13 +22,28 @@ export default class App extends Component {
       }
     }));
   };
-
+  // ПОЛУЧИТЬ КОЛЛ. СТРАНИЦ
   getTotalPages = total_pages => {
     this.setState({
       total_pages
     });
   };
-
+  // СБРАСЫВАЕМ ФИЛЬТР ПО УМОЛЧАНИЮ
+  onReset = () => {
+    // ОБЬЕКТ ИЗНАЧАЛЬНОГО СОСТОЯНИЯ
+    const pureState = {
+      filters: {
+        sort_by: "popularity.desc",
+        primary_release_year: "",
+        with_genres: []
+      },
+      page: 1
+    };
+    this.setState({
+      ...pureState
+    });
+  };
+  // ИЗМЕНЯЕМ ТЕКУЩУЮ СТРАНИЦУ
   onChangePage = page => {
     this.setState({
       page
@@ -45,7 +56,7 @@ export default class App extends Component {
       <div className="container">
         <div className="row mt-4">
           <div className="col-4">
-            <div className="card" style={style.card}>
+            <div className="card">
               <div className="card-body">
                 <h3>Фильтры:</h3>
                 <Filters
@@ -54,6 +65,7 @@ export default class App extends Component {
                   page={page}
                   onChangePage={this.onChangePage}
                   total_pages={total_pages}
+                  onReset={this.onReset}
                 />
               </div>
             </div>

@@ -1,3 +1,6 @@
 body {
-  background: #fdfdfd; 
+  background: #fdfdfd;
+}
+card: {
+  width: 100%;
 }
