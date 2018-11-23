@@ -4,3 +4,10 @@ body {
 card: {
   width: 100%;
 }
+
+.invalid-feedback {
+  display: block;
+}
+.valid-feedback{
+  display: block;
+}

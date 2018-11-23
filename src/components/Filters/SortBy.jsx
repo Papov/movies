@@ -1,13 +1,13 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import UISelect from "../UISelect";
+import UISelect from "../UI/UISelect";
 
 export default class SortBy extends PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired,
     sort_by: PropTypes.string.isRequired
   };
-
+  //===================================================
   static defaultProps = {
     options: [
       {
@@ -28,6 +28,7 @@ export default class SortBy extends PureComponent {
       }
     ]
   };
+  //===================================================
   render() {
     const { onChangeFilters, sort_by, options } = this.props;
     console.log("sortBy");

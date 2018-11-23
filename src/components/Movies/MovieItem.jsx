@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-// ЕСЛИ НЕТУ КАРТИНКИ ИЗ API, ИСПОЛЬЗУЕМ ЭТУ
 const noImageUrl =
   "https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png";
 
@@ -9,6 +8,7 @@ export default class MovieItem extends Component {
   static propTypes = {
     item: PropTypes.object.isRequired
   };
+  //===================================================
   render() {
     const { item } = this.props;
     const image_available = !!(item.backdrop_path || item.poster_path);

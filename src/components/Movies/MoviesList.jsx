@@ -11,14 +11,13 @@ export default class MoviesList extends Component {
     filters: PropTypes.object.isRequired,
     page: PropTypes.number
   };
+  //===================================================
   state = {
     movies: []
   };
-
-  // ПОЛУЧАЕМ ДАННЫЕ ИЗ API
+  //===================================================
   getMovies = (filters, page) => {
     const { sort_by, primary_release_year, with_genres } = filters;
-    // КЛЮЧ - ЗНАЧЕНИЕ ЗАПРОСА
     const query = {
       api_key: API_KEY_3,
       language: "ru-RU",
@@ -29,9 +28,7 @@ export default class MoviesList extends Component {
     if (with_genres.length > 0) {
       query.with_genres = with_genres.join(",");
     }
-    const link = `${API_URL}/discover/movie?${queryString.stringify(
-      query
-    )}`; /*ПРЕОБРАЗУЕМ В НУЖНЫЙ НАМ ФОРМАТ ЗАПРОСА*/
+    const link = `${API_URL}/discover/movie?${queryString.stringify(query)}`;
     fetch(link)
       .then(responseData => responseData.json())
       .then(data => {
@@ -41,11 +38,11 @@ export default class MoviesList extends Component {
         this.props.getTotalPages(data.total_pages);
       });
   };
-
+  //===================================================
   componentDidMount() {
     this.getMovies(this.props.filters, this.props.page);
   }
-
+  //===================================================
   componentDidUpdate(prevProps) {
     if (this.props.filters !== prevProps.filters) {
       this.props.onChangePage(1);
@@ -55,7 +52,7 @@ export default class MoviesList extends Component {
       this.getMovies(this.props.filters, this.props.page);
     }
   }
-
+  //===================================================
   render() {
     const { movies } = this.state;
     return (

@@ -6,10 +6,11 @@ export default class Genres extends PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired
   };
+  //===================================================
   state = {
     genresList: []
   };
-  // ПОЛУЧАЕМ СПИСОК ВСЕХ ЖАНРОВ
+  //===================================================
   componentDidMount() {
     const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
     fetch(link)
@@ -20,7 +21,7 @@ export default class Genres extends PureComponent {
         });
       });
   }
-  // СБРАСЫВАЕМ ЖАРНРЫ
+  //===================================================
   showAllGenres = () => {
     this.props.onChangeFilters({
       target: {
@@ -29,15 +30,12 @@ export default class Genres extends PureComponent {
       }
     });
   };
-  // ФИЛЬТРУЕМ ПО ВЫБРАНЫМ ЖАНРАМ
+  //===================================================
   checkedGenges = event => {
     const value = event.target.checked
       ? [...this.props.with_genres, event.target.value]
-      : [
-          ...this.props.with_genres.filter(
-            genre => genre !== event.target.value
-          )
-        ];
+      : this.props.with_genres.filter(genre => genre !== event.target.value);
+
     this.props.onChangeFilters({
       target: {
         name: "with_genres",
@@ -45,14 +43,13 @@ export default class Genres extends PureComponent {
       }
     });
   };
-
+  //===================================================
   render() {
     const { genresList } = this.state;
     const { with_genres } = this.props;
     console.log("genres");
     return (
       <Fragment>
-        {/*СБРОСИТЬ ВЫБРАННЫЕ ЖАНРЫ*/}
         <button
           className="btn btn-primary"
           type="button"
@@ -61,7 +58,6 @@ export default class Genres extends PureComponent {
         >
           Все жанры
         </button>
-        {/*СПИСОК ЧЕКСБОКСОВ ЖАНРЫ*/}
         {genresList.map(genre => (
           <div className="form-check" key={`genre${genre.id}`}>
             <input

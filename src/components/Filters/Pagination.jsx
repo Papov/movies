@@ -7,13 +7,13 @@ export default class Pagination extends PureComponent {
     page: PropTypes.number,
     total_pages: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
+  //===================================================
   render() {
     const { onChangePage, page, total_pages } = this.props;
     console.log("pagination");
     return (
       <Fragment>
         <div className="btn-group d-flex justify-content-center">
-          {/*КНОПКА НАЗАД*/}
           <button
             type="button"
             className="btn btn-light"
@@ -22,7 +22,6 @@ export default class Pagination extends PureComponent {
           >
             Назад
           </button>
-          {/*КНОПКА ВПЕРЕД*/}
           <button
             type="button"
             className="btn btn-light"
@@ -32,7 +31,6 @@ export default class Pagination extends PureComponent {
             Вперед
           </button>
         </div>
-        {/*ТЕКУЩАЯ СТРАНИЦА И ОБЩЕЕ КОЛИЧЕСТВО*/}
         <div className="mt-4 text-center">{`${page} of ${total_pages}`}</div>
       </Fragment>
     );
