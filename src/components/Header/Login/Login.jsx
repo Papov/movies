@@ -14,6 +14,7 @@ export default class Login extends Component {
   };
   //===================================================
   render() {
+    const {checkLogined,updateSessionToken} = this.props;
     return (
       <Fragment>
         <button
@@ -25,7 +26,7 @@ export default class Login extends Component {
         </button>
         <Modal isOpen={this.state.showLoginForm} toggle={this.toogleLoginForm}>
           <ModalBody>
-            <LoginFormModal />
+            <LoginFormModal checkLogined={checkLogined} updateSessionToken={updateSessionToken}/>
           </ModalBody>
         </Modal>
       </Fragment>

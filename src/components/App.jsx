@@ -2,7 +2,12 @@ import React, { Component, Fragment } from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
+import { fetchUrl, api_urls } from "../api/api";
+import Cookies from "universal-cookie";
 
+const cookies = new Cookies();
+
+//===================================================
 export default class App extends Component {
   state = {
     filters: {
@@ -11,7 +16,25 @@ export default class App extends Component {
       with_genres: []
     },
     page: 1,
-    total_pages: ""
+    total_pages: "",
+    user: null,
+    session_token: null
+  };
+  //===================================================
+  checkLogined = user => {
+    this.setState({
+      user
+    });
+  };
+  //===================================================
+  updateSessionToken = session_token => {
+    this.setState({
+      session_token
+    });
+    cookies.set("session_token", session_token, {
+      path: "/",
+      expires: new Date(Date.now()+2592000)
+    });
   };
   //===================================================
   onChangeFilters = event => {
@@ -52,10 +75,14 @@ export default class App extends Component {
   };
   //===================================================
   render() {
-    const { filters, page, total_pages } = this.state;
+    const { filters, page, total_pages, user } = this.state;
     return (
       <Fragment>
-        <Header />
+        <Header
+          checkLogined={this.checkLogined}
+          user={user}
+          updateSessionToken={this.updateSessionToken}
+        />
         <div className="container">
           <div className="row mt-4">
             <div className="col-4">
@@ -85,5 +112,16 @@ export default class App extends Component {
         </div>
       </Fragment>
     );
+  }
+  //===================================================
+  componentDidMount() {
+    const session_id = cookies.get("session_token");
+    if (cookies) {
+      fetchUrl(`${api_urls.account}${session_id}`).then(user => {
+        this.setState({
+          user
+        });
+      });
+    }
   }
 }

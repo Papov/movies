@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { API_KEY_3, API_URL } from "../../../api/api";
+import { fetchUrl, api_urls } from "../../../api/api";
 
 export default class LoginFormModal extends Component {
   state = {
@@ -9,37 +9,58 @@ export default class LoginFormModal extends Component {
     submitAwait: false
   };
   //===================================================
-  onBlurHandle = event => {
-    if (this.state.username.length === 0) {
-      this.setState({
-        errors: {
-          username: "please, white your login"
-        }
-      });
-    }
-  };
-  //===================================================
-  validateForm = () => {
+  checkErrors = (event = null) => {
     const { username, password } = this.state;
     const errors = {};
-    if (username === "") {
-      errors.username = "please, white your login";
-    }
-    if (password === "") {
-      errors.password = "please, white your password";
-    }
-    const valid = !!Object.keys(errors).length;
-    if (valid) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          ...errors
+    const messages = {
+      username: "please, white your login",
+      password: "please, white your password"
+    };
+    if (event) {
+      const name = event.target.name;
+      if (this.state[name].length === 0) {
+        switch (name) {
+          case "username":
+            errors.username = messages.username;
+            break;
+          case "password":
+            errors.password = messages.password;
+            break;
+          default:
+            break;
         }
-      }));
-      return false;
-    }
-    if (!valid) {
-      return true;
+      }
+      let valid = !!Object.keys(errors).length;
+      if (valid) {
+        this.setState(prevState => ({
+          errors: {
+            ...prevState.errors,
+            ...errors,
+            base: null
+          }
+        }));
+      }
+    } else {
+      if (username === "") {
+        errors.username = messages.username;
+      }
+      if (password === "") {
+        errors.password = messages.password;
+      }
+      let valid = !!Object.keys(errors).length;
+      if (valid) {
+        this.setState(prevState => ({
+          errors: {
+            ...prevState.errors,
+            ...errors,
+            base: null
+          }
+        }));
+        return false;
+      }
+      if (!valid) {
+        return true;
+      }
     }
   };
   //===================================================
@@ -55,35 +76,7 @@ export default class LoginFormModal extends Component {
   };
   //===================================================
   onSubmit = async () => {
-    const api_urls = {
-      first_token: "/authentication/token/new?api_key=",
-      validate_with_login: "/authentication/token/validate_with_login?api_key=",
-      session: "/authentication/session/new?api_key="
-    };
     const { username, password } = this.state;
-    //===================================================
-    const fetchUrl = (url, body = {}) => {
-      /*FETCHING URL TO GET TOKENS*/
-      return new Promise((resolve, reject) => {
-        const link = `${API_URL}${url}${API_KEY_3}`;
-        fetch(link, body)
-          .then(response => {
-            if (response.status < 400) {
-              return response.json();
-            } else {
-              throw response;
-            }
-          })
-          .then(data => {
-            resolve(data);
-          })
-          .catch(response => {
-            response.json().then(error => {
-              reject(error);
-            });
-          });
-      });
-    };
     //===================================================
     this.setState({
       submitAwait: true
@@ -103,6 +96,7 @@ export default class LoginFormModal extends Component {
           request_token: firstDataToken.request_token
         })
       });
+      console.log(validateLoginToken);
       const { session_id } = await fetchUrl(api_urls.session, {
         method: "POST",
         mode: "cors",
@@ -113,6 +107,9 @@ export default class LoginFormModal extends Component {
           request_token: validateLoginToken.request_token
         })
       });
+      this.props.updateSessionToken(session_id);
+      const account = await fetchUrl(`${api_urls.account}${session_id}`);
+      this.props.checkLogined(account);
       this.setState({
         submitAwait: false,
         errors: {
@@ -131,7 +128,7 @@ export default class LoginFormModal extends Component {
   //===================================================
   onSubmitClick = event => {
     event.preventDefault();
-    const valid = this.validateForm();
+    const valid = this.checkErrors();
     if (valid) {
       this.onSubmit();
     }
@@ -152,7 +149,7 @@ export default class LoginFormModal extends Component {
             placeholder="Логин"
             name="username"
             onChange={this.onHandleChange}
-            onBlur={this.onBlurHandle}
+            onBlur={this.checkErrors}
           />
           {errors.username ? (
             <div className="invalid-feedback">{errors.username}</div>
@@ -168,6 +165,7 @@ export default class LoginFormModal extends Component {
             placeholder="Пароль"
             name="password"
             onChange={this.onHandleChange}
+            onBlur={this.checkErrors}
           />
           {errors.password ? (
             <div className="invalid-feedback">{errors.password}</div>
