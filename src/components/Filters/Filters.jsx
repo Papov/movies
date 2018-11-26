@@ -21,7 +21,6 @@ export default class Filters extends Component {
       onChangeFilters,
       page,
       onChangePage,
-
       total_pages,
       onReset
     } = this.props;

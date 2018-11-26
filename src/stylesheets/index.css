@@ -20,9 +20,20 @@ card: {
   margin-left: 5px;
   cursor: pointer;
 }
+.card-img--favourite.not_allowed{
+  cursor: not-allowed;
+}
 .avatar{
     cursor: pointer;
 }
 .btn--exit{
     margin: 0 5px;
+}
+.alert--fixed {
+  position: fixed;
+  top: 5px;
+  z-index: 1;
+  right: calc(50vw - 150px);
+  width: 300px;
+  text-align: center;
 }
