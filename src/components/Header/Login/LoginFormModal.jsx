@@ -1,52 +1,55 @@
 import React, { Component } from "react";
 import { fetchUrl, api_urls } from "../../../api/api";
+import UIInput from "../../UI/UIInput";
+import PropTypes from "prop-types";
 
 export default class LoginFormModal extends Component {
+  static propTypes = {
+    updateSessionToken: PropTypes.func.isRequired,
+    checkLogined: PropTypes.func.isRequired
+  }
+  //===================================================
   state = {
     username: "",
     password: "",
+    repeatPassword: "",
     errors: {},
     submitAwait: false
   };
   //===================================================
   checkErrors = (event = null) => {
-    const { username, password } = this.state;
+    const { username, password, repeatPassword } = this.state;
     const errors = {};
     const messages = {
-      username: "please, white your login",
-      password: "please, white your password"
+      username: "please, write your login",
+      password: "please, write your password",
+      repeatPassword: "please, write the same password"
     };
+    //----
     if (event) {
-      const name = event.target.name;
-      if (this.state[name].length === 0) {
-        switch (name) {
-          case "username":
+      let name = event.target.name;
+      let length = this.state[name].length === 0;
+      //----
+      switch (name) {
+        case "username":
+          if (length) {
             errors.username = messages.username;
-            break;
-          case "password":
-            errors.password = messages.password;
-            break;
-          default:
-            break;
-        }
-      }
-      let valid = !!Object.keys(errors).length;
-      if (valid) {
-        this.setState(prevState => ({
-          errors: {
-            ...prevState.errors,
-            ...errors,
-            base: null
           }
-        }));
+          break;
+        case "password":
+          if (length) {
+            errors.password = messages.password;
+          }
+          break;
+        case "repeatPassword":
+          if (password !== repeatPassword) {
+            errors.repeatPassword = messages.repeatPassword;
+          }
+          break;
+        default:
+          break;
       }
-    } else {
-      if (username === "") {
-        errors.username = messages.username;
-      }
-      if (password === "") {
-        errors.password = messages.password;
-      }
+      //----
       let valid = !!Object.keys(errors).length;
       if (valid) {
         this.setState(prevState => ({
@@ -58,6 +61,30 @@ export default class LoginFormModal extends Component {
         }));
         return false;
       }
+    } else {
+      //----
+      if (username === "") {
+        errors.username = messages.username;
+      }
+      if (password === "") {
+        errors.password = messages.password;
+      }
+      if (password !== repeatPassword) {
+        errors.repeatPassword = messages.repeatPassword;
+      }
+      //----
+      let valid = !!Object.keys(errors).length;
+      if (valid) {
+        this.setState(prevState => ({
+          errors: {
+            ...prevState.errors,
+            ...errors,
+            base: null
+          }
+        }));
+        return false;
+      }
+      //----
       if (!valid) {
         return true;
       }
@@ -66,6 +93,7 @@ export default class LoginFormModal extends Component {
   //===================================================
   onHandleChange = event => {
     const { name, value } = event.target;
+    //----
     this.setState(prevState => ({
       [name]: value,
       errors: {
@@ -77,13 +105,14 @@ export default class LoginFormModal extends Component {
   //===================================================
   onSubmit = async () => {
     const { username, password } = this.state;
-    //===================================================
+    //----
     this.setState({
       submitAwait: true
     });
-    //===================================================
+    //----
     try {
       const firstDataToken = await fetchUrl(api_urls.first_token);
+      //----
       const validateLoginToken = await fetchUrl(api_urls.validate_with_login, {
         method: "POST",
         mode: "cors",
@@ -96,7 +125,7 @@ export default class LoginFormModal extends Component {
           request_token: firstDataToken.request_token
         })
       });
-      console.log(validateLoginToken);
+      //----
       const { session_id } = await fetchUrl(api_urls.session, {
         method: "POST",
         mode: "cors",
@@ -107,15 +136,20 @@ export default class LoginFormModal extends Component {
           request_token: validateLoginToken.request_token
         })
       });
+      //----
       this.props.updateSessionToken(session_id);
+      //----
       const account = await fetchUrl(`${api_urls.account}${session_id}`);
+      //----
       this.props.checkLogined(account);
+      //----
       this.setState({
         submitAwait: false,
         errors: {
           registered: "Вход успешный"
         }
       });
+      //----
     } catch (error) {
       this.setState({
         submitAwait: false,
@@ -135,42 +169,49 @@ export default class LoginFormModal extends Component {
   };
   //===================================================
   render() {
-    const { username, password, errors, submitAwait } = this.state;
+    const {
+      username,
+      password,
+      repeatPassword,
+      errors,
+      submitAwait
+    } = this.state;
     return (
       <form>
         <h4 className="h4 text-center">Авторизация</h4>
-        <div className="form-group">
-          <label htmlFor="username">Логин</label>
-          <input
-            type="text"
-            className="form-control"
-            id="username"
-            value={username}
-            placeholder="Логин"
-            name="username"
-            onChange={this.onHandleChange}
-            onBlur={this.checkErrors}
-          />
-          {errors.username ? (
-            <div className="invalid-feedback">{errors.username}</div>
-          ) : null}
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Пароль</label>
-          <input
-            type="password"
-            className="form-control"
-            id="password"
-            value={password}
-            placeholder="Пароль"
-            name="password"
-            onChange={this.onHandleChange}
-            onBlur={this.checkErrors}
-          />
-          {errors.password ? (
-            <div className="invalid-feedback">{errors.password}</div>
-          ) : null}
-        </div>
+        <UIInput
+          type="text"
+          label="Логин"
+          id="username"
+          value={username}
+          placeholder="Логин"
+          name="username"
+          onChange={this.onHandleChange}
+          onBlur={this.checkErrors}
+          error={errors.username}
+        />
+        <UIInput
+          id="password"
+          name="password"
+          value={password}
+          label="Пароль"
+          type="password"
+          placeholder="Пароль"
+          onChange={this.onHandleChange}
+          onBlur={this.checkErrors}
+          error={errors.password}
+        />
+        <UIInput
+          id="repeatPassword"
+          name="repeatPassword"
+          value={repeatPassword}
+          label="Повторить пароль"
+          type="password"
+          placeholder="Повторно введите пароль"
+          onChange={this.onHandleChange}
+          onBlur={this.checkErrors}
+          error={errors.repeatPassword}
+        />
         <button
           type="submit"
           className="btn btn-primary"

@@ -35,7 +35,7 @@ export default class Genres extends PureComponent {
     const value = event.target.checked
       ? [...this.props.with_genres, event.target.value]
       : this.props.with_genres.filter(genre => genre !== event.target.value);
-
+    //-------------------
     this.props.onChangeFilters({
       target: {
         name: "with_genres",

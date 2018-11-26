@@ -4,9 +4,15 @@ import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import { fetchUrl, api_urls } from "../api/api";
 import Cookies from "universal-cookie";
-
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faBookmark as solidFaBookmark,
+  faHeart as solidFaHeart
+} from "@fortawesome/free-solid-svg-icons";
+import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
+//===================================================
 const cookies = new Cookies();
-
+library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart);
 //===================================================
 export default class App extends Component {
   state = {
@@ -15,25 +21,46 @@ export default class App extends Component {
       primary_release_year: "",
       with_genres: []
     },
+    user: {
+      user_info: null,
+      session_token: null
+    },
     page: 1,
     total_pages: "",
-    user: null,
-    session_token: null
+    showLoginForm: false
   };
   //===================================================
-  checkLogined = user => {
-    this.setState({
-      user
-    });
+  checkLogined = user_info => {
+    if (user_info) {
+      this.setState({
+        user: {
+          ...this.state.user,
+          user_info
+        }
+      });
+    } else {
+      this.setState({
+        user: {}
+      });
+    }
+  };
+  //===================================================
+  toogleLoginForm = () => {
+    this.setState(prevState => ({
+      showLoginForm: !prevState.showLoginForm
+    }));
   };
   //===================================================
   updateSessionToken = session_token => {
     this.setState({
-      session_token
+      user: {
+        ...this.state.user,
+        session_token
+      }
     });
     cookies.set("session_token", session_token, {
       path: "/",
-      expires: new Date(Date.now()+2592000)
+      expires: new Date(Date.now() + 2592000)
     });
   };
   //===================================================
@@ -75,13 +102,16 @@ export default class App extends Component {
   };
   //===================================================
   render() {
-    const { filters, page, total_pages, user } = this.state;
+    const { filters, page, total_pages, user, showLoginForm } = this.state;
     return (
       <Fragment>
         <Header
           checkLogined={this.checkLogined}
           user={user}
           updateSessionToken={this.updateSessionToken}
+          toogleLoginForm={this.toogleLoginForm}
+          showLoginForm={showLoginForm}
+          cookies={cookies}
         />
         <div className="container">
           <div className="row mt-4">
@@ -106,6 +136,8 @@ export default class App extends Component {
                 page={page}
                 onChangePage={this.onChangePage}
                 getTotalPages={this.getTotalPages}
+                user={user}
+                toogleLoginForm={this.toogleLoginForm}
               />
             </div>
           </div>
@@ -116,10 +148,13 @@ export default class App extends Component {
   //===================================================
   componentDidMount() {
     const session_id = cookies.get("session_token");
-    if (cookies) {
-      fetchUrl(`${api_urls.account}${session_id}`).then(user => {
+    if (session_id) {
+      fetchUrl(`${api_urls.account}${session_id}`).then(user_info => {
         this.setState({
-          user
+          user: {
+            user_info,
+            session_token: session_id
+          }
         });
       });
     }

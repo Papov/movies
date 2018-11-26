@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { API_URL, API_KEY_3 } from "../../api/api";
 import MovieItem from "./MovieItem";
 import queryString from "query-string";
+import { fetchUrl, api_urls, API_KEY_3 } from "../../api/api";
 import PropTypes from "prop-types";
 
 export default class MoviesList extends Component {
@@ -16,8 +16,9 @@ export default class MoviesList extends Component {
     movies: []
   };
   //===================================================
-  getMovies = (filters, page) => {
+  getMovies = async (filters, page) => {
     const { sort_by, primary_release_year, with_genres } = filters;
+    //----
     const query = {
       api_key: API_KEY_3,
       language: "ru-RU",
@@ -25,18 +26,20 @@ export default class MoviesList extends Component {
       page: page,
       primary_release_year: primary_release_year
     };
+    //----
     if (with_genres.length > 0) {
       query.with_genres = with_genres.join(",");
     }
-    const link = `${API_URL}/discover/movie?${queryString.stringify(query)}`;
-    fetch(link)
-      .then(responseData => responseData.json())
-      .then(data => {
-        this.setState({
-          movies: data.results
-        });
-        this.props.getTotalPages(data.total_pages);
-      });
+    //----
+    const link = `${api_urls.discover}${queryString.stringify(query)}`;
+    //----
+    const discover = await fetchUrl(link);
+    //----
+    this.setState({
+      movies: discover.results
+    });
+    //----
+    this.props.getTotalPages(discover.total_pages);
   };
   //===================================================
   componentDidMount() {
@@ -48,6 +51,7 @@ export default class MoviesList extends Component {
       this.props.onChangePage(1);
       this.getMovies(this.props.filters, 1);
     }
+    //----
     if (this.props.page !== prevProps.page) {
       this.getMovies(this.props.filters, this.props.page);
     }
@@ -55,6 +59,7 @@ export default class MoviesList extends Component {
   //===================================================
   render() {
     const { movies } = this.state;
+    const { user, toogleLoginForm } = this.props;
     return (
       <div className="row">
         {movies.length === 0 ? (
@@ -65,7 +70,11 @@ export default class MoviesList extends Component {
           movies.map(movie => {
             return (
               <div key={movie.id} className="col-6 mb-4">
-                <MovieItem item={movie} />
+                <MovieItem
+                  item={movie}
+                  user={user}
+                  toogleLoginForm={toogleLoginForm}
+                />
               </div>
             );
           })

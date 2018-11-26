@@ -4,10 +4,25 @@ body {
 card: {
   width: 100%;
 }
-
 .invalid-feedback {
   display: block;
 }
-.valid-feedback{
+.valid-feedback {
   display: block;
+}
+.card-img--height {
+  max-height: 161.84px;
+  object-fit: cover;
+}
+.card-img--favourite {
+  width: 15px;
+  height: 15px;
+  margin-left: 5px;
+  cursor: pointer;
+}
+.avatar{
+    cursor: pointer;
+}
+.btn--exit{
+    margin: 0 5px;
 }

@@ -27,10 +27,7 @@ export default class Filters extends Component {
     } = this.props;
     //===================================================
     return (
-      <form className="mb-3">
-        <button type="button" className="btn btn-light" onClick={onReset}>
-          Сбросить фильтр
-        </button>
+      <form>
         <SortBy onChangeFilters={onChangeFilters} sort_by={sort_by} />
         <PrimaryReleaseYear
           onChangeFilters={onChangeFilters}
@@ -42,6 +39,9 @@ export default class Filters extends Component {
           page={page}
           total_pages={total_pages}
         />
+        <button type="button" className="btn btn-light m-auto d-block mt-sm-3" onClick={onReset}>
+          Сбросить фильтр
+        </button>
       </form>
     );
   }
