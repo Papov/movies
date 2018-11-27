@@ -10,6 +10,7 @@ export default class Login extends Component {
     showLoginForm: PropTypes.bool,
     toogleLoginForm: PropTypes.func.isRequired
   };
+
   render() {
     const {
       checkLogined,

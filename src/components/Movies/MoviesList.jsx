@@ -11,9 +11,11 @@ export default class MoviesList extends Component {
     filters: PropTypes.object.isRequired,
     page: PropTypes.number
   };
+
   state = {
     movies: []
   };
+
   getMovies = async (filters, page) => {
     const { sort_by, primary_release_year, with_genres } = filters;
     const query = {
@@ -33,9 +35,11 @@ export default class MoviesList extends Component {
     });
     this.props.getTotalPages(discover.total_pages);
   };
+
   componentDidMount() {
     this.getMovies(this.props.filters, this.props.page);
   }
+
   componentDidUpdate(prevProps) {
     if (this.props.filters !== prevProps.filters) {
       this.props.onChangePage(1);
@@ -45,6 +49,7 @@ export default class MoviesList extends Component {
       this.getMovies(this.props.filters, this.props.page);
     }
   }
+
   render() {
     const { movies } = this.state;
     const { user, toogleLoginForm } = this.props;

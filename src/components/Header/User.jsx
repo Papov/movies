@@ -8,14 +8,17 @@ export default class User extends Component {
     cookies: PropTypes.object.isRequired,
     user_info: PropTypes.object
   };
+
   state = {
     popovnerOpen: false
   };
+
   toggle = () => {
     this.setState({
       popoverOpen: !this.state.popoverOpen
     });
   };
+
   exitFromAccount = event => {
     const { name } = event.target;
     if (name === "true") {
@@ -25,6 +28,7 @@ export default class User extends Component {
       this.toggle();
     }
   };
+
   render() {
     const { user_info } = this.props;
     return (

@@ -5,6 +5,7 @@ export default class UISelect extends PureComponent {
   static propTypes = {
     onChange: PropTypes.func.isRequired
   };
+
   render() {
     const { id, name, value, onChange, label, children } = this.props;
     return (

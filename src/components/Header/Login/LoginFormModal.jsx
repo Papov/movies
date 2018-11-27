@@ -8,6 +8,7 @@ export default class LoginFormModal extends Component {
     updateSessionToken: PropTypes.func.isRequired,
     checkLogined: PropTypes.func.isRequired
   };
+
   state = {
     username: "",
     password: "",
@@ -15,6 +16,7 @@ export default class LoginFormModal extends Component {
     errors: {},
     submitAwait: false
   };
+
   checkErrors = (name = null) => {
     const { username, password, repeatPassword } = this.state;
     const errors = {};
@@ -83,6 +85,7 @@ export default class LoginFormModal extends Component {
       }
     }
   };
+
   onHandleChange = name => event => {
     const { value } = event.target;
     this.setState(prevState => ({
@@ -93,6 +96,7 @@ export default class LoginFormModal extends Component {
       }
     }));
   };
+
   onSubmit = async () => {
     const { username, password } = this.state;
     this.setState({
@@ -137,6 +141,7 @@ export default class LoginFormModal extends Component {
       });
     }
   };
+
   onSubmitClick = event => {
     event.preventDefault();
     const valid = this.checkErrors();
@@ -144,6 +149,7 @@ export default class LoginFormModal extends Component {
       this.onSubmit();
     }
   };
+
   render() {
     const {
       username,

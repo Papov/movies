@@ -6,6 +6,7 @@ export default class UIInput extends PureComponent {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired
   };
+
   render() {
     const {
       id,

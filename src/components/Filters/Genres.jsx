@@ -6,9 +6,11 @@ export default class Genres extends PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired
   };
+
   state = {
     genresList: []
   };
+
   componentDidMount() {
     const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
     fetch(link)
@@ -19,6 +21,7 @@ export default class Genres extends PureComponent {
         });
       });
   }
+
   showAllGenres = () => {
     this.props.onChangeFilters({
       target: {
@@ -27,6 +30,7 @@ export default class Genres extends PureComponent {
       }
     });
   };
+
   checkedGenges = event => {
     const value = event.target.checked
       ? [...this.props.with_genres, event.target.value]
@@ -38,6 +42,7 @@ export default class Genres extends PureComponent {
       }
     });
   };
+
   render() {
     const { genresList } = this.state;
     const { with_genres } = this.props;

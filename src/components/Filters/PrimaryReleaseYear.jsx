@@ -7,6 +7,7 @@ export default class PrimaryReleaseYear extends PureComponent {
     onChangeFilters: PropTypes.func.isRequired,
     primary_release_year: PropTypes.string.isRequired
   };
+
   static defaultProps = {
     years: [
       {
@@ -31,6 +32,7 @@ export default class PrimaryReleaseYear extends PureComponent {
       }
     ]
   };
+
   render() {
     const { years, primary_release_year, onChangeFilters } = this.props;
     console.log("year");

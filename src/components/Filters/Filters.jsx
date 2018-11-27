@@ -14,6 +14,7 @@ export default class Filters extends Component {
     page: PropTypes.number,
     total_pages: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
+
   render() {
     const {
       filters: { sort_by, primary_release_year, with_genres },
