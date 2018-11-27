@@ -12,7 +12,6 @@ export default class Header extends Component {
     cookies: PropTypes.object,
     user_info: PropTypes.object
   }
-  //===================================================
   render() {
     const {
       user: { user_info },

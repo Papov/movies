@@ -7,7 +7,6 @@ export default class SortBy extends PureComponent {
     onChangeFilters: PropTypes.func.isRequired,
     sort_by: PropTypes.string.isRequired
   };
-  //===================================================
   static defaultProps = {
     options: [
       {
@@ -28,7 +27,6 @@ export default class SortBy extends PureComponent {
       }
     ]
   };
-  //===================================================
   render() {
     const { onChangeFilters, sort_by, options } = this.props;
     console.log("sortBy");

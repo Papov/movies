@@ -9,8 +9,7 @@ export default class Login extends Component {
     updateSessionToken: PropTypes.func.isRequired,
     showLoginForm: PropTypes.bool,
     toogleLoginForm: PropTypes.func.isRequired
-  }
-  //===================================================
+  };
   render() {
     const {
       checkLogined,

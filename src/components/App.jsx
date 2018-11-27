@@ -10,10 +10,8 @@ import {
   faHeart as solidFaHeart
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
-//===================================================
 const cookies = new Cookies();
 library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart);
-//===================================================
 export default class App extends Component {
   state = {
     filters: {
@@ -23,13 +21,12 @@ export default class App extends Component {
     },
     user: {
       user_info: null,
-      session_token: null
+      session_id: null
     },
     page: 1,
     total_pages: "",
     showLoginForm: false
   };
-  //===================================================
   checkLogined = user_info => {
     if (user_info) {
       this.setState({
@@ -44,26 +41,23 @@ export default class App extends Component {
       });
     }
   };
-  //===================================================
   toogleLoginForm = () => {
     this.setState(prevState => ({
       showLoginForm: !prevState.showLoginForm
     }));
   };
-  //===================================================
-  updateSessionToken = session_token => {
+  updateSessionToken = session_id => {
     this.setState({
       user: {
         ...this.state.user,
-        session_token
+        session_id
       }
     });
-    cookies.set("session_token", session_token, {
+    cookies.set("session_id", session_id, {
       path: "/",
       expires: new Date(Date.now() + 2592000)
     });
   };
-  //===================================================
   onChangeFilters = event => {
     const { name, value } = event.target;
     this.setState(prevState => ({
@@ -73,15 +67,12 @@ export default class App extends Component {
       }
     }));
   };
-  //===================================================
   getTotalPages = total_pages => {
     this.setState({
       total_pages
     });
   };
-  //===================================================
   onReset = () => {
-    // ОБЬЕКТ ИЗНАЧАЛЬНОГО СОСТОЯНИЯ
     const pureState = {
       filters: {
         sort_by: "popularity.desc",
@@ -94,13 +85,11 @@ export default class App extends Component {
       ...pureState
     });
   };
-  //===================================================
   onChangePage = page => {
     this.setState({
       page
     });
   };
-  //===================================================
   render() {
     const { filters, page, total_pages, user, showLoginForm } = this.state;
     return (
@@ -145,15 +134,14 @@ export default class App extends Component {
       </Fragment>
     );
   }
-  //===================================================
   componentDidMount() {
-    const session_id = cookies.get("session_token");
+    const session_id = cookies.get("session_id");
     if (session_id) {
       fetchUrl(`${api_urls.account}${session_id}`).then(user_info => {
         this.setState({
           user: {
             user_info,
-            session_token: session_id
+            session_id: session_id
           }
         });
       });

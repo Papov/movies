@@ -7,29 +7,24 @@ export default class User extends Component {
     checkLogined: PropTypes.func.isRequired,
     cookies: PropTypes.object.isRequired,
     user_info: PropTypes.object
-  }
-  //===================================================
+  };
   state = {
     popovnerOpen: false
   };
-  //===================================================
   toggle = () => {
     this.setState({
       popoverOpen: !this.state.popoverOpen
     });
   };
-  //===================================================
   exitFromAccount = event => {
     const { name } = event.target;
-    //----
-    if(name === 'true'){
+    if (name === "true") {
       this.props.checkLogined(null);
-      this.props.cookies.remove("session_token");
+      this.props.cookies.remove("session_id");
     } else {
       this.toggle();
     }
   };
-  //===================================================
   render() {
     const { user_info } = this.props;
     return (
@@ -58,7 +53,7 @@ export default class User extends Component {
             <button
               type="button"
               className="btn btn--exit btn-success"
-              name='true'
+              name="true"
               onClick={this.exitFromAccount}
             >
               Да
@@ -66,7 +61,7 @@ export default class User extends Component {
             <button
               type="button"
               className="btn btn--exit btn-danger"
-              name='false'
+              name="false"
               onClick={this.exitFromAccount}
             >
               Нет

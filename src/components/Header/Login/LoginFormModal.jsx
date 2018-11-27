@@ -7,8 +7,7 @@ export default class LoginFormModal extends Component {
   static propTypes = {
     updateSessionToken: PropTypes.func.isRequired,
     checkLogined: PropTypes.func.isRequired
-  }
-  //===================================================
+  };
   state = {
     username: "",
     password: "",
@@ -16,8 +15,7 @@ export default class LoginFormModal extends Component {
     errors: {},
     submitAwait: false
   };
-  //===================================================
-  checkErrors = (event = null) => {
+  checkErrors = (name = null) => {
     const { username, password, repeatPassword } = this.state;
     const errors = {};
     const messages = {
@@ -25,44 +23,41 @@ export default class LoginFormModal extends Component {
       password: "please, write your password",
       repeatPassword: "please, write the same password"
     };
-    //----
-    if (event) {
-      let name = event.target.name;
-      let length = this.state[name].length === 0;
-      //----
-      switch (name) {
-        case "username":
-          if (length) {
-            errors.username = messages.username;
-          }
-          break;
-        case "password":
-          if (length) {
-            errors.password = messages.password;
-          }
-          break;
-        case "repeatPassword":
-          if (password !== repeatPassword) {
-            errors.repeatPassword = messages.repeatPassword;
-          }
-          break;
-        default:
-          break;
-      }
-      //----
-      let valid = !!Object.keys(errors).length;
-      if (valid) {
-        this.setState(prevState => ({
-          errors: {
-            ...prevState.errors,
-            ...errors,
-            base: null
-          }
-        }));
-        return false;
-      }
+    if (name) {
+      return () => {
+        let length = this.state[name].length === 0;
+        switch (name) {
+          case "username":
+            if (length) {
+              errors.username = messages.username;
+            }
+            break;
+          case "password":
+            if (length) {
+              errors.password = messages.password;
+            }
+            break;
+          case "repeatPassword":
+            if (password !== repeatPassword) {
+              errors.repeatPassword = messages.repeatPassword;
+            }
+            break;
+          default:
+            break;
+        }
+        let valid = !!Object.keys(errors).length;
+        if (valid) {
+          this.setState(prevState => ({
+            errors: {
+              ...prevState.errors,
+              ...errors,
+              base: null
+            }
+          }));
+          return false;
+        }
+      };
     } else {
-      //----
       if (username === "") {
         errors.username = messages.username;
       }
@@ -72,7 +67,6 @@ export default class LoginFormModal extends Component {
       if (password !== repeatPassword) {
         errors.repeatPassword = messages.repeatPassword;
       }
-      //----
       let valid = !!Object.keys(errors).length;
       if (valid) {
         this.setState(prevState => ({
@@ -84,16 +78,13 @@ export default class LoginFormModal extends Component {
         }));
         return false;
       }
-      //----
       if (!valid) {
         return true;
       }
     }
   };
-  //===================================================
-  onHandleChange = event => {
-    const { name, value } = event.target;
-    //----
+  onHandleChange = name => event => {
+    const { value } = event.target;
     this.setState(prevState => ({
       [name]: value,
       errors: {
@@ -102,17 +93,13 @@ export default class LoginFormModal extends Component {
       }
     }));
   };
-  //===================================================
   onSubmit = async () => {
     const { username, password } = this.state;
-    //----
     this.setState({
       submitAwait: true
     });
-    //----
     try {
       const firstDataToken = await fetchUrl(api_urls.first_token);
-      //----
       const validateLoginToken = await fetchUrl(api_urls.validate_with_login, {
         method: "POST",
         mode: "cors",
@@ -125,7 +112,6 @@ export default class LoginFormModal extends Component {
           request_token: firstDataToken.request_token
         })
       });
-      //----
       const { session_id } = await fetchUrl(api_urls.session, {
         method: "POST",
         mode: "cors",
@@ -136,20 +122,12 @@ export default class LoginFormModal extends Component {
           request_token: validateLoginToken.request_token
         })
       });
-      //----
       this.props.updateSessionToken(session_id);
-      //----
       const account = await fetchUrl(`${api_urls.account}${session_id}`);
-      //----
       this.props.checkLogined(account);
-      //----
       this.setState({
-        submitAwait: false,
-        errors: {
-          registered: "Вход успешный"
-        }
+        submitAwait: false
       });
-      //----
     } catch (error) {
       this.setState({
         submitAwait: false,
@@ -159,7 +137,6 @@ export default class LoginFormModal extends Component {
       });
     }
   };
-  //===================================================
   onSubmitClick = event => {
     event.preventDefault();
     const valid = this.checkErrors();
@@ -167,7 +144,6 @@ export default class LoginFormModal extends Component {
       this.onSubmit();
     }
   };
-  //===================================================
   render() {
     const {
       username,
@@ -185,31 +161,28 @@ export default class LoginFormModal extends Component {
           id="username"
           value={username}
           placeholder="Логин"
-          name="username"
-          onChange={this.onHandleChange}
-          onBlur={this.checkErrors}
+          onChange={this.onHandleChange("username")}
+          onBlur={this.checkErrors("username", username)}
           error={errors.username}
         />
         <UIInput
           id="password"
-          name="password"
-          value={password}
           label="Пароль"
           type="password"
+          value={password}
           placeholder="Пароль"
-          onChange={this.onHandleChange}
-          onBlur={this.checkErrors}
+          onChange={this.onHandleChange("password")}
+          onBlur={this.checkErrors("password", password)}
           error={errors.password}
         />
         <UIInput
           id="repeatPassword"
-          name="repeatPassword"
-          value={repeatPassword}
           label="Повторить пароль"
           type="password"
+          value={repeatPassword}
           placeholder="Повторно введите пароль"
-          onChange={this.onHandleChange}
-          onBlur={this.checkErrors}
+          onChange={this.onHandleChange("repeatPassword")}
+          onBlur={this.checkErrors("repeatPassword", repeatPassword)}
           error={errors.repeatPassword}
         />
         <button
@@ -222,9 +195,6 @@ export default class LoginFormModal extends Component {
         </button>
         {errors.base ? (
           <div className="invalid-feedback text-center">{errors.base}</div>
-        ) : null}
-        {errors.registered ? (
-          <div className="valid-feedback text-center">{errors.registered}</div>
         ) : null}
       </form>
     );

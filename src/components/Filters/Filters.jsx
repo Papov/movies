@@ -14,7 +14,6 @@ export default class Filters extends Component {
     page: PropTypes.number,
     total_pages: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
-  //===================================================
   render() {
     const {
       filters: { sort_by, primary_release_year, with_genres },
@@ -24,7 +23,6 @@ export default class Filters extends Component {
       total_pages,
       onReset
     } = this.props;
-    //===================================================
     return (
       <form>
         <SortBy onChangeFilters={onChangeFilters} sort_by={sort_by} />
@@ -38,7 +36,11 @@ export default class Filters extends Component {
           page={page}
           total_pages={total_pages}
         />
-        <button type="button" className="btn btn-light m-auto d-block mt-sm-3" onClick={onReset}>
+        <button
+          type="button"
+          className="btn btn-light m-auto d-block mt-sm-3"
+          onClick={onReset}
+        >
           Сбросить фильтр
         </button>
       </form>
