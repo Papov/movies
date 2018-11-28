@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import SortBy from "./SortBy";
 import Pagination from "./Pagination";
 import PrimaryReleaseYear from "./PrimaryReleaseYear";
-import Genres from "./Genres";
+import Genres from "./Genres/Genres";
 import PropTypes from "prop-types";
 
 export default class Filters extends Component {

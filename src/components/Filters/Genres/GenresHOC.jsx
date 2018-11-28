@@ -1,8 +1,8 @@
-import React, { PureComponent, Fragment } from "react";
-import { API_URL, API_KEY_3 } from "../../api/api";
+import React, { PureComponent } from "react";
+import { API_URL, API_KEY_3 } from "../../../api/api";
 import PropTypes from "prop-types";
 
-export default class Genres extends PureComponent {
+export default (Container) => class GenresHOC extends PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired
   };
@@ -48,29 +48,12 @@ export default class Genres extends PureComponent {
     const { with_genres } = this.props;
     console.log("genres");
     return (
-      <Fragment>
-        <button
-          className="btn btn-primary"
-          type="button"
-          onClick={this.showAllGenres}
-          style={{ marginBottom: "15px" }}
-        >
-          Все жанры
-        </button>
-        {genresList.map(genre => (
-          <div className="form-check" key={`genre${genre.id}`}>
-            <input
-              type="checkbox"
-              className="form-check-input"
-              value={genre.id}
-              id={`id${genre.id}`}
-              onChange={this.checkedGenges}
-              checked={with_genres.indexOf(String(genre.id)) !== -1}
-            />
-            <label htmlFor={`id${genre.id}`}>{genre.name}</label>
-          </div>
-        ))}
-      </Fragment>
+      <Container
+        genresList={genresList}
+        showAllGenres={this.showAllGenres}
+        with_genres={with_genres}
+        checkedGenges={this.checkedGenges}
+      />
     );
   }
 }

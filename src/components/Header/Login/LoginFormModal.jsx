@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import { fetchUrl, api_urls } from "../../../api/api";
 import UIInput from "../../UI/UIInput";
 import PropTypes from "prop-types";
+import { AppContext } from "../../App";
 
-export default class LoginFormModal extends Component {
+class LoginFormModal extends Component {
   static propTypes = {
-    updateSessionToken: PropTypes.func.isRequired,
+    updateSessionId: PropTypes.func.isRequired,
     checkLogined: PropTypes.func.isRequired
   };
 
   state = {
-    username: "",
-    password: "",
-    repeatPassword: "",
+    username: "vlad_link",
+    password: "Link0lnpassword",
+    repeatPassword: "Link0lnpassword",
     errors: {},
     submitAwait: false
   };
@@ -126,12 +127,16 @@ export default class LoginFormModal extends Component {
           request_token: validateLoginToken.request_token
         })
       });
-      this.props.updateSessionToken(session_id);
-      const account = await fetchUrl(`${api_urls.account}${session_id}`);
-      this.props.checkLogined(account);
-      this.setState({
-        submitAwait: false
-      });
+      this.props.updateSessionId(session_id);
+      const user = await fetchUrl(`${api_urls.account}${session_id}`);
+      this.setState(
+        {
+          submitAwait: false
+        },
+        () => {
+          this.props.checkLogined(user);
+        }
+      );
     } catch (error) {
       this.setState({
         submitAwait: false,
@@ -206,3 +211,15 @@ export default class LoginFormModal extends Component {
     );
   }
 }
+
+const LoginFormConsumer = props => {
+  return (
+    <AppContext.Consumer>
+      {({ updateSessionId }) => (
+        <LoginFormModal updateSessionId={updateSessionId} {...props} />
+      )}
+    </AppContext.Consumer>
+  );
+};
+
+export default LoginFormConsumer;

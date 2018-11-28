@@ -7,13 +7,11 @@ const noImageUrl =
 
 export default class MovieItem extends PureComponent {
   static propTypes = {
-    item: PropTypes.object.isRequired,
-    toogleLoginForm: PropTypes.func.isRequired,
-    user: PropTypes.object
+    item: PropTypes.object.isRequired
   };
 
   render() {
-    const { item, toogleLoginForm, user } = this.props;
+    const { item } = this.props;
 
     const image_available = !!(item.backdrop_path || item.poster_path);
 
@@ -33,20 +31,8 @@ export default class MovieItem extends PureComponent {
           <h6 className="card-title">{item.title}</h6>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="card-img d-flex justify-content-end">
-            <IconFav
-              item={item}
-              toogleLoginForm={toogleLoginForm}
-              user={user}
-              icon_name="favorite"
-              icon_image="heart"
-            />
-            <IconFav
-              item={item}
-              toogleLoginForm={toogleLoginForm}
-              user={user}
-              icon_name="watchlist"
-              icon_image="bookmark"
-            />
+            <IconFav item={item} icon_name="favorite" icon_image="heart" />
+            <IconFav item={item} icon_name="watchlist" icon_image="bookmark" />
           </div>
         </div>
       </div>

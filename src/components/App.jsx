@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
@@ -10,8 +10,11 @@ import {
   faHeart as solidFaHeart
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
+
 const cookies = new Cookies();
+export const AppContext = React.createContext();
 library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart);
+
 export default class App extends Component {
   state = {
     filters: {
@@ -46,7 +49,7 @@ export default class App extends Component {
       showLoginForm: !prevState.showLoginForm
     }));
   };
-  updateSessionToken = session_id => {
+  updateSessionId = session_id => {
     this.setState({
       user: {
         ...this.state.user,
@@ -93,45 +96,48 @@ export default class App extends Component {
   render() {
     const { filters, page, total_pages, user, showLoginForm } = this.state;
     return (
-      <Fragment>
-        <Header
-          checkLogined={this.checkLogined}
-          user={user}
-          updateSessionToken={this.updateSessionToken}
-          toogleLoginForm={this.toogleLoginForm}
-          showLoginForm={showLoginForm}
-          cookies={cookies}
-        />
-        <div className="container">
-          <div className="row mt-4">
-            <div className="col-4">
-              <div className="card">
-                <div className="card-body">
-                  <h3>Фильтры:</h3>
-                  <Filters
-                    filters={filters}
-                    onChangeFilters={this.onChangeFilters}
-                    page={page}
-                    onChangePage={this.onChangePage}
-                    total_pages={total_pages}
-                    onReset={this.onReset}
-                  />
+      <AppContext.Provider value={{
+        user,
+        updateSessionId:this.updateSessionId,
+        toogleLoginForm: this.toogleLoginForm
+      }}>
+          <Header
+            checkLogined={this.checkLogined}
+            user={user}
+            toogleLoginForm={this.toogleLoginForm}
+            showLoginForm={showLoginForm}
+            cookies={cookies}
+          />
+          <div className="container">
+            <div className="row mt-4">
+              <div className="col-4">
+                <div className="card">
+                  <div className="card-body">
+                    <h3>Фильтры:</h3>
+                    <Filters
+                      filters={filters}
+                      onChangeFilters={this.onChangeFilters}
+                      page={page}
+                      onChangePage={this.onChangePage}
+                      total_pages={total_pages}
+                      onReset={this.onReset}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-8">
-              <MoviesList
-                filters={filters}
-                page={page}
-                onChangePage={this.onChangePage}
-                getTotalPages={this.getTotalPages}
-                user={user}
-                toogleLoginForm={this.toogleLoginForm}
-              />
+              <div className="col-8">
+                <MoviesList
+                  filters={filters}
+                  page={page}
+                  onChangePage={this.onChangePage}
+                  getTotalPages={this.getTotalPages}
+                  user={user}
+                  toogleLoginForm={this.toogleLoginForm}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </Fragment>
+      </AppContext.Provider>
     );
   }
   componentDidMount() {

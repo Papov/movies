@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import PropTypes from "prop-types";
+import { AppContext } from "../App";
 
-export default class User extends Component {
+class User extends Component {
   static propTypes = {
     checkLogined: PropTypes.func.isRequired,
     cookies: PropTypes.object.isRequired,
@@ -30,7 +31,9 @@ export default class User extends Component {
   };
 
   render() {
-    const { user_info } = this.props;
+    const {
+      user_info: { user_info }
+    } = this.props;
     return (
       <div className="d-flex align-items-center">
         <span className="text-white" style={{ marginRight: "10px" }}>
@@ -76,3 +79,15 @@ export default class User extends Component {
     );
   }
 }
+
+const UserConsumer = props => {
+  return (
+    <AppContext.Consumer>
+      {({ user }) => <User user_info={user} {...props} />}
+    </AppContext.Consumer>
+  );
+};
+
+UserConsumer.displayName = "UserConsumer";
+
+export default UserConsumer;

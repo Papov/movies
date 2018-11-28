@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { API_KEY_3, fetchUrl } from "../../api/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
+import { AppContext } from "../App";
 
-export default class IconFav extends Component {
+class IconFav extends Component {
   static propTypes = {
     toogleLoginForm: PropTypes.func.isRequired,
     icon_image: PropTypes.string.isRequired,
@@ -59,3 +60,15 @@ export default class IconFav extends Component {
     );
   }
 }
+
+const FavIconConsumer = props => (
+  <AppContext>
+    {({ toogleLoginForm, user }) => (
+      <IconFav toogleLoginForm={toogleLoginForm} user={user} {...props} />
+    )}
+  </AppContext>
+);
+
+FavIconConsumer.displayName = "FavIconConsumer";
+
+export default FavIconConsumer;
