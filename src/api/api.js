@@ -33,5 +33,6 @@ export const api_urls = {
   validate_with_login: `/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
   session: `/authentication/session/new?api_key=${API_KEY_3}`,
   account: `/account?api_key=${API_KEY_3}&session_id=`,
-  discover: `/discover/movie?`
+  discover: `/discover/movie?`,
+  logOut: `/authentication/session?api_key=${API_KEY_3}`
 };

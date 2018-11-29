@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
-import IconFav from "../UI/IconFav";
+import UIIcon from "../UI/UIIcon";
 
 const noImageUrl =
   "https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png";
@@ -31,8 +31,8 @@ export default class MovieItem extends PureComponent {
           <h6 className="card-title">{item.title}</h6>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="card-img d-flex justify-content-end">
-            <IconFav item={item} icon_name="favorite" icon_image="heart" />
-            <IconFav item={item} icon_name="watchlist" icon_image="bookmark" />
+            <UIIcon item={item} icon_name="favorite" icon_image="heart" />
+            <UIIcon item={item} icon_name="watchlist" icon_image="bookmark" />
           </div>
         </div>
       </div>

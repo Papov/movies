@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
+import LoginForm from "./Header/Login/LoginFormModal";
 import { fetchUrl, api_urls } from "../api/api";
+import { Modal, ModalBody } from "reactstrap";
 import Cookies from "universal-cookie";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -96,47 +98,59 @@ export default class App extends Component {
   render() {
     const { filters, page, total_pages, user, showLoginForm } = this.state;
     return (
-      <AppContext.Provider value={{
-        user,
-        updateSessionId:this.updateSessionId,
-        toogleLoginForm: this.toogleLoginForm
-      }}>
-          <Header
-            checkLogined={this.checkLogined}
-            user={user}
-            toogleLoginForm={this.toogleLoginForm}
-            showLoginForm={showLoginForm}
-            cookies={cookies}
-          />
-          <div className="container">
-            <div className="row mt-4">
-              <div className="col-4">
-                <div className="card">
-                  <div className="card-body">
-                    <h3>Фильтры:</h3>
-                    <Filters
-                      filters={filters}
-                      onChangeFilters={this.onChangeFilters}
-                      page={page}
-                      onChangePage={this.onChangePage}
-                      total_pages={total_pages}
-                      onReset={this.onReset}
-                    />
-                  </div>
+      <AppContext.Provider
+        value={{
+          user,
+          updateSessionId: this.updateSessionId,
+          toogleLoginForm: this.toogleLoginForm
+        }}
+      >
+        <Header
+          checkLogined={this.checkLogined}
+          user={user}
+          toogleLoginForm={this.toogleLoginForm}
+          showLoginForm={showLoginForm}
+          cookies={cookies}
+        />
+        <div className="container">
+          <div className="row mt-4">
+            <div className="col-4">
+              <div className="card">
+                <div className="card-body">
+                  <h3>Фильтры:</h3>
+                  <Filters
+                    filters={filters}
+                    onChangeFilters={this.onChangeFilters}
+                    page={page}
+                    onChangePage={this.onChangePage}
+                    total_pages={total_pages}
+                    onReset={this.onReset}
+                  />
                 </div>
               </div>
-              <div className="col-8">
-                <MoviesList
-                  filters={filters}
-                  page={page}
-                  onChangePage={this.onChangePage}
-                  getTotalPages={this.getTotalPages}
-                  user={user}
-                  toogleLoginForm={this.toogleLoginForm}
-                />
-              </div>
+            </div>
+            <div className="col-8">
+              <MoviesList
+                filters={filters}
+                page={page}
+                onChangePage={this.onChangePage}
+                getTotalPages={this.getTotalPages}
+                user={user}
+                toogleLoginForm={this.toogleLoginForm}
+              />
             </div>
           </div>
+        </div>
+        {showLoginForm && (
+          <Modal isOpen={showLoginForm} toggle={this.toogleLoginForm}>
+            <ModalBody>
+              <LoginForm
+                checkLogined={this.checkLogined}
+                toogleLoginForm={this.toogleLoginForm}
+              />
+            </ModalBody>
+          </Modal>
+        )}
       </AppContext.Provider>
     );
   }

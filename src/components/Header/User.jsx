@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import PropTypes from "prop-types";
+import { fetchUrl, api_urls } from "../../api/api";
 import { AppContext } from "../App";
 
 class User extends Component {
@@ -20,11 +21,23 @@ class User extends Component {
     });
   };
 
-  exitFromAccount = event => {
+  exitFromAccount = async event => {
     const { name } = event.target;
+    const {user_info} = this.props;
     if (name === "true") {
+      const logOut = await fetchUrl(api_urls.logOut, {
+        method: "DELETE",
+        mode: "cors",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          session_id: user_info.session_id
+        })
+      });
       this.props.checkLogined(null);
       this.props.cookies.remove("session_id");
+      console.log(logOut);
     } else {
       this.toggle();
     }

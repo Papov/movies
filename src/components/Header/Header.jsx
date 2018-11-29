@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Login from "./Login/Login";
-import UserConsumer from "./User";
+import User from "./User";
 import PropTypes from "prop-types";
 
 export default class Header extends Component {
@@ -24,7 +24,7 @@ export default class Header extends Component {
         <div className="container">
           <a className="nav-item text-white font-weight-bold">Home</a>
           {user_info ? (
-            <UserConsumer checkLogined={checkLogined} cookies={cookies} />
+            <User checkLogined={checkLogined} cookies={cookies} />
           ) : (
             <Login
               checkLogined={checkLogined}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { fetchUrl, api_urls } from "../../../api/api";
 import UIInput from "../../UI/UIInput";
 import PropTypes from "prop-types";
-import { AppContext } from "../../App";
+import AppConsumerHOC from "../../../HOC/AppConsumerHOC";
 
 class LoginFormModal extends Component {
   static propTypes = {
@@ -135,6 +135,7 @@ class LoginFormModal extends Component {
         },
         () => {
           this.props.checkLogined(user);
+          this.props.toogleLoginForm();
         }
       );
     } catch (error) {
@@ -212,14 +213,4 @@ class LoginFormModal extends Component {
   }
 }
 
-const LoginFormConsumer = props => {
-  return (
-    <AppContext.Consumer>
-      {({ updateSessionId }) => (
-        <LoginFormModal updateSessionId={updateSessionId} {...props} />
-      )}
-    </AppContext.Consumer>
-  );
-};
-
-export default LoginFormConsumer;
+export default AppConsumerHOC(LoginFormModal);

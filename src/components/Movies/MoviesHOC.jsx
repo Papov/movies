@@ -1,10 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import queryString from "query-string";
 import { fetchUrl, api_urls, API_KEY_3 } from "../../api/api";
 import PropTypes from "prop-types";
 
-export default DefaultComponent =>
-  class MoviesHOC extends Component {
+export default Component =>
+  class MoviesHOC extends React.Component {
     static propTypes = {
       getTotalPages: PropTypes.func.isRequired,
       onChangePage: PropTypes.func.isRequired,
@@ -52,6 +52,6 @@ export default DefaultComponent =>
 
     render() {
       const { movies } = this.state;
-      return <DefaultComponent movies={movies} />;
+      return <Component movies={movies} />;
     }
   };

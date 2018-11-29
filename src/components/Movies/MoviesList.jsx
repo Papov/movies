@@ -7,7 +7,7 @@ const MoviesList = ({ movies }) => (
   <div className="row">
     {movies.length === 0 ? (
       <h3 className="h3 text-center" style={{ width: "100%" }}>
-        НЕТУ ФИЛЬМОВ ПО ДАННЫМ ПАРАМЕТРАМ
+        Нету фильмов
       </h3>
     ) : (
       movies.map(movie => {
