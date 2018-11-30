@@ -1,106 +1,58 @@
-import React, { Component } from "react";
+import React from "react";
 import { Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import PropTypes from "prop-types";
-import { fetchUrl, api_urls } from "../../api/api";
-import { AppContext } from "../App";
+import AppConsumerHOC from "../../HOC/AppConsumerHOC";
+import UserHOC from "../../HOC/UserHOC";
 
-class User extends Component {
-  static propTypes = {
-    checkLogined: PropTypes.func.isRequired,
-    cookies: PropTypes.object.isRequired,
-    user_info: PropTypes.object
-  };
-
-  state = {
-    popovnerOpen: false
-  };
-
-  toggle = () => {
-    this.setState({
-      popoverOpen: !this.state.popoverOpen
-    });
-  };
-
-  exitFromAccount = async event => {
-    const { name } = event.target;
-    const {user_info} = this.props;
-    if (name === "true") {
-      const logOut = await fetchUrl(api_urls.logOut, {
-        method: "DELETE",
-        mode: "cors",
-        headers: {
-          "Content-type": "application/json"
-        },
-        body: JSON.stringify({
-          session_id: user_info.session_id
-        })
-      });
-      this.props.checkLogined(null);
-      this.props.cookies.remove("session_id");
-      console.log(logOut);
-    } else {
-      this.toggle();
-    }
-  };
-
-  render() {
-    const {
-      user_info: { user_info }
-    } = this.props;
-    return (
-      <div className="d-flex align-items-center">
-        <span className="text-white" style={{ marginRight: "10px" }}>
-          {user_info.name}
-        </span>
-        <img
-          className="rounded-circle avatar"
-          width="45"
-          src={`https://secure.gravatar.com/avatar/${
-            user_info.avatar.gravatar.hash
-          }.jpg?s=64`}
-          alt="avatar"
-          id="exit"
-          onClick={this.toggle}
-        />
-        <Popover
-          placement="bottom"
-          isOpen={this.state.popoverOpen}
-          target="exit"
-          toggle={this.toggle}
-        >
-          <PopoverHeader className="text-center">выйти?</PopoverHeader>
-          <PopoverBody>
-            <button
-              type="button"
-              className="btn btn--exit btn-success"
-              name="true"
-              onClick={this.exitFromAccount}
-            >
-              Да
-            </button>
-            <button
-              type="button"
-              className="btn btn--exit btn-danger"
-              name="false"
-              onClick={this.exitFromAccount}
-            >
-              Нет
-            </button>
-          </PopoverBody>
-        </Popover>
-      </div>
-    );
-  }
-}
-
-const UserConsumer = props => {
+const User = ({ user_info, popovnerOpen, exitFromAccount, toggleMenu }) => {
   return (
-    <AppContext.Consumer>
-      {({ user }) => <User user_info={user} {...props} />}
-    </AppContext.Consumer>
+    <div className="d-flex align-items-center">
+      <span className="text-white" style={{ marginRight: "10px" }}>
+        {user_info.name}
+      </span>
+      <img
+        className="rounded-circle avatar"
+        width="45"
+        src={`https://secure.gravatar.com/avatar/${
+          user_info.avatar.gravatar.hash
+        }.jpg?s=64`}
+        alt="avatar"
+        id="exit"
+        onClick={toggleMenu}
+      />
+      <Popover
+        placement="bottom"
+        isOpen={popovnerOpen}
+        target="exit"
+        toggle={toggleMenu}
+      >
+        <PopoverHeader className="text-center">выйти?</PopoverHeader>
+        <PopoverBody>
+          <button
+            type="button"
+            className="btn btn--exit btn-success"
+            onClick={exitFromAccount(true)}
+          >
+            Да
+          </button>
+          <button
+            type="button"
+            className="btn btn--exit btn-danger"
+            onClick={exitFromAccount(false)}
+          >
+            Нет
+          </button>
+        </PopoverBody>
+      </Popover>
+    </div>
   );
 };
 
-UserConsumer.displayName = "UserConsumer";
+User.propTypes = {
+  user_info: PropTypes.object.isRequired,
+  popovnerOpen: PropTypes.bool.isRequired,
+  exitFromAccount: PropTypes.func.isRequired,
+  toggleMenu: PropTypes.func.isRequired
+}
 
-export default UserConsumer;
+export default AppConsumerHOC(UserHOC(User));

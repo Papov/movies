@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { API_URL, API_KEY_3 } from "../../../api/api";
+import CallApi from "../api/api";
 import PropTypes from "prop-types";
 
 export default (Container) => class GenresHOC extends PureComponent {
@@ -12,14 +12,17 @@ export default (Container) => class GenresHOC extends PureComponent {
   };
 
   componentDidMount() {
-    const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
-    fetch(link)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          genresList: data.genres
-        });
+    const response = async () => {
+      const data = await CallApi.get('/genre/movie/list',{
+        params: {
+          language: 'ru-RU'
+        }
+      })
+      this.setState({
+        genresList: data.genres
       });
+    }
+    response();
   }
 
   showAllGenres = () => {

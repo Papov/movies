@@ -1,6 +1,5 @@
 import React from "react";
-import queryString from "query-string";
-import { fetchUrl, api_urls, API_KEY_3 } from "../../api/api";
+import CallApi from "../api/api";
 import PropTypes from "prop-types";
 
 export default Component =>
@@ -13,25 +12,27 @@ export default Component =>
     };
 
     state = {
-      movies: []
+      movies: [],
+      preloader: true
     };
 
     getMovies = async (filters, page) => {
       const { sort_by, primary_release_year, with_genres } = filters;
-      const query = {
-        api_key: API_KEY_3,
+      let queryParams = {
         language: "ru-RU",
         sort_by: sort_by,
         page: page,
         primary_release_year: primary_release_year
       };
       if (with_genres.length > 0) {
-        query.with_genres = with_genres.join(",");
+        queryParams.with_genres = with_genres.join(",");
       }
-      const link = `${api_urls.discover}${queryString.stringify(query)}`;
-      const discover = await fetchUrl(link);
+      const discover = await CallApi.get("/discover/movie", {
+        params: queryParams
+      });
       this.setState({
-        movies: discover.results
+        movies: discover.results,
+        preloader: false
       });
       this.props.getTotalPages(discover.total_pages);
     };
@@ -51,7 +52,7 @@ export default Component =>
     }
 
     render() {
-      const { movies } = this.state;
-      return <Component movies={movies} />;
+      const { movies, preloader } = this.state;
+      return <Component movies={movies} preloader={preloader}/>;
     }
   };

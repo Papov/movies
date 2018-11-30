@@ -1,8 +1,8 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import UISelect from "../UI/UISelect";
 
-export default class SortBy extends PureComponent {
+export default class SortBy extends React.PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired,
     sort_by: PropTypes.string.isRequired

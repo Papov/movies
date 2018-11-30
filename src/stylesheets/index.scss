@@ -1,7 +1,9 @@
+@import "./preloader";
+
 body {
-  background: #fdfdfd;
+  background: #f5f5f5;
 }
-card: {
+.card {
   width: 100%;
 }
 .invalid-feedback {

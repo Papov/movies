@@ -1,3 +1,5 @@
+import queryString from "query-string";
+
 export const API_URL = "https://api.themoviedb.org/3";
 
 export const API_KEY_3 = "f3b6bf0826b03d53c7be6ac7c02b226c";
@@ -8,8 +10,7 @@ export const API_KEY_4 =
 export const fetchUrl = (url, body = {}) => {
   /*FETCHING URL TO GET TOKENS*/
   return new Promise((resolve, reject) => {
-    const link = `${API_URL}${url}`;
-    fetch(link, body)
+    fetch(url, body)
       .then(response => {
         if (response.status < 400) {
           return response.json();
@@ -28,11 +29,51 @@ export const fetchUrl = (url, body = {}) => {
   });
 };
 
-export const api_urls = {
-  first_token: `/authentication/token/new?api_key=${API_KEY_3}`,
-  validate_with_login: `/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
-  session: `/authentication/session/new?api_key=${API_KEY_3}`,
-  account: `/account?api_key=${API_KEY_3}&session_id=`,
-  discover: `/discover/movie?`,
-  logOut: `/authentication/session?api_key=${API_KEY_3}`
-};
+export default class CallApi {
+  static get(url, options = {}) {
+    const { params = {} } = options;
+    const queryParams = {
+      api_key: API_KEY_3,
+      ...params
+    };
+    return fetchUrl(
+      `${API_URL}${url}?${queryString.stringify(queryParams)}`,
+      {
+        mode: "cors",
+        headers: {
+          "Content-type": "application/json;charset=utf-8"
+        }
+      }
+    );
+  }
+  static post(url, options = {}){
+    const {params = {}, body = {}} = options;
+    const queryParams = {
+      api_key: API_KEY_3,
+      ...params
+    };
+    return fetchUrl(`${API_URL}${url}?${queryString.stringify(queryParams)}`, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-type": "application/json;charset=utf-8"
+      },
+      body: JSON.stringify(body)
+    });
+  }
+  static delete(url, options = {}){
+    const {params = {}, body = {}} = options;
+    const queryParams = {
+      api_key: API_KEY_3,
+      ...params
+    };
+    return fetchUrl(`${API_URL}${url}?${queryString.stringify(queryParams)}`, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-type": "application/json;charset=utf-8"
+      },
+      body: JSON.stringify(body)
+    });
+  }
+}

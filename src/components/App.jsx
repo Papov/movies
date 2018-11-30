@@ -3,7 +3,7 @@ import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import LoginForm from "./Header/Login/LoginFormModal";
-import { fetchUrl, api_urls } from "../api/api";
+import CallApi from "../api/api";
 import { Modal, ModalBody } from "reactstrap";
 import Cookies from "universal-cookie";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -32,7 +32,7 @@ export default class App extends Component {
     total_pages: "",
     showLoginForm: false
   };
-  checkLogined = user_info => {
+  checkAuthorization = user_info => {
     if (user_info) {
       this.setState({
         user: {
@@ -46,11 +46,13 @@ export default class App extends Component {
       });
     }
   };
+
   toogleLoginForm = () => {
     this.setState(prevState => ({
       showLoginForm: !prevState.showLoginForm
     }));
   };
+
   updateSessionId = session_id => {
     this.setState({
       user: {
@@ -63,6 +65,7 @@ export default class App extends Component {
       expires: new Date(Date.now() + 2592000)
     });
   };
+
   onChangeFilters = event => {
     const { name, value } = event.target;
     this.setState(prevState => ({
@@ -72,11 +75,13 @@ export default class App extends Component {
       }
     }));
   };
+
   getTotalPages = total_pages => {
     this.setState({
       total_pages
     });
   };
+
   onReset = () => {
     const pureState = {
       filters: {
@@ -90,11 +95,13 @@ export default class App extends Component {
       ...pureState
     });
   };
+
   onChangePage = page => {
     this.setState({
       page
     });
   };
+
   render() {
     const { filters, page, total_pages, user, showLoginForm } = this.state;
     return (
@@ -102,16 +109,12 @@ export default class App extends Component {
         value={{
           user,
           updateSessionId: this.updateSessionId,
-          toogleLoginForm: this.toogleLoginForm
+          toogleLoginForm: this.toogleLoginForm,
+          checkAuthorization: this.checkAuthorization,
+          cookies: cookies
         }}
       >
-        <Header
-          checkLogined={this.checkLogined}
-          user={user}
-          toogleLoginForm={this.toogleLoginForm}
-          showLoginForm={showLoginForm}
-          cookies={cookies}
-        />
+        <Header user={user} toogleLoginForm={this.toogleLoginForm} />
         <div className="container">
           <div className="row mt-4">
             <div className="col-4">
@@ -145,7 +148,7 @@ export default class App extends Component {
           <Modal isOpen={showLoginForm} toggle={this.toogleLoginForm}>
             <ModalBody>
               <LoginForm
-                checkLogined={this.checkLogined}
+                checkAuthorization={this.checkAuthorization}
                 toogleLoginForm={this.toogleLoginForm}
               />
             </ModalBody>
@@ -154,17 +157,24 @@ export default class App extends Component {
       </AppContext.Provider>
     );
   }
+
   componentDidMount() {
-    const session_id = cookies.get("session_id");
-    if (session_id) {
-      fetchUrl(`${api_urls.account}${session_id}`).then(user_info => {
+    const asyncFunc = async () => {
+      const session_id = cookies.get("session_id");
+      if (session_id) {
+        const user_info = await CallApi.get("/account", {
+          params: {
+            session_id: session_id
+          }
+        });
         this.setState({
           user: {
             user_info,
             session_id: session_id
           }
         });
-      });
-    }
+      }
+    };
+    asyncFunc();
   }
 }

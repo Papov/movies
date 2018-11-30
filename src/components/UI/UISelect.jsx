@@ -1,13 +1,7 @@
-import React, { PureComponent } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-export default class UISelect extends PureComponent {
-  static propTypes = {
-    onChange: PropTypes.func.isRequired
-  };
-
-  render() {
-    const { id, name, value, onChange, label, children } = this.props;
+const UISelect = ({ id, name, value, onChange, label, children }) => {
     return (
       <div className="form-group">
         <label htmlFor={id}>{label}</label>
@@ -22,5 +16,10 @@ export default class UISelect extends PureComponent {
         </select>
       </div>
     );
-  }
 }
+
+UISelect.propTypes = {
+  onChange: PropTypes.func.isRequired
+};
+
+export default UISelect;
