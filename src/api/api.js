@@ -1,4 +1,5 @@
 import queryString from "query-string";
+import fetch from 'cross-fetch';
 
 export const API_URL = "https://api.themoviedb.org/3";
 
