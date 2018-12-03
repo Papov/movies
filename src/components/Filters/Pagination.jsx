@@ -1,18 +1,18 @@
-import React, { PureComponent, Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-export default class Pagination extends PureComponent {
+export default class Pagination extends React.PureComponent {
   static propTypes = {
     onChangePage: PropTypes.func.isRequired,
     page: PropTypes.number,
     total_pages: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
   };
-  //===================================================
+
   render() {
     const { onChangePage, page, total_pages } = this.props;
     console.log("pagination");
     return (
-      <Fragment>
+      <React.Fragment>
         <div className="btn-group d-flex justify-content-center">
           <button
             type="button"
@@ -32,7 +32,7 @@ export default class Pagination extends PureComponent {
           </button>
         </div>
         <div className="mt-4 text-center">{`${page} of ${total_pages}`}</div>
-      </Fragment>
+      </React.Fragment>
     );
   }
 }

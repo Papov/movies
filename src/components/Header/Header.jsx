@@ -1,15 +1,32 @@
-import React, { Component } from "react";
-import Login from "./Login/Login";
+import React from "react";
 import User from "./User";
+import PropTypes from "prop-types";
 
-export default class Header extends Component {
+export default class Header extends React.PureComponent {
+  static propTypes = {
+    toogleLoginForm: PropTypes.func.isRequired,
+    user_info: PropTypes.object
+  };
   render() {
-    const { user, checkLogined, updateSessionToken } = this.props;
+    const {
+      user: { user_info },
+      toogleLoginForm
+    } = this.props;
     return (
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
-          <a className="nav-item text-white font-weight-bold">Home</a>
-          {user ? <User user={user}/> : <Login checkLogined={checkLogined} updateSessionToken={updateSessionToken}/>}
+          <span className="nav-item text-white font-weight-bold">Home</span>
+          {user_info ? (
+            <User />
+          ) : (
+            <button
+              type="button"
+              className="btn btn-success"
+              onClick={toogleLoginForm}
+            >
+              Login
+            </button>
+          )}
         </div>
       </nav>
     );

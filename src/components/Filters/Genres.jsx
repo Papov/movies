@@ -1,59 +1,28 @@
-import React, { PureComponent, Fragment } from "react";
-import { API_URL, API_KEY_3 } from "../../api/api";
+import React, { Fragment } from "react";
+import GenresHOC from "../../HOC/GenresHOC";
 import PropTypes from "prop-types";
 
-export default class Genres extends PureComponent {
+class Genres extends React.PureComponent {
   static propTypes = {
-    onChangeFilters: PropTypes.func.isRequired
+    showAllGenres: PropTypes.func.isRequired,
+    genresList: PropTypes.array.isRequired,
+    checkedGenges: PropTypes.func.isRequired,
+    with_genres: PropTypes.array.isRequired
   };
-  //===================================================
-  state = {
-    genresList: []
-  };
-  //===================================================
-  componentDidMount() {
-    const link = `${API_URL}/genre/movie/list?api_key=${API_KEY_3}&language=ru-RU`;
-    fetch(link)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          genresList: data.genres
-        });
-      });
-  }
-  //===================================================
-  showAllGenres = () => {
-    this.props.onChangeFilters({
-      target: {
-        name: "with_genres",
-        value: []
-      }
-    });
-  };
-  //===================================================
-  checkedGenges = event => {
-    const value = event.target.checked
-      ? [...this.props.with_genres, event.target.value]
-      : this.props.with_genres.filter(genre => genre !== event.target.value);
 
-    this.props.onChangeFilters({
-      target: {
-        name: "with_genres",
-        value: value
-      }
-    });
-  };
-  //===================================================
   render() {
-    const { genresList } = this.state;
-    const { with_genres } = this.props;
-    console.log("genres");
+    const {
+      showAllGenres,
+      genresList,
+      checkedGenges,
+      with_genres
+    } = this.props;
     return (
       <Fragment>
         <button
           className="btn btn-primary"
           type="button"
-          onClick={this.showAllGenres}
+          onClick={showAllGenres}
           style={{ marginBottom: "15px" }}
         >
           Все жанры
@@ -65,7 +34,7 @@ export default class Genres extends PureComponent {
               className="form-check-input"
               value={genre.id}
               id={`id${genre.id}`}
-              onChange={this.checkedGenges}
+              onChange={checkedGenges}
               checked={with_genres.indexOf(String(genre.id)) !== -1}
             />
             <label htmlFor={`id${genre.id}`}>{genre.name}</label>
@@ -75,3 +44,5 @@ export default class Genres extends PureComponent {
     );
   }
 }
+
+export default GenresHOC(Genres);
