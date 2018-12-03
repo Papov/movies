@@ -2,12 +2,12 @@ import React from "react";
 import CallApi from "../../../api/api";
 import UIInput from "../../UI/UIInput";
 import PropTypes from "prop-types";
-import AppConsumerHOC from "../../../HOC/AppConsumerHOC";
+import AppConsumerHOC from "../../../HOC/AppConsumer";
 
 class LoginFormModal extends React.Component {
   static propTypes = {
     updateSessionId: PropTypes.func.isRequired,
-    checkAuthorization: PropTypes.func.isRequired
+    updateUser: PropTypes.func.isRequired
   };
 
   static defaultProps = {
@@ -130,7 +130,7 @@ class LoginFormModal extends React.Component {
           submitAwait: false
         },
         () => {
-          this.props.checkAuthorization(user);
+          this.props.updateUser(user);
           this.props.toogleLoginForm();
         }
       );

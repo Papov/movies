@@ -1,11 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 import UISelect from "../UI/UISelect";
+import FilterConsumer from "../../HOC/FilterConsumer";
 
-export default class SortBy extends React.PureComponent {
+class SortBy extends React.PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired,
-    sort_by: PropTypes.string.isRequired
+    filters: PropTypes.object.isRequired
   };
 
   static defaultProps = {
@@ -30,7 +31,11 @@ export default class SortBy extends React.PureComponent {
   };
 
   render() {
-    const { onChangeFilters, sort_by, options } = this.props;
+    const {
+      onChangeFilters,
+      filters: { sort_by },
+      options
+    } = this.props;
     console.log("sortBy");
     return (
       <UISelect
@@ -49,3 +54,5 @@ export default class SortBy extends React.PureComponent {
     );
   }
 }
+
+export default FilterConsumer(SortBy);

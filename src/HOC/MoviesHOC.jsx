@@ -13,7 +13,7 @@ export default Component =>
 
     state = {
       movies: [],
-      preloader: true
+      isLoading: false
     };
 
     getMovies = async (filters, page) => {
@@ -27,12 +27,13 @@ export default Component =>
       if (with_genres.length > 0) {
         queryParams.with_genres = with_genres.join(",");
       }
+      this.setState({ isLoading: true });
       const discover = await CallApi.get("/discover/movie", {
         params: queryParams
       });
       this.setState({
         movies: discover.results,
-        preloader: false
+        isLoading: false
       });
       this.props.getTotalPages(discover.total_pages);
     };
@@ -52,7 +53,7 @@ export default Component =>
     }
 
     render() {
-      const { movies, preloader } = this.state;
-      return <Component movies={movies} preloader={preloader}/>;
+      const { movies, isLoading } = this.state;
+      return <Component movies={movies} isLoading={isLoading} />;
     }
   };

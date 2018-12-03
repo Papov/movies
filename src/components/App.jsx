@@ -2,20 +2,25 @@ import React, { Component } from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
-import LoginForm from "./Header/Login/LoginFormModal";
+import LoginModal from "./Modals/LoginModal";
 import CallApi from "../api/api";
-import { Modal, ModalBody } from "reactstrap";
 import Cookies from "universal-cookie";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faBookmark as solidFaBookmark,
   faHeart as solidFaHeart
 } from "@fortawesome/free-solid-svg-icons";
-import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
+import {
+  faBookmark,
+  faHeart,
+  faClock
+} from "@fortawesome/free-regular-svg-icons";
 
 const cookies = new Cookies();
 export const AppContext = React.createContext();
-library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart);
+export const MoviesIconContext = React.createContext();
+export const FilterContext = React.createContext();
+library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart, faClock);
 
 export default class App extends Component {
   state = {
@@ -24,25 +29,43 @@ export default class App extends Component {
       primary_release_year: "",
       with_genres: []
     },
-    user: {
-      user_info: null,
-      session_id: null
-    },
+    user: null,
+    session_id: null,
     page: 1,
     total_pages: "",
-    showLoginForm: false
+    showLoginForm: false,
+    favorite: [],
+    watchlist: []
   };
-  checkAuthorization = user_info => {
-    if (user_info) {
-      this.setState({
-        user: {
-          ...this.state.user,
-          user_info
+
+  updateAddedMovie = async listName => {
+    const { user, session_id } = this.state;
+    const responseApi = await CallApi.get(
+      `/account/${user.id}/${listName}/movies`,
+      {
+        params: {
+          language: "ru-RU",
+          session_id: session_id
         }
+      }
+    );
+    const moviesId = responseApi.results.map(item => item.id);
+    this.setState({
+      [listName]: moviesId
+    });
+  };
+
+  updateUser = user => {
+    if (user) {
+      this.setState({
+        user
       });
     } else {
       this.setState({
-        user: {}
+        user: null,
+        session_id: null,
+        favorite: [],
+        watchlist: []
       });
     }
   };
@@ -55,10 +78,7 @@ export default class App extends Component {
 
   updateSessionId = session_id => {
     this.setState({
-      user: {
-        ...this.state.user,
-        session_id
-      }
+      session_id
     });
     cookies.set("session_id", session_id, {
       path: "/",
@@ -102,15 +122,31 @@ export default class App extends Component {
     });
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.user !== this.state.user && !!this.state.user) {
+      this.updateAddedMovie("watchlist");
+      this.updateAddedMovie("favorite");
+    }
+  }
+
   render() {
-    const { filters, page, total_pages, user, showLoginForm } = this.state;
+    const {
+      filters,
+      page,
+      total_pages,
+      user,
+      showLoginForm,
+      favorite,
+      watchlist,
+      session_id
+    } = this.state;
     return (
       <AppContext.Provider
         value={{
-          user,
+          user: user,
+          session_id: session_id,
           updateSessionId: this.updateSessionId,
-          toogleLoginForm: this.toogleLoginForm,
-          checkAuthorization: this.checkAuthorization,
+          updateUser: this.updateUser,
           cookies: cookies
         }}
       >
@@ -121,60 +157,64 @@ export default class App extends Component {
               <div className="card">
                 <div className="card-body">
                   <h3>Фильтры:</h3>
-                  <Filters
-                    filters={filters}
-                    onChangeFilters={this.onChangeFilters}
-                    page={page}
-                    onChangePage={this.onChangePage}
-                    total_pages={total_pages}
-                    onReset={this.onReset}
-                  />
+                  <FilterContext.Provider
+                    value={{
+                      filters: filters,
+                      onChangeFilters: this.onChangeFilters,
+                      page: page,
+                      onChangePage: this.onChangePage,
+                      total_pages: total_pages
+                    }}
+                  >
+                    <Filters onReset={this.onReset} />
+                  </FilterContext.Provider>
                 </div>
               </div>
             </div>
             <div className="col-8">
-              <MoviesList
-                filters={filters}
-                page={page}
-                onChangePage={this.onChangePage}
-                getTotalPages={this.getTotalPages}
-                user={user}
-                toogleLoginForm={this.toogleLoginForm}
-              />
+              <MoviesIconContext.Provider
+                value={{
+                  watchlist: watchlist,
+                  favorite: favorite,
+                  toogleLoginForm: this.toogleLoginForm,
+                  user: user,
+                  session_id: session_id,
+                  updateAddedMovie: this.updateAddedMovie
+                }}
+              >
+                <MoviesList
+                  filters={filters}
+                  page={page}
+                  onChangePage={this.onChangePage}
+                  getTotalPages={this.getTotalPages}
+                />
+              </MoviesIconContext.Provider>
             </div>
           </div>
         </div>
         {showLoginForm && (
-          <Modal isOpen={showLoginForm} toggle={this.toogleLoginForm}>
-            <ModalBody>
-              <LoginForm
-                checkAuthorization={this.checkAuthorization}
-                toogleLoginForm={this.toogleLoginForm}
-              />
-            </ModalBody>
-          </Modal>
+          <LoginModal
+            showLoginForm={showLoginForm}
+            toogleLoginForm={this.toogleLoginForm}
+            updateUser={this.updateUser}
+          />
         )}
       </AppContext.Provider>
     );
   }
 
-  componentDidMount() {
-    const asyncFunc = async () => {
-      const session_id = cookies.get("session_id");
-      if (session_id) {
-        const user_info = await CallApi.get("/account", {
-          params: {
-            session_id: session_id
-          }
-        });
-        this.setState({
-          user: {
-            user_info,
-            session_id: session_id
-          }
-        });
-      }
-    };
-    asyncFunc();
+  async componentDidMount() {
+    const session_id = cookies.get("session_id");
+    if (session_id) {
+      const user = await CallApi.get("/account", {
+        params: {
+          session_id: session_id
+        }
+      });
+      this.setState({
+        user,
+        session_id
+      });
+    }
   }
 }

@@ -2,63 +2,58 @@ import React from "react";
 import CallApi from "../api/api";
 import PropTypes from "prop-types";
 
-const IconContainer = Container =>
+const IconContainer = (Container, type) =>
   class IconMoviesHOC extends React.Component {
-    displayName = "IconMoviesHOC";
-
     static propTypes = {
       toogleLoginForm: PropTypes.func.isRequired,
-      iconImage: PropTypes.string.isRequired,
-      iconName: PropTypes.string.isRequired,
       movieId: PropTypes.number,
       user: PropTypes.object
     };
 
-    state = {
-      isAdd: false
-    };
-
-    addToMyList = name => () => {
-      const { user, toogleLoginForm, movieId } = this.props;
-      if (user.session_id) {
-        this.setState(
-          {
-            isAdd: !this.state.isAdd
-          },
-          async () => {
-            const queryParams = {
-              session_id: user.session_id
-            };
-            const body = {
-              media_type: "movie",
-              media_id: movieId,
-              [name]: this.state.isAdd
-            };
-
-            const myList = await CallApi.post(
-              `/account/${user.user_info.id}/${name}`,
-              {
-                params: queryParams,
-                body: body
-              }
-            );
-            console.log(name, "--", myList.status_message);
-          }
-        );
+    addToMyList = async () => {
+      const { user, toogleLoginForm, movieId, session_id } = this.props;
+      if (session_id) {
+        const queryParams = {
+          session_id: session_id
+        };
+        const body = {
+          media_type: "movie",
+          media_id: movieId,
+          [type]: !this.props[type].includes(movieId)
+        };
+        this.setState({
+          isLoading: true
+        });
+        const myList = await CallApi.post(`/account/${user.id}/${type}`, {
+          params: queryParams,
+          body: body
+        });
+        this.props.updateAddedMovie("watchlist");
+        this.props.updateAddedMovie("favorite");
+        console.log(type, "--", myList.status_message);
       } else {
         toogleLoginForm();
       }
     };
 
+    shouldComponentUpdate(nextProps, nextState) {
+      const thisMoviesList = this.props[type];
+      const nextMoviesList = nextProps[type];
+      const { movieId } = this.props;
+      if (
+        thisMoviesList.includes(movieId) !== nextMoviesList.includes(movieId)
+      ) {
+        return true;
+      } else return false;
+    }
+
     render() {
-      const { iconImage, iconName } = this.props;
-      const { isAdd } = this.state;
+      // console.log("iconHOC");
+      const { movieId } = this.props;
       return (
         <Container
-          iconImage={iconImage}
-          iconName={iconName}
+          isAdd={this.props[type].includes(movieId)}
           addToMyList={this.addToMyList}
-          isAdd={isAdd}
         />
       );
     }
