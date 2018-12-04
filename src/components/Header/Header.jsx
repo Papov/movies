@@ -5,18 +5,15 @@ import PropTypes from "prop-types";
 export default class Header extends React.PureComponent {
   static propTypes = {
     toogleLoginForm: PropTypes.func.isRequired,
-    user_info: PropTypes.object
+    user: PropTypes.object
   };
   render() {
-    const {
-      user: { user_info },
-      toogleLoginForm
-    } = this.props;
+    const { user, toogleLoginForm } = this.props;
     return (
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
           <span className="nav-item text-white font-weight-bold">Home</span>
-          {user_info ? (
+          {user ? (
             <User />
           ) : (
             <button

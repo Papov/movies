@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
+import FilterConsumer from "../../HOC/FilterConsumer";
 
-export default class Pagination extends React.PureComponent {
+class Pagination extends React.PureComponent {
   static propTypes = {
     onChangePage: PropTypes.func.isRequired,
     page: PropTypes.number,
@@ -36,3 +37,5 @@ export default class Pagination extends React.PureComponent {
     );
   }
 }
+
+export default FilterConsumer(Pagination);

@@ -1,20 +1,20 @@
 import React from "react";
 import { Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import PropTypes from "prop-types";
-import AppConsumerHOC from "../../HOC/AppConsumerHOC";
+import AppConsumerHOC from "../../HOC/AppConsumer";
 import UserHOC from "../../HOC/UserHOC";
 
-const User = ({ user_info, popovnerOpen, exitFromAccount, toggleMenu }) => {
+const User = ({ user, popovnerOpen, exitFromAccount, toggleMenu }) => {
   return (
     <div className="d-flex align-items-center">
       <span className="text-white" style={{ marginRight: "10px" }}>
-        {user_info.name}
+        {user.name}
       </span>
       <img
         className="rounded-circle avatar"
         width="45"
         src={`https://secure.gravatar.com/avatar/${
-          user_info.avatar.gravatar.hash
+          user.avatar.gravatar.hash
         }.jpg?s=64`}
         alt="avatar"
         id="exit"
@@ -49,10 +49,10 @@ const User = ({ user_info, popovnerOpen, exitFromAccount, toggleMenu }) => {
 };
 
 User.propTypes = {
-  user_info: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
   popovnerOpen: PropTypes.bool.isRequired,
   exitFromAccount: PropTypes.func.isRequired,
   toggleMenu: PropTypes.func.isRequired
-}
+};
 
 export default AppConsumerHOC(UserHOC(User));

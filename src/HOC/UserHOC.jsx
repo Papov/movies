@@ -3,11 +3,9 @@ import PropTypes from "prop-types";
 import CallApi from "../api/api";
 
 const UserContainer = Component =>
-  class UserHOC extends React.Component {
-    displayName = "UserHOC";
-
+  class UserHOC extends React.PureComponent {
     static propTypes = {
-      checkAuthorization: PropTypes.func.isRequired,
+      updateUser: PropTypes.func.isRequired,
       cookies: PropTypes.object.isRequired,
       user: PropTypes.object
     };
@@ -23,9 +21,7 @@ const UserContainer = Component =>
     };
 
     exitFromAccount = bool => async () => {
-      const {
-        user: { session_id }
-      } = this.props;
+      const { session_id } = this.props;
       if (bool) {
         await CallApi.delete("/authentication/session", {
           body: {
@@ -33,8 +29,8 @@ const UserContainer = Component =>
           }
         });
         console.log("EXIT IS SUCCESS");
-        this.props.checkAuthorization(null);
         this.props.cookies.remove("session_id");
+        this.props.updateUser(null);
       } else {
         this.toggleMenu();
       }
@@ -42,15 +38,13 @@ const UserContainer = Component =>
 
     render() {
       const { popovnerOpen } = this.state;
-      const {
-        user: { user_info }
-      } = this.props;
+      const { user } = this.props;
       return (
         <Component
           popovnerOpen={popovnerOpen}
           exitFromAccount={this.exitFromAccount}
           toggleMenu={this.toggleMenu}
-          user_info={user_info}
+          user={user}
         />
       );
     }
