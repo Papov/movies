@@ -40,7 +40,7 @@ class PrimaryReleaseYear extends React.PureComponent {
       filters: { primary_release_year },
       onChangeFilters
     } = this.props;
-    console.log("year");
+    // console.log("year");
     return (
       <UISelect
         id="primary_release_year"

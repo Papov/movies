@@ -36,7 +36,7 @@ class SortBy extends React.PureComponent {
       filters: { sort_by },
       options
     } = this.props;
-    console.log("sortBy");
+    // console.log("sortBy");
     return (
       <UISelect
         label="Сортировать по:"

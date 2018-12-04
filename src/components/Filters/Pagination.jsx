@@ -11,7 +11,7 @@ class Pagination extends React.PureComponent {
 
   render() {
     const { onChangePage, page, total_pages } = this.props;
-    console.log("pagination");
+    //console.log("pagination");
     return (
       <React.Fragment>
         <div className="btn-group d-flex justify-content-center">

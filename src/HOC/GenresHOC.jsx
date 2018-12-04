@@ -55,7 +55,7 @@ export default Container =>
       const {
         filters: { with_genres }
       } = this.props;
-      console.log("genres");
+      //console.log("genres");
       return (
         <Container
           genresList={genresList}
