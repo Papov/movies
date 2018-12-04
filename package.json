@@ -16,8 +16,8 @@
     "react-scripts": "^2.1.1",
     "reactstrap": "^6.5.0",
     "universal-cookie": "^3.0.4",
-    "@babel/polyfill": "^7.0.0",
-    "cross-fetch": "^2.2.3"
+//    "@babel/polyfill": "^7.0.0", for ie11
+//    "cross-fetch": "^2.2.3" for ie11
   },
   "scripts": {
     "start": "react-scripts start",
