@@ -30,7 +30,7 @@ export default class MovieItem extends React.PureComponent {
           alt="poster"
         />
         <div className="card-body">
-          <Link className="card-title title" to={`/movie/${item.id}`}>{item.title}</Link>
+          <Link className="card-title title" to={`/movie/${item.id}/detail`}>{item.title}</Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="card-img d-flex justify-content-end">
             <FavoriteIcon movieId={item.id} />
