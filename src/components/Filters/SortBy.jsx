@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import UISelect from "../UI/UISelect";
-import FilterConsumer from "../../HOC/FilterConsumer";
 
 class SortBy extends React.PureComponent {
   static propTypes = {
@@ -36,7 +35,7 @@ class SortBy extends React.PureComponent {
       filters: { sort_by },
       options
     } = this.props;
-    console.log("sortBy");
+    //console.log("sortBy");
     return (
       <UISelect
         label="Сортировать по:"
@@ -55,4 +54,4 @@ class SortBy extends React.PureComponent {
   }
 }
 
-export default FilterConsumer(SortBy);
+export default SortBy;

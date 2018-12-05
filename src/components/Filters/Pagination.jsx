@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import FilterConsumer from "../../HOC/FilterConsumer";
 
 class Pagination extends React.PureComponent {
   static propTypes = {
@@ -11,7 +10,7 @@ class Pagination extends React.PureComponent {
 
   render() {
     const { onChangePage, page, total_pages } = this.props;
-    console.log("pagination");
+    //console.log("pagination");
     return (
       <React.Fragment>
         <div className="btn-group d-flex justify-content-center">
@@ -38,4 +37,4 @@ class Pagination extends React.PureComponent {
   }
 }
 
-export default FilterConsumer(Pagination);
+export default Pagination;

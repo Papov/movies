@@ -5,8 +5,7 @@ import CallApi from "../api/api";
 const UserContainer = Component =>
   class UserHOC extends React.PureComponent {
     static propTypes = {
-      updateUser: PropTypes.func.isRequired,
-      cookies: PropTypes.object.isRequired,
+      onLogOut: PropTypes.func.isRequired,
       user: PropTypes.object
     };
 
@@ -29,8 +28,7 @@ const UserContainer = Component =>
           }
         });
         console.log("EXIT IS SUCCESS");
-        this.props.cookies.remove("session_id");
-        this.props.updateUser(null);
+        this.props.onLogOut(null);
       } else {
         this.toggleMenu();
       }

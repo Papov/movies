@@ -1,38 +1,19 @@
-import React, { Component } from "react";
-import Filters from "./Filters/Filters";
-import MoviesList from "./Movies/MoviesList";
+import React from "react";
 import Header from "./Header/Header";
-import LoginModal from "./Modals/LoginModal";
 import CallApi from "../api/api";
+import LoginModal from "../components/Modals/LoginModal";
+import MoviesPage from "../pages/MoviesPage";
+import MoviePage from "../pages/MoviePage";
 import Cookies from "universal-cookie";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faBookmark as solidFaBookmark,
-  faHeart as solidFaHeart
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  faBookmark,
-  faHeart,
-  faClock
-} from "@fortawesome/free-regular-svg-icons";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const cookies = new Cookies();
 export const AppContext = React.createContext();
-export const MoviesIconContext = React.createContext();
-export const FilterContext = React.createContext();
-library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart, faClock);
 
-export default class App extends Component {
+export default class App extends React.Component {
   state = {
-    filters: {
-      sort_by: "popularity.desc",
-      primary_release_year: "",
-      with_genres: []
-    },
     user: null,
     session_id: null,
-    page: 1,
-    total_pages: "",
     showLoginForm: false,
     favorite: [],
     watchlist: []
@@ -56,18 +37,17 @@ export default class App extends Component {
   };
 
   updateUser = user => {
-    if (user) {
-      this.setState({
-        user
-      });
-    } else {
-      this.setState({
-        user: null,
-        session_id: null,
-        favorite: [],
-        watchlist: []
-      });
-    }
+    this.setState({
+      user
+    });
+  };
+
+  onLogOut = () => {
+    cookies.remove("session_id");
+    this.setState({
+      user: null,
+      session_id: null
+    });
   };
 
   toogleLoginForm = () => {
@@ -86,120 +66,47 @@ export default class App extends Component {
     });
   };
 
-  onChangeFilters = event => {
-    const { name, value } = event.target;
-    this.setState(prevState => ({
-      filters: {
-        ...this.state.filters,
-        [name]: value
-      }
-    }));
-  };
-
-  getTotalPages = total_pages => {
-    this.setState({
-      total_pages
-    });
-  };
-
-  onReset = () => {
-    const pureState = {
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: "",
-        with_genres: []
-      },
-      page: 1
-    };
-    this.setState({
-      ...pureState
-    });
-  };
-
-  onChangePage = page => {
-    this.setState({
-      page
-    });
-  };
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState.user !== this.state.user && !!this.state.user) {
       this.updateAddedMovie("watchlist");
       this.updateAddedMovie("favorite");
     }
+    if (prevState.user !== this.state.user && !this.state.user) {
+      this.setState({
+        favorite: [],
+        watchlist: []
+      });
+    }
   }
 
   render() {
-    const {
-      filters,
-      page,
-      total_pages,
-      user,
-      showLoginForm,
-      favorite,
-      watchlist,
-      session_id
-    } = this.state;
+    const { user, session_id, showLoginForm, watchlist, favorite } = this.state;
     return (
-      <AppContext.Provider
-        value={{
-          user: user,
-          session_id: session_id,
-          updateSessionId: this.updateSessionId,
-          updateUser: this.updateUser,
-          cookies: cookies
-        }}
-      >
-        <Header user={user} toogleLoginForm={this.toogleLoginForm} />
-        <div className="container">
-          <div className="row mt-4">
-            <div className="col-4">
-              <div className="card">
-                <div className="card-body">
-                  <h3>Фильтры:</h3>
-                  <FilterContext.Provider
-                    value={{
-                      filters: filters,
-                      onChangeFilters: this.onChangeFilters,
-                      page: page,
-                      onChangePage: this.onChangePage,
-                      total_pages: total_pages
-                    }}
-                  >
-                    <Filters onReset={this.onReset} />
-                  </FilterContext.Provider>
-                </div>
-              </div>
-            </div>
-            <div className="col-8">
-              <MoviesIconContext.Provider
-                value={{
-                  watchlist: watchlist,
-                  favorite: favorite,
-                  toogleLoginForm: this.toogleLoginForm,
-                  user: user,
-                  session_id: session_id,
-                  updateAddedMovie: this.updateAddedMovie
-                }}
-              >
-                <MoviesList
-                  filters={filters}
-                  page={page}
-                  onChangePage={this.onChangePage}
-                  getTotalPages={this.getTotalPages}
-                />
-              </MoviesIconContext.Provider>
-            </div>
-          </div>
-        </div>
-        {showLoginForm && (
-          <LoginModal
-            showLoginForm={showLoginForm}
-            toogleLoginForm={this.toogleLoginForm}
-            updateUser={this.updateUser}
-          />
-        )}
-      </AppContext.Provider>
+      <Router>
+        <AppContext.Provider
+          value={{
+            user: user,
+            session_id: session_id,
+            updateSessionId: this.updateSessionId,
+            updateUser: this.updateUser,
+            onLogOut: this.onLogOut,
+            toogleLoginForm: this.toogleLoginForm,
+            updateAddedMovie: this.updateAddedMovie,
+            watchlist: watchlist,
+            favorite: favorite
+          }}
+        >
+          <Header user={user} toogleLoginForm={this.toogleLoginForm} />
+          <Route exact path="/" component={MoviesPage} />
+          <Route path="/movie/:id" component={MoviePage} />
+          {showLoginForm && (
+            <LoginModal
+              showLoginForm={showLoginForm}
+              toogleLoginForm={this.toogleLoginForm}
+            />
+          )}
+        </AppContext.Provider>
+      </Router>
     );
   }
 

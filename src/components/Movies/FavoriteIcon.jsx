@@ -1,10 +1,9 @@
 import React from "react";
 import UIIcon from "../UI/UIIcon";
-import AddToMyListConsumerHOC from "../../HOC/AddToMyListConsumer";
 import MovieIconHOC from "../../HOC/MoviesIconHOC";
+import AppConsumer from "../../HOC/AppConsumer";
 
 class FavoriteIcon extends React.PureComponent {
-
   render() {
     // console.log("favorite");
     const { isAdd, addToMyList } = this.props;
@@ -12,4 +11,4 @@ class FavoriteIcon extends React.PureComponent {
   }
 }
 
-export default AddToMyListConsumerHOC(MovieIconHOC(FavoriteIcon, "favorite"));
+export default AppConsumer(MovieIconHOC(FavoriteIcon, "favorite"));

@@ -1,6 +1,7 @@
 import React from "react";
 import User from "./User";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 export default class Header extends React.PureComponent {
   static propTypes = {
@@ -12,7 +13,9 @@ export default class Header extends React.PureComponent {
     return (
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
-          <span className="nav-item text-white font-weight-bold">Home</span>
+          <Link className="nav-item text-white font-weight-bold" to="/">
+            Home
+          </Link>
           {user ? (
             <User />
           ) : (

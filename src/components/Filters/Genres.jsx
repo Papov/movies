@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import GenresHOC from "../../HOC/GenresHOC";
 import PropTypes from "prop-types";
-import FilterConsumer from "../../HOC/FilterConsumer";
 
 class Genres extends React.PureComponent {
   static propTypes = {
@@ -46,4 +45,4 @@ class Genres extends React.PureComponent {
   }
 }
 
-export default FilterConsumer(GenresHOC(Genres));
+export default GenresHOC(Genres);

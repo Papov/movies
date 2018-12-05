@@ -4,6 +4,11 @@ import PropTypes from "prop-types";
 
 const IconContainer = (Container, type) =>
   class IconMoviesHOC extends React.Component {
+    static defaultProps = {
+      [type]: [],
+      access: null
+    };
+
     static propTypes = {
       toogleLoginForm: PropTypes.func.isRequired,
       movieId: PropTypes.number,
@@ -21,9 +26,6 @@ const IconContainer = (Container, type) =>
           media_id: movieId,
           [type]: !this.props[type].includes(movieId)
         };
-        this.setState({
-          isLoading: true
-        });
         const myList = await CallApi.post(`/account/${user.id}/${type}`, {
           params: queryParams,
           body: body
@@ -37,18 +39,15 @@ const IconContainer = (Container, type) =>
     };
 
     shouldComponentUpdate(nextProps, nextState) {
-      const thisMoviesList = this.props[type];
-      const nextMoviesList = nextProps[type];
       const { movieId } = this.props;
-      if (
-        thisMoviesList.includes(movieId) !== nextMoviesList.includes(movieId)
-      ) {
-        return true;
-      } else return false;
+      return (
+        (this.props.access && !!this.props.user) ||
+        this.props[type].includes(movieId) !== nextProps[type].includes(movieId)
+      );
     }
 
     render() {
-      // console.log("iconHOC");
+      //console.log("iconHOC");
       const { movieId } = this.props;
       return (
         <Container

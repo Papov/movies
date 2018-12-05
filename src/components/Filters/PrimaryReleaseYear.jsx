@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import UISelect from "../UI/UISelect";
-import FilterConsumer from "../../HOC/FilterConsumer";
 
 class PrimaryReleaseYear extends React.PureComponent {
   static propTypes = {
@@ -40,7 +39,7 @@ class PrimaryReleaseYear extends React.PureComponent {
       filters: { primary_release_year },
       onChangeFilters
     } = this.props;
-    console.log("year");
+    //console.log("year");
     return (
       <UISelect
         id="primary_release_year"
@@ -59,4 +58,4 @@ class PrimaryReleaseYear extends React.PureComponent {
   }
 }
 
-export default FilterConsumer(PrimaryReleaseYear);
+export default PrimaryReleaseYear;
