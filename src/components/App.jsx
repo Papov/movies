@@ -43,7 +43,9 @@ export default class App extends React.Component {
   };
 
   onLogOut = () => {
-    cookies.remove("session_id");
+    cookies.remove("session_id", {
+      path: "/"
+    });
     this.setState({
       user: null,
       session_id: null
@@ -93,7 +95,8 @@ export default class App extends React.Component {
             toogleLoginForm: this.toogleLoginForm,
             updateAddedMovie: this.updateAddedMovie,
             watchlist: watchlist,
-            favorite: favorite
+            favorite: favorite,
+            cookies: cookies
           }}
         >
           <Header user={user} toogleLoginForm={this.toogleLoginForm} />

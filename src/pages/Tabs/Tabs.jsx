@@ -6,11 +6,9 @@ import { Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 import { Route, Switch, Link } from "react-router-dom";
 import classnames from "classnames";
 
-export const TabContext = React.createContext();
-
 export default class Tabs extends React.Component {
   state = {
-    activeTab: "1"
+    activeTab: '1'
   };
 
   handleChangeTab = tab => {
@@ -25,14 +23,14 @@ export default class Tabs extends React.Component {
     const { movieData } = this.props;
     const { activeTab } = this.state;
     return (
-      <TabContext.Provider value={movieData}>
+      <React.Fragment>
         <Nav tabs>
           <NavItem>
             <NavLink
               tag="div"
               className={classnames({ active: this.state.activeTab === "1" })}
               onClick={() => {
-                this.handleChangeTab("2");
+                this.handleChangeTab("1");
               }}
             >
               <Link className="tab-link" to={`/movie/${movieData.id}/detail`}>
@@ -70,13 +68,16 @@ export default class Tabs extends React.Component {
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId={activeTab}>
             <Switch>
-              <Route path="/movie/:id/detail" component={TabDetail} />
+              <Route
+                path="/movie/:id/detail"
+                render={props => <TabDetail {...props} movieData={movieData} />}
+              />
               <Route path="/movie/:id/videos" component={TabVideos} />
               <Route path="/movie/:id/credits" component={TabCredits} />
             </Switch>
           </TabPane>
         </TabContent>
-      </TabContext.Provider>
+      </React.Fragment>
     );
   }
 }

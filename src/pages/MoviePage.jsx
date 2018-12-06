@@ -8,7 +8,8 @@ import Tabs from "./Tabs/Tabs";
 
 class MoviePage extends React.Component {
   state = {
-    movieData: {}
+    movieData: {},
+    isLoading: true
   };
 
   returnBack = () => {
@@ -16,7 +17,14 @@ class MoviePage extends React.Component {
   };
 
   render() {
-    const { movieData } = this.state;
+    const { movieData, isLoading } = this.state;
+    if (isLoading) {
+      return (
+        <div className="preloader">
+          <div className="page-loader-circle" />
+        </div>
+      );
+    }
     return (
       <React.Fragment>
         {/*background-image*/}
@@ -92,7 +100,7 @@ class MoviePage extends React.Component {
             </div>
           </div>
         </div>
-        <Tabs movieData={movieData}/>
+        <Tabs movieData={movieData} />
       </React.Fragment>
     );
   }
@@ -105,7 +113,8 @@ class MoviePage extends React.Component {
     });
     console.log(response);
     this.setState({
-      movieData: response
+      movieData: response,
+      isLoading: false
     });
   }
 }
