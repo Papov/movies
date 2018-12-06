@@ -5,25 +5,13 @@ import AppConsumer from "../HOC/AppConsumer";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faBookmark as solidFaBookmark,
-  faHeart as solidFaHeart,
-  faChevronLeft
+  faHeart as solidFaHeart
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  faBookmark,
-  faHeart,
-  faClock
-} from "@fortawesome/free-regular-svg-icons";
+import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
 
 export const MoviesIconContext = React.createContext();
 export const FilterContext = React.createContext();
-library.add(
-  faBookmark,
-  faHeart,
-  solidFaBookmark,
-  solidFaHeart,
-  faClock,
-  faChevronLeft
-);
+library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart);
 
 class MoviesPage extends React.Component {
   state = {

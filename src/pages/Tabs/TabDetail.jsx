@@ -5,7 +5,7 @@ export default class TabDetail extends React.Component {
   render() {
     const { movieData } = this.props;
     return (
-      <Table>
+      <Table className='container'>
         <tbody>
           {!!movieData.status && (
             <tr>
@@ -67,7 +67,7 @@ export default class TabDetail extends React.Component {
 
           {!!movieData.genres.length && (
             <tr>
-              <th>Жанры</th>
+              <th>Жанр</th>
               <th>
                 {movieData.genres.map(genre => (
                   <React.Fragment key={`genre${genre.id}`}>

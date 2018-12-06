@@ -8,7 +8,7 @@ import classnames from "classnames";
 
 export default class Tabs extends React.Component {
   state = {
-    activeTab: '1'
+    activeTab: "1"
   };
 
   handleChangeTab = tab => {
@@ -24,7 +24,7 @@ export default class Tabs extends React.Component {
     const { activeTab } = this.state;
     return (
       <React.Fragment>
-        <Nav tabs>
+        <Nav tabs className='mt-3'>
           <NavItem>
             <NavLink
               tag="div"
@@ -33,8 +33,8 @@ export default class Tabs extends React.Component {
                 this.handleChangeTab("1");
               }}
             >
-              <Link className="tab-link" to={`/movie/${movieData.id}/detail`}>
-                detail
+              <Link className="tab-link text-center" to={`/movie/${movieData.id}/detail`}>
+                Детали
               </Link>
             </NavLink>
           </NavItem>
@@ -46,8 +46,8 @@ export default class Tabs extends React.Component {
                 this.handleChangeTab("2");
               }}
             >
-              <Link className="tab-link" to={`/movie/${movieData.id}/videos`}>
-                videos
+              <Link className="tab-link text-center" to={`/movie/${movieData.id}/videos`}>
+                Видео
               </Link>
             </NavLink>
           </NavItem>
@@ -59,8 +59,8 @@ export default class Tabs extends React.Component {
                 this.handleChangeTab("3");
               }}
             >
-              <Link className="tab-link" to={`/movie/${movieData.id}/credits`}>
-                credits
+              <Link className="tab-link text-center" to={`/movie/${movieData.id}/credits`}>
+                Акторы
               </Link>
             </NavLink>
           </NavItem>

@@ -15,6 +15,7 @@ export default class TabVideos extends React.Component {
         </div>
       );
     }
+    else if(!videos.length){return <p className='pt-4 text-center'>Видео для данного фильма отсутствуют</p>}
     return (
       <div className="container d-flex justify-content-start flex-wrap">
         {videos.map(video => (
@@ -47,7 +48,7 @@ export default class TabVideos extends React.Component {
         }
       }
     );
-    console.log(response);
+    // console.log("video", response);
     this.setState({
       videos: response.results,
       isLoading: false

@@ -3,17 +3,12 @@ import CallApi from "../api/api";
 import AppConsumer from "../HOC/AppConsumer";
 import FavoriteIcon from "../components/Movies/FavoriteIcon";
 import WatchlistIcon from "../components/Movies/WatchlistIcon";
-import UIIcon from "../components/UI/UIIcon";
 import Tabs from "./Tabs/Tabs";
 
 class MoviePage extends React.Component {
   state = {
     movieData: {},
     isLoading: true
-  };
-
-  returnBack = () => {
-    this.props.history.goBack();
   };
 
   render() {
@@ -32,18 +27,11 @@ class MoviePage extends React.Component {
           style={{
             background: `url(https://image.tmdb.org/t/p/w600_and_h900_bestv2${
               movieData.backdrop_path
-            }) no-repeat 50%/cover fixed`
+            }) no-repeat 50%/cover`
           }}
         >
           <div className="second_layer">
             <div className="container">
-              <span
-                className="bread_crumb d-flex align-items-center"
-                onClick={this.returnBack}
-              >
-                <UIIcon type="chevron-left" onClick={null} isAdd={true} />
-                <span className="ml-1 bread_crumb-text">назад</span>
-              </span>
               <div className="row">
                 {/*poster*/}
                 <div className="col-sm-4">
@@ -111,7 +99,7 @@ class MoviePage extends React.Component {
         language: "ru-RU"
       }
     });
-    console.log(response);
+    // console.log("movieData", response);
     this.setState({
       movieData: response,
       isLoading: false
