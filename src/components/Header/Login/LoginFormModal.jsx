@@ -2,7 +2,7 @@ import React from "react";
 import CallApi from "../../../api/api";
 import UIInput from "../../UI/UIInput";
 import PropTypes from "prop-types";
-import AppConsumerHOC from "../../../HOC/AppConsumer";
+import AppConsumerHOC from "../../HOC/AppConsumer";
 
 class LoginFormModal extends React.Component {
   static propTypes = {

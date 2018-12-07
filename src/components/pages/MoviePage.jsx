@@ -1,8 +1,8 @@
 import React from "react";
-import CallApi from "../api/api";
+import CallApi from "../../api/api";
 import AppConsumer from "../HOC/AppConsumer";
-import FavoriteIcon from "../components/Movies/FavoriteIcon";
-import WatchlistIcon from "../components/Movies/WatchlistIcon";
+import FavoriteIcon from "../functional icons/FavoriteIcon";
+import WatchlistIcon from "../functional icons/WatchlistIcon";
 import Tabs from "./Tabs/Tabs";
 
 class MoviePage extends React.Component {
@@ -10,6 +10,19 @@ class MoviePage extends React.Component {
     movieData: {},
     isLoading: true
   };
+
+  async componentDidMount() {
+    const response = await CallApi.get(`/movie/${this.props.match.params.id}`, {
+      params: {
+        language: "ru-RU"
+      }
+    });
+    // console.log("movieData", response);
+    this.setState({
+      movieData: response,
+      isLoading: false
+    });
+  }
 
   render() {
     const { movieData, isLoading } = this.state;
@@ -91,19 +104,6 @@ class MoviePage extends React.Component {
         <Tabs movieData={movieData} />
       </React.Fragment>
     );
-  }
-
-  async componentDidMount() {
-    const response = await CallApi.get(`/movie/${this.props.match.params.id}`, {
-      params: {
-        language: "ru-RU"
-      }
-    });
-    // console.log("movieData", response);
-    this.setState({
-      movieData: response,
-      isLoading: false
-    });
   }
 }
 

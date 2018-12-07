@@ -1,9 +1,9 @@
 import React from "react";
-import CallApi from "../api/api";
+import CallApi from "../../api/api";
 import PropTypes from "prop-types";
 
 const IconContainer = (Container, type) =>
-  class IconMoviesHOC extends React.PureComponent {
+  class IconMoviesHOC extends React.Component {
     static defaultProps = {
       [type]: [],
       access: null
@@ -11,7 +11,7 @@ const IconContainer = (Container, type) =>
 
     state = {
       isAdd: this.props[type].includes(this.props.movieId)
-    }
+    };
 
     static propTypes = {
       toogleLoginForm: PropTypes.func.isRequired,
@@ -24,7 +24,7 @@ const IconContainer = (Container, type) =>
       if (session_id) {
         this.setState(prevState => ({
           isAdd: !prevState.isAdd
-        }))
+        }));
         const queryParams = {
           session_id: session_id
         };
@@ -33,42 +33,35 @@ const IconContainer = (Container, type) =>
           media_id: movieId,
           [type]: !this.props[type].includes(movieId)
         };
-        const addDeleteMovie = await CallApi.post(`/account/${user.id}/${type}`, {
-          params: queryParams,
-          body: body
-        });
-        this.props.updateAddedMovie("watchlist");
-        this.props.updateAddedMovie("favorite");
+        const addDeleteMovie = await CallApi.post(
+          `/account/${user.id}/${type}`,
+          {
+            params: queryParams,
+            body: body
+          }
+        );
+        this.props.updateAddedMovie(type);
         console.log(type, "--", addDeleteMovie.status_message);
       } else {
         toogleLoginForm();
       }
     };
 
-    // shouldComponentUpdate(nextProps, nextState) {
-    //   const { movieId } = this.props;
-    //   return (
-    //     (this.props.access && !!this.props.user) ||
-    //     this.props[type].includes(movieId) !== nextProps[type].includes(movieId)
-    //   );
-    // }
-
-    componentDidUpdate(prevProps, prevState){
-      if(prevProps[type].includes(this.props.movieId) !== this.props[type].includes(this.props.movieId)){
+    componentDidUpdate(prevProps, prevState) {
+      const { movieId } = this.props;
+      if (
+        prevProps[type].includes(movieId) !== this.props[type].includes(movieId)
+      ) {
         this.setState({
-          isAdd: this.props[type].includes(this.props.movieId)
-        })
+          isAdd: this.props[type].includes(movieId)
+        });
       }
     }
 
     render() {
-      console.log("iconHOC");
-      // const { movieId } = this.props;
+      // console.log("iconHOC");
       return (
-        <Container
-          isAdd={this.state.isAdd}
-          addToMyList={this.addToMyList}
-        />
+        <Container isAdd={this.state.isAdd} addToMyList={this.addToMyList} />
       );
     }
   };

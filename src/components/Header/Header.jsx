@@ -13,7 +13,7 @@ export default class Header extends React.PureComponent {
     return (
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">
-          <Link className="nav-item text-white font-weight-bold" to="/">
+          <Link className="link nav-item text-white font-weight-bold" to="/">
             Home
           </Link>
           {user ? (

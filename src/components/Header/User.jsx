@@ -1,8 +1,8 @@
 import React from "react";
 import { Popover, PopoverBody, PopoverHeader } from "reactstrap";
 import PropTypes from "prop-types";
-import AppConsumerHOC from "../../HOC/AppConsumer";
-import UserHOC from "../../HOC/UserHOC";
+import AppConsumerHOC from "../HOC/AppConsumer";
+import UserHOC from "../HOC/UserHOC";
 
 const User = ({ user, popovnerOpen, exitFromAccount, toggleMenu }) => {
   return (

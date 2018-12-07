@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import FavoriteIcon from "./FavoriteIcon";
-import WatchlistIcon from "./WatchlistIcon";
+import FavoriteIcon from "../functional icons/FavoriteIcon";
+import WatchlistIcon from "../functional icons/WatchlistIcon";
 import {Link} from 'react-router-dom';
 
 const noImageUrl =
@@ -30,7 +30,7 @@ export default class MovieItem extends React.PureComponent {
           alt="poster"
         />
         <div className="card-body">
-          <Link className="card-title title" to={`/movie/${item.id}/detail`}>{item.title}</Link>
+          <Link className="link card-title title" to={`/movie/${item.id}/detail`}>{item.title}</Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="card-img d-flex justify-content-end">
             <FavoriteIcon movieId={item.id} />

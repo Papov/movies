@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CallApi from "../api/api";
+import CallApi from "../../api/api";
 
 const UserContainer = Component =>
   class UserHOC extends React.PureComponent {

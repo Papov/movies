@@ -1,10 +1,26 @@
 import React from "react";
-import CallApi from "../../api/api";
+import CallApi from "../../../api/api";
 
 export default class TabCredits extends React.Component {
   state = {
     isLoading: true
   };
+
+  async componentDidMount() {
+    const response = await CallApi.get(
+      `/movie/${this.props.match.params.id}/credits`,
+      {
+        params: {
+          language: "ru-RU"
+        }
+      }
+    );
+    // console.log("actors", response);
+    this.setState({
+      actors: response.cast,
+      isLoading: false
+    });
+  }
 
   render() {
     const { isLoading, actors } = this.state;
@@ -13,6 +29,10 @@ export default class TabCredits extends React.Component {
         <div className="preloader">
           <div className="page-loader-circle" />
         </div>
+      );
+    } else if (!actors.length) {
+      return (
+        <p className="pt-4 text-center">Акторы по данному фильму отсутствуют</p>
       );
     }
     return (
@@ -23,7 +43,7 @@ export default class TabCredits extends React.Component {
           }
           return (
             <div
-              key={`actor${actor.id}`}
+              key={`actor${actor.credit_id}`}
               className="card card-actors position-relative"
             >
               <img
@@ -41,21 +61,5 @@ export default class TabCredits extends React.Component {
         })}
       </div>
     );
-  }
-
-  async componentDidMount() {
-    const response = await CallApi.get(
-      `/movie/${this.props.match.params.id}/credits`,
-      {
-        params: {
-          language: "ru-RU"
-        }
-      }
-    );
-    // console.log("actors", response);
-    this.setState({
-      actors: response.cast,
-      isLoading: false
-    });
   }
 }

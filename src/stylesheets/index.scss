@@ -3,7 +3,7 @@
 @import "./preloader";
 @import "./MoviePage";
 
-a {
+.link {
   color: #333;
   transition: 0.2s;
   &:hover {
@@ -27,6 +27,7 @@ body {
 .card-img--height {
   max-height: 161.84px;
   object-fit: cover;
+  object-position: 0 30%;
 }
 
 .icon-effect .card-img--favourite {
@@ -137,7 +138,7 @@ body {
 }
 
 .nav-item {
-  width: 33.3%;
+  width: 20%;
 }
 
 .table {
@@ -146,4 +147,10 @@ body {
 
 .nav-tabs .nav-link:hover {
   border-bottom: none;
+}
+
+.card-similar{
+  min-width: 340px;
+  margin: 10px;
+  max-width: 340px;
 }

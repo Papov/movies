@@ -4,8 +4,16 @@ import { Table } from "reactstrap";
 export default class TabDetail extends React.Component {
   render() {
     const { movieData } = this.props;
+    if (!movieData) {
+      return (
+        <div className="preloader">
+          <div className="page-loader-circle" />
+        </div>
+      );
+    }
+
     return (
-      <Table className='container'>
+      <Table className="container">
         <tbody>
           {!!movieData.status && (
             <tr>
@@ -35,7 +43,7 @@ export default class TabDetail extends React.Component {
             </tr>
           )}
 
-          {!!movieData.production_countries && (
+          {!!movieData.production_countries.length && (
             <tr>
               <th>Страна</th>
               <th>{movieData.production_countries[0].name}</th>

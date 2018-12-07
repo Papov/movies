@@ -1,6 +1,6 @@
 import React from "react";
-import Filters from "../components/Filters/Filters";
-import MoviesList from "../components/Movies/MoviesList";
+import Filters from "../Filters/Filters";
+import MoviesList from "../Movies/MoviesList";
 import AppConsumer from "../HOC/AppConsumer";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -9,8 +9,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faBookmark, faHeart } from "@fortawesome/free-regular-svg-icons";
 
-export const MoviesIconContext = React.createContext();
-export const FilterContext = React.createContext();
 library.add(faBookmark, faHeart, solidFaBookmark, solidFaHeart);
 
 class MoviesPage extends React.Component {
@@ -28,7 +26,7 @@ class MoviesPage extends React.Component {
     const { name, value } = event.target;
     this.setState(prevState => ({
       filters: {
-        ...this.state.filters,
+        ...prevState.filters,
         [name]: value
       }
     }));

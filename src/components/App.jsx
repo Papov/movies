@@ -2,8 +2,8 @@ import React from "react";
 import Header from "./Header/Header";
 import CallApi from "../api/api";
 import LoginModal from "../components/Modals/LoginModal";
-import MoviesPage from "../pages/MoviesPage";
-import MoviePage from "../pages/MoviePage";
+import MoviesPage from "./pages/MoviesPage";
+import MoviePage from "./pages/MoviePage";
 import Cookies from "universal-cookie";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
@@ -19,21 +19,32 @@ export default class App extends React.Component {
     watchlist: []
   };
 
-  updateAddedMovie = async listName => {
+  updateAddedMovie = listName => {
     const { user, session_id } = this.state;
-    const responseApi = await CallApi.get(
-      `/account/${user.id}/${listName}/movies`,
-      {
-        params: {
-          language: "ru-RU",
-          session_id: session_id
+    const moviesId = [];
+    let page = 1;
+    const getAddedMovies = async () => {
+      const responseApi = await CallApi.get(
+        `/account/${user.id}/${listName}/movies`,
+        {
+          params: {
+            language: "ru-RU",
+            session_id: session_id,
+            page: page
+          }
         }
+      );
+      moviesId.push(...responseApi.results.map(item => item.id));
+      if (responseApi.total_pages > page) {
+        page++;
+        getAddedMovies();
+      } else {
+        this.setState({
+          [listName]: moviesId
+        });
       }
-    );
-    const moviesId = responseApi.results.map(item => item.id);
-    this.setState({
-      [listName]: moviesId
-    });
+    };
+    getAddedMovies();
   };
 
   updateUser = user => {
@@ -81,6 +92,21 @@ export default class App extends React.Component {
     }
   }
 
+  async componentDidMount() {
+    const session_id = cookies.get("session_id");
+    if (session_id) {
+      const user = await CallApi.get("/account", {
+        params: {
+          session_id: session_id
+        }
+      });
+      this.setState({
+        user,
+        session_id
+      });
+    }
+  }
+
   render() {
     const { user, session_id, showLoginForm, watchlist, favorite } = this.state;
     return (
@@ -111,20 +137,5 @@ export default class App extends React.Component {
         </AppContext.Provider>
       </Router>
     );
-  }
-
-  async componentDidMount() {
-    const session_id = cookies.get("session_id");
-    if (session_id) {
-      const user = await CallApi.get("/account", {
-        params: {
-          session_id: session_id
-        }
-      });
-      this.setState({
-        user,
-        session_id
-      });
-    }
   }
 }

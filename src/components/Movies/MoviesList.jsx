@@ -1,7 +1,7 @@
 import React from "react";
 import MovieItem from "./MovieItem";
 import PropTypes from "prop-types";
-import MoviesHOC from "../../HOC/MoviesHOC";
+import MoviesHOC from "../HOC/MoviesHOC";
 
 const MoviesList = ({ movies, isLoading }) => (
   <React.Fragment>

@@ -1,5 +1,5 @@
 import React from "react";
-import CallApi from "../api/api";
+import CallApi from "../../api/api";
 import PropTypes from "prop-types";
 
 export default Component =>

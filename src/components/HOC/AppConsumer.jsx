@@ -1,5 +1,5 @@
 import React from "react";
-import { AppContext } from "../components/App";
+import { AppContext } from "../App";
 
 export default Component =>
   class AppHOC extends React.Component {
