@@ -80,15 +80,16 @@ export default class App extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.user !== this.state.user && !!this.state.user) {
-      this.updateAddedMovie("watchlist");
-      this.updateAddedMovie("favorite");
-    }
-    if (prevState.user !== this.state.user && !this.state.user) {
-      this.setState({
-        favorite: [],
-        watchlist: []
-      });
+    if (prevState.user !== this.state.user) {
+      if (this.state.user) {
+        this.updateAddedMovie("watchlist");
+        this.updateAddedMovie("favorite");
+      } else if (!this.state.user) {
+        this.setState({
+          favorite: [],
+          watchlist: []
+        });
+      }
     }
   }
 
@@ -121,8 +122,7 @@ export default class App extends React.Component {
             toogleLoginForm: this.toogleLoginForm,
             updateAddedMovie: this.updateAddedMovie,
             watchlist: watchlist,
-            favorite: favorite,
-            cookies: cookies
+            favorite: favorite
           }}
         >
           <Header user={user} toogleLoginForm={this.toogleLoginForm} />

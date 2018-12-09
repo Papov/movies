@@ -1,8 +1,9 @@
 import React from "react";
-import FavoriteIcon from "../../functional icons/FavoriteIcon";
-import WatchlistIcon from "../../functional icons/WatchlistIcon";
+import FavoriteIcon from "../../Movies/FavoriteIcon";
+import WatchlistIcon from "../../Movies/WatchlistIcon";
 import { Link } from "react-router-dom";
 import CallApi from "../../../api/api";
+import Loader from "../../UI/UILoader";
 
 export default class TabSimilarMovies extends React.Component {
   state = {
@@ -18,7 +19,7 @@ export default class TabSimilarMovies extends React.Component {
         }
       }
     );
-    console.log(similarMovies);
+    // console.log(similarMovies);
     this.setState({
       isLoading: false,
       similarMovies: similarMovies.results
@@ -28,11 +29,7 @@ export default class TabSimilarMovies extends React.Component {
   render() {
     const { similarMovies, isLoading } = this.state;
     if (isLoading) {
-      return (
-        <div className="preloader">
-          <div className="page-loader-circle" />
-        </div>
-      );
+      return <Loader />;
     } else if (!similarMovies.length) {
       return (
         <p className="pt-4 text-center">

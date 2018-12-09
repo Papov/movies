@@ -1,5 +1,6 @@
 import React from "react";
 import CallApi from "../../../api/api";
+import Loader from "../../UI/UILoader";
 
 export default class TabCrew extends React.Component {
   state = {
@@ -25,11 +26,7 @@ export default class TabCrew extends React.Component {
   render() {
     const { isLoading, crew } = this.state;
     if (isLoading) {
-      return (
-        <div className="preloader">
-          <div className="page-loader-circle" />
-        </div>
-      );
+      return <Loader />;
     } else if (!crew.length) {
       return (
         <p className="pt-4 text-center">Акторы по данному фильму отсутствуют</p>

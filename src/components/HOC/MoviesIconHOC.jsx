@@ -2,11 +2,10 @@ import React from "react";
 import CallApi from "../../api/api";
 import PropTypes from "prop-types";
 
-const IconContainer = (Container, type) =>
+const IconContainer = (Component, type) =>
   class IconMoviesHOC extends React.Component {
     static defaultProps = {
-      [type]: [],
-      access: null
+      [type]: []
     };
 
     state = {
@@ -19,35 +18,35 @@ const IconContainer = (Container, type) =>
       user: PropTypes.object
     };
 
-    addToMyList = async () => {
+    addToMyList = () => {
       const { user, toogleLoginForm, movieId, session_id } = this.props;
       if (session_id) {
-        this.setState(prevState => ({
-          isAdd: !prevState.isAdd
-        }));
-        const queryParams = {
-          session_id: session_id
-        };
-        const body = {
-          media_type: "movie",
-          media_id: movieId,
-          [type]: !this.props[type].includes(movieId)
-        };
-        const addDeleteMovie = await CallApi.post(
-          `/account/${user.id}/${type}`,
-          {
-            params: queryParams,
-            body: body
+        this.setState(
+          prevState => ({
+            isAdd: !prevState.isAdd
+          }),
+          async () => {
+            const queryParams = {
+              session_id: session_id
+            };
+            const body = {
+              media_type: "movie",
+              media_id: movieId,
+              [type]: this.state.isAdd
+            };
+            await CallApi.post(`/account/${user.id}/${type}`, {
+              params: queryParams,
+              body: body
+            });
+            this.props.updateAddedMovie(type);
           }
         );
-        this.props.updateAddedMovie(type);
-        console.log(type, "--", addDeleteMovie.status_message);
       } else {
         toogleLoginForm();
       }
     };
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
       const { movieId } = this.props;
       if (
         prevProps[type].includes(movieId) !== this.props[type].includes(movieId)
@@ -61,7 +60,7 @@ const IconContainer = (Container, type) =>
     render() {
       // console.log("iconHOC");
       return (
-        <Container isAdd={this.state.isAdd} addToMyList={this.addToMyList} />
+        <Component isAdd={this.state.isAdd} addToMyList={this.addToMyList} />
       );
     }
   };

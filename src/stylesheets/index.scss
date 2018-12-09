@@ -149,8 +149,19 @@ body {
   border-bottom: none;
 }
 
-.card-similar{
+.card-similar {
   min-width: 340px;
   margin: 10px;
   max-width: 340px;
+}
+
+.nav-tabs .nav-item {
+  margin-bottom: 0;
+}
+
+.tab-link.link.active {
+  border: 1px solid #dee2e6;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  background: #fff;
 }

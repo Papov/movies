@@ -1,5 +1,6 @@
 import React from "react";
 import CallApi from "../../../api/api";
+import Loader from "../../UI/UILoader";
 
 export default class TabCredits extends React.Component {
   state = {
@@ -25,14 +26,10 @@ export default class TabCredits extends React.Component {
   render() {
     const { isLoading, actors } = this.state;
     if (isLoading) {
-      return (
-        <div className="preloader">
-          <div className="page-loader-circle" />
-        </div>
-      );
+      return <Loader />;
     } else if (!actors.length) {
       return (
-        <p className="pt-4 text-center">Акторы по данному фильму отсутствуют</p>
+        <p className="pt-4 text-center">Актeры по данному фильму отсутствуют</p>
       );
     }
     return (

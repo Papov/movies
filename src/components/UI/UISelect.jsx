@@ -1,7 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const UISelect = ({ id, name, value, onChange, label, children }) => {
+export default class UISelect extends React.PureComponent {
+  static propTypes = {
+    onChange: PropTypes.func.isRequired
+  };
+
+  render() {
+    const { id, name, value, onChange, label, children } = this.props;
     return (
       <div className="form-group">
         <label htmlFor={id}>{label}</label>
@@ -16,10 +22,5 @@ const UISelect = ({ id, name, value, onChange, label, children }) => {
         </select>
       </div>
     );
+  }
 }
-
-UISelect.propTypes = {
-  onChange: PropTypes.func.isRequired
-};
-
-export default UISelect;

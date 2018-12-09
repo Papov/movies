@@ -1,63 +1,59 @@
 import React from "react";
 import { Table } from "reactstrap";
+import Loader from "../../UI/UILoader";
 
 export default class TabDetail extends React.Component {
   render() {
     const { movieData } = this.props;
     if (!movieData) {
-      return (
-        <div className="preloader">
-          <div className="page-loader-circle" />
-        </div>
-      );
+      return <Loader />;
     }
-
     return (
       <Table className="container">
         <tbody>
-          {!!movieData.status && (
+          {movieData.status && (
             <tr>
               <th>Статус</th>
               <th>{movieData.status}</th>
             </tr>
           )}
 
-          {!!movieData.release_date && (
+          {movieData.release_date && (
             <tr>
               <th>Дата выхода</th>
               <th>{movieData.release_date}</th>
             </tr>
           )}
 
-          {!!movieData.runtime && (
+          {movieData.runtime && (
             <tr>
               <th>Продолжительность</th>
               <th>{`${movieData.runtime} минут`}</th>
             </tr>
           )}
 
-          {!!movieData.original_language && (
+          {movieData.original_language && (
             <tr>
               <th>Язык оригинала</th>
               <th>{movieData.original_language}</th>
             </tr>
           )}
 
-          {!!movieData.production_countries.length && (
+          {movieData.production_countries.length && (
             <tr>
               <th>Страна</th>
               <th>{movieData.production_countries[0].name}</th>
             </tr>
           )}
 
-          {!!movieData.budget && (
+          {movieData.budget && (
             <tr>
               <th>Бюджет</th>
               <th>{`${movieData.budget} $`}</th>
             </tr>
           )}
 
-          {!!movieData.production_companies.length && (
+          {movieData.production_companies.length && (
             <tr>
               <th>Компания</th>
               <th>
@@ -73,7 +69,7 @@ export default class TabDetail extends React.Component {
             </tr>
           )}
 
-          {!!movieData.genres.length && (
+          {movieData.genres.length && (
             <tr>
               <th>Жанр</th>
               <th>

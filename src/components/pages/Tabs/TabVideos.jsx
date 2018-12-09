@@ -1,5 +1,6 @@
 import React from "react";
 import CallApi from "../../../api/api";
+import Loader from "../../UI/UILoader";
 
 export default class TabVideos extends React.Component {
   state = {
@@ -25,11 +26,7 @@ export default class TabVideos extends React.Component {
   render() {
     const { isLoading, videos } = this.state;
     if (isLoading) {
-      return (
-        <div className="preloader">
-          <div className="page-loader-circle" />
-        </div>
-      );
+      return <Loader />;
     } else if (!videos.length) {
       return (
         <p className="pt-4 text-center">Видео для данного фильма отсутствуют</p>
