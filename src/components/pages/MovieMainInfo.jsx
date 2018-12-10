@@ -9,9 +9,8 @@ class MovieMainInfo extends React.PureComponent {
       // background-image
       <div
         style={{
-          background: `url(https://image.tmdb.org/t/p/w600_and_h900_bestv2${
-            movieData.backdrop_path
-          }) no-repeat 50%/cover`
+          background: `url(https://image.tmdb.org/t/p/w600_and_h900_bestv2${movieData.backdrop_path ||
+            movieData.poster_path}) no-repeat 50%/cover`
         }}
       >
         <div className="second_layer">

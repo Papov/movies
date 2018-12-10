@@ -2,7 +2,7 @@ import React from "react";
 import CallApi from "../../api/api";
 import AppConsumer from "../hoc/AppConsumer";
 import TabApp from "./tabs/TabApp";
-import Loader from "../ui/UILoader";
+import { Loader } from "../ui/UILoader";
 import MovieMainInfo from "./MovieMainInfo";
 
 class MoviePage extends React.Component {

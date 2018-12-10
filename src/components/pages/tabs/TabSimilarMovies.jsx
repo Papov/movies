@@ -3,7 +3,8 @@ import FavoriteIcon from "../../movies/FavoriteIcon";
 import WatchlistIcon from "../../movies/WatchlistIcon";
 import { Link } from "react-router-dom";
 import CallApi from "../../../api/api";
-import Loader from "../../ui/UILoader";
+import { Loader } from "../../ui/UILoader";
+import { NoData } from "../../ui/UINoData";
 
 export default class TabSimilarMovies extends React.Component {
   state = {
@@ -31,11 +32,7 @@ export default class TabSimilarMovies extends React.Component {
     if (isLoading) {
       return <Loader />;
     } else if (!similarMovies.length) {
-      return (
-        <p className="pt-4 text-center">
-          Похожие фильмы по данному запросу отсутствуют
-        </p>
-      );
+      return <NoData />;
     }
     return (
       <div className="container d-flex flex-wrap justify-content-center pt-4">
@@ -43,7 +40,7 @@ export default class TabSimilarMovies extends React.Component {
           <div className="card card-similar" key={`similar${similarMovie.id}`}>
             <img
               className="card-img-top card-img--height"
-              src={`https://image.tmdb.org/t/p/w600_and_h900_bestv2${similarMovie.backdrop_path ||
+              src={`https://image.tmdb.org/t/p/w500${similarMovie.backdrop_path ||
                 similarMovie.poster_path}`}
               alt="poster"
             />

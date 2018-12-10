@@ -94,6 +94,7 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    console.log("componentDidMount");
     const session_id = cookies.get("session_id");
     if (session_id) {
       const user = await CallApi.get("/account", {

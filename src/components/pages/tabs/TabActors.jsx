@@ -1,6 +1,7 @@
 import React from "react";
 import CallApi from "../../../api/api";
-import Loader from "../../ui/UILoader";
+import { Loader } from "../../ui/UILoader";
+import { NoData } from "../../ui/UINoData";
 import Actor from "./credits/Actor";
 
 export default class TabCredits extends React.Component {
@@ -29,7 +30,7 @@ export default class TabCredits extends React.Component {
     if (isLoading) {
       return <Loader />;
     } else if (!persons.length) {
-      return <p className="pt-4 text-center">Данные отсутствуют</p>;
+      return <NoData />;
     }
     return (
       <div className="d-flex flex-wrap justify-content-center pt-4 pb-4">

@@ -1,5 +1,5 @@
 import React from "react";
-import { Popover, PopoverBody, PopoverHeader } from "reactstrap";
+import { Popover, PopoverBody } from "reactstrap";
 import PropTypes from "prop-types";
 import AppConsumerHOC from "../hoc/AppConsumer";
 import UserHOC from "../hoc/UserHOC";
@@ -26,22 +26,15 @@ const User = ({ user, popovnerOpen, exitFromAccount, toggleMenu }) => {
         target="exit"
         toggle={toggleMenu}
       >
-        <PopoverHeader className="text-center">выйти?</PopoverHeader>
-        <PopoverBody>
-          <button
-            type="button"
-            className="btn btn--exit btn-success"
+        <PopoverBody className="p-0">
+          <div className="nav-tabs nav-menu p-1">избранное</div>
+          <div className="nav-tabs nav-menu p-1">список просмотра</div>
+          <div
+            className="nav-tabs nav-menu p-1"
             onClick={exitFromAccount(true)}
           >
-            Да
-          </button>
-          <button
-            type="button"
-            className="btn btn--exit btn-danger"
-            onClick={exitFromAccount(false)}
-          >
-            Нет
-          </button>
+            выйти
+          </div>
         </PopoverBody>
       </Popover>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import CallApi from "../../../api/api";
-import Loader from "../../ui/UILoader";
+import { Loader } from "../../ui/UILoader";
+import { NoData } from "../../ui/UINoData";
 
 export default class TabVideos extends React.Component {
   state = {
@@ -28,9 +29,7 @@ export default class TabVideos extends React.Component {
     if (isLoading) {
       return <Loader />;
     } else if (!videos.length) {
-      return (
-        <p className="pt-4 text-center">Видео для данного фильма отсутствуют</p>
-      );
+      return <NoData />;
     }
     return (
       <div className="container d-flex justify-content-start flex-wrap">
