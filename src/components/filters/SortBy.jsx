@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import UISelect from "../UI/UISelect";
+import UISelect from "../ui/UISelect";
 
 class SortBy extends React.PureComponent {
   static propTypes = {

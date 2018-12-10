@@ -1,6 +1,6 @@
 import React from "react";
 import CallApi from "../../../api/api";
-import Loader from "../../UI/UILoader";
+import Loader from "../../ui/UILoader";
 
 export default class TabVideos extends React.Component {
   state = {

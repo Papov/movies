@@ -1,8 +1,8 @@
 import React from "react";
 import CallApi from "../../api/api";
-import AppConsumer from "../HOC/AppConsumer";
-import TabsApp from "./Tabs/TabsApp";
-import Loader from "../UI/UILoader";
+import AppConsumer from "../hoc/AppConsumer";
+import TabApp from "./tabs/TabApp";
+import Loader from "../ui/UILoader";
 import MovieMainInfo from "./MovieMainInfo";
 
 class MoviePage extends React.Component {
@@ -45,7 +45,7 @@ class MoviePage extends React.Component {
     return (
       <React.Fragment>
         <MovieMainInfo movieData={movieData} />
-        <TabsApp movieData={movieData} />
+        <TabApp movieData={movieData} />
       </React.Fragment>
     );
   }

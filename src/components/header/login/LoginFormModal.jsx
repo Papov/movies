@@ -1,8 +1,8 @@
 import React from "react";
 import CallApi from "../../../api/api";
-import UIInput from "../../UI/UIInput";
+import UIInput from "../../ui/UIInput";
 import PropTypes from "prop-types";
-import AppConsumerHOC from "../../HOC/AppConsumer";
+import AppConsumerHOC from "../../hoc/AppConsumer";
 
 class LoginFormModal extends React.Component {
   static propTypes = {
@@ -47,7 +47,7 @@ class LoginFormModal extends React.Component {
         default:
           break;
       }
-      if (!!Object.keys(errors).length) {
+      if (Object.keys(errors).length) {
         this.setState(prevState => ({
           errors: {
             ...prevState.errors,
@@ -72,7 +72,7 @@ class LoginFormModal extends React.Component {
     if (password !== repeatPassword) {
       errors.repeatPassword = messages.repeatPassword;
     }
-    if (!!Object.keys(errors).length) {
+    if (Object.keys(errors).length) {
       this.setState(prevState => ({
         errors: {
           ...prevState.errors,

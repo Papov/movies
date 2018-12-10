@@ -1,9 +1,9 @@
 import React from "react";
-import FavoriteIcon from "../../Movies/FavoriteIcon";
-import WatchlistIcon from "../../Movies/WatchlistIcon";
+import FavoriteIcon from "../../movies/FavoriteIcon";
+import WatchlistIcon from "../../movies/WatchlistIcon";
 import { Link } from "react-router-dom";
 import CallApi from "../../../api/api";
-import Loader from "../../UI/UILoader";
+import Loader from "../../ui/UILoader";
 
 export default class TabSimilarMovies extends React.Component {
   state = {

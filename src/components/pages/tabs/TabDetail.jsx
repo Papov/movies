@@ -1,6 +1,6 @@
 import React from "react";
 import { Table } from "reactstrap";
-import Loader from "../../UI/UILoader";
+import Loader from "../../ui/UILoader";
 
 export default class TabDetail extends React.Component {
   render() {

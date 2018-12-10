@@ -1,6 +1,6 @@
 import React from "react";
-import FavoriteIcon from "../Movies/FavoriteIcon";
-import WatchlistIcon from "../Movies/WatchlistIcon";
+import FavoriteIcon from "../movies/FavoriteIcon";
+import WatchlistIcon from "../movies/WatchlistIcon";
 
 class MovieMainInfo extends React.PureComponent {
   render() {

@@ -1,7 +1,7 @@
 import React from "react";
-import UIIcon from "../UI/UIIcon";
-import MovieIconHOC from "../HOC/MoviesIconHOC";
-import AppConsumer from "../HOC/AppConsumer";
+import UIIcon from "../ui/UIIcon";
+import MovieIconHOC from "../hoc/MoviesIconHOC";
+import AppConsumer from "../hoc/AppConsumer";
 
 class WatchlistIcon extends React.PureComponent {
   render() {

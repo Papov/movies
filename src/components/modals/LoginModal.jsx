@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
-import LoginForm from "../Header/Login/LoginFormModal";
+import LoginForm from "../header/login/LoginFormModal";
 
 export default class LoginModal extends React.Component {
   render() {

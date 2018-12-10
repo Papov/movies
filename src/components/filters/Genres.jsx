@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import GenresHOC from "../HOC/GenresHOC";
+import GenresHOC from "../hoc/GenresHOC";
 import PropTypes from "prop-types";
 
 class Genres extends React.PureComponent {
