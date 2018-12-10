@@ -2,7 +2,7 @@ import React from "react";
 import { Nav, NavItem } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
-class TabsNavigation extends React.Component {
+export class TabsNavigation extends React.Component {
   render() {
     const { movieData } = this.props;
     return (
@@ -56,5 +56,3 @@ class TabsNavigation extends React.Component {
     );
   }
 }
-
-export default TabsNavigation;

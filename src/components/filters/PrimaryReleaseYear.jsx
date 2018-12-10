@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import UISelect from "../ui/UISelect";
+import { UISelect } from "../ui/UISelect";
 
-class PrimaryReleaseYear extends React.PureComponent {
+export class PrimaryReleaseYear extends React.PureComponent {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired,
     filters: PropTypes.object.isRequired
@@ -65,5 +65,3 @@ class PrimaryReleaseYear extends React.PureComponent {
     );
   }
 }
-
-export default PrimaryReleaseYear;

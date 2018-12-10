@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "./header/Header";
-import CallApi from "../api/api";
-import LoginModal from "../components/modals/LoginModal";
+import { Header } from "./header/Header";
+import { CallApi } from "../api/api";
+import { LoginModal } from "../components/modals/LoginModal";
 import MoviesPage from "./pages/MoviesPage";
 import MoviePage from "./pages/MoviePage";
 import Cookies from "universal-cookie";
@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 const cookies = new Cookies();
 export const AppContext = React.createContext();
 
-export default class App extends React.Component {
+export class App extends React.Component {
   state = {
     user: null,
     session_id: null,

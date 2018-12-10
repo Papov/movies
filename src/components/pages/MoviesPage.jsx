@@ -1,7 +1,7 @@
 import React from "react";
-import Filters from "../filters/Filters";
+import { Filters } from "../filters/Filters";
 import MoviesList from "../movies/MoviesList";
-import AppConsumer from "../hoc/AppConsumer";
+import { AppConsumer } from "../hoc/AppConsumer";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faBookmark as solidFaBookmark,

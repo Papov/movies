@@ -1,11 +1,11 @@
 import React from "react";
-import SortBy from "./SortBy";
-import Pagination from "./Pagination";
-import PrimaryReleaseYear from "./PrimaryReleaseYear";
+import { SortBy } from "./SortBy";
+import { Pagination } from "./Pagination";
+import { PrimaryReleaseYear } from "./PrimaryReleaseYear";
 import Genres from "./Genres";
 import PropTypes from "prop-types";
 
-export default class Filters extends React.Component {
+export class Filters extends React.Component {
   static propTypes = {
     onReset: PropTypes.func.isRequired,
     onChangeFilters: PropTypes.func.isRequired,

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import CallApi from "../../api/api";
+import { CallApi } from "../../api/api";
 
-const UserContainer = Component =>
+export const UserHOC = Component =>
   class UserHOC extends React.PureComponent {
     static propTypes = {
       onLogOut: PropTypes.func.isRequired,
@@ -47,5 +47,3 @@ const UserContainer = Component =>
       );
     }
   };
-
-export default UserContainer;

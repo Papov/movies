@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default class UISelect extends React.PureComponent {
+export class UISelect extends React.PureComponent {
   static propTypes = {
     onChange: PropTypes.func.isRequired
   };

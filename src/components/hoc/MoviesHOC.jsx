@@ -1,8 +1,8 @@
 import React from "react";
-import CallApi from "../../api/api";
+import { CallApi } from "../../api/api";
 import PropTypes from "prop-types";
 
-export default Component =>
+export const MoviesHOC = Component =>
   class MoviesHOC extends React.Component {
     static propTypes = {
       getTotalPages: PropTypes.func.isRequired,

@@ -1,9 +1,9 @@
-import React, { PureComponent } from "react";
-import CallApi from "../../api/api";
+import React from "react";
+import { CallApi } from "../../api/api";
 import PropTypes from "prop-types";
 
-export default Container =>
-  class GenresHOC extends PureComponent {
+export const GenresHOC = Container =>
+  class GenresHOC extends React.PureComponent {
     static propTypes = {
       onChangeFilters: PropTypes.func.isRequired
     };

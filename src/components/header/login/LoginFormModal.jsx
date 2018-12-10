@@ -1,8 +1,8 @@
 import React from "react";
-import CallApi from "../../../api/api";
-import UIInput from "../../ui/UIInput";
+import { CallApi } from "../../../api/api";
+import { UIInput } from "../../ui/UIInput";
 import PropTypes from "prop-types";
-import AppConsumerHOC from "../../hoc/AppConsumer";
+import { AppConsumer } from "../../hoc/AppConsumer";
 
 class LoginFormModal extends React.Component {
   static propTypes = {
@@ -91,7 +91,7 @@ class LoginFormModal extends React.Component {
     this.setState(prevState => ({
       [name]: value,
       errors: {
-        ...this.state.errors,
+        ...prevState.errors,
         [name]: null
       }
     }));
@@ -209,4 +209,4 @@ class LoginFormModal extends React.Component {
   }
 }
 
-export default AppConsumerHOC(LoginFormModal);
+export default AppConsumer(LoginFormModal);

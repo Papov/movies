@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 const noAvatar =
   "https://static.reverb-assets.com/assets/avatars/default-af2a21e98f66532fb06e6082cfd9cffb.jpg";
 
-class Crew extends React.PureComponent {
+export class Crew extends React.PureComponent {
   static propTypes = {
     person: PropTypes.object.isRequired
   };
@@ -31,5 +31,3 @@ class Crew extends React.PureComponent {
     );
   }
 }
-
-export default Crew;

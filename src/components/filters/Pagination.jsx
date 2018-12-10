@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-class Pagination extends React.PureComponent {
+export class Pagination extends React.PureComponent {
   static propTypes = {
     onChangePage: PropTypes.func.isRequired,
     page: PropTypes.number,
@@ -36,5 +36,3 @@ class Pagination extends React.PureComponent {
     );
   }
 }
-
-export default Pagination;

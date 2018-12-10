@@ -2,11 +2,11 @@ import React from "react";
 import FavoriteIcon from "../../movies/FavoriteIcon";
 import WatchlistIcon from "../../movies/WatchlistIcon";
 import { Link } from "react-router-dom";
-import CallApi from "../../../api/api";
+import { CallApi } from "../../../api/api";
 import { Loader } from "../../ui/UILoader";
 import { NoData } from "../../ui/UINoData";
 
-export default class TabSimilarMovies extends React.Component {
+export class TabSimilarMovies extends React.Component {
   state = {
     isLoading: true
   };

@@ -1,13 +1,13 @@
 import React from "react";
-import TabDetail from "./TabDetail";
-import TabVideos from "./TabVideos";
-import TabActors from "./TabActors";
-import TabCrew from "./TabCrew";
-import TabSimilarMovies from "./TabSimilarMovies";
+import { TabDetail } from "./TabDetail";
+import { TabVideos } from "./TabVideos";
+import { TabActors } from "./TabActors";
+import { TabCrew } from "./TabCrew";
+import { TabSimilarMovies } from "./TabSimilarMovies";
 import { Route, Switch } from "react-router-dom";
-import TabsNavigation from "./TabNavigation";
+import { TabsNavigation } from "./TabNavigation";
 
-export default class TabsApp extends React.Component {
+export class TabApp extends React.Component {
   render() {
     const { movieData } = this.props;
     return (

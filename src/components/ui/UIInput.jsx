@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default class UIInput extends React.PureComponent {
+export class UIInput extends React.PureComponent {
   static propTypes = {
     onChange: PropTypes.func.isRequired,
     onBlur: PropTypes.func.isRequired

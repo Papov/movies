@@ -1,7 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default class UIIcon extends React.PureComponent {
+export class UIIcon extends React.PureComponent {
   render() {
     const { type, onClick, isAdd } = this.props;
     return (

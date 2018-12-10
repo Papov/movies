@@ -1,10 +1,10 @@
 import React from "react";
-import CallApi from "../../../api/api";
+import { CallApi } from "../../../api/api";
 import { Loader } from "../../ui/UILoader";
 import { NoData } from "../../ui/UINoData";
-import Crew from "./credits/Crew";
+import { Crew } from "./credits/Crew";
 
-export default class TabCrew extends React.Component {
+export class TabCrew extends React.Component {
   state = {
     isLoading: true
   };

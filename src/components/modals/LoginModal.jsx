@@ -1,14 +1,14 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
-import LoginForm from "../header/login/LoginFormModal";
+import LoginFormModal from "../header/login/LoginFormModal";
 
-export default class LoginModal extends React.Component {
+export class LoginModal extends React.Component {
   render() {
     const { toogleLoginForm, showLoginForm, checkAuthorization } = this.props;
     return (
       <Modal isOpen={showLoginForm} toggle={toogleLoginForm}>
         <ModalBody>
-          <LoginForm
+          <LoginFormModal
             checkAuthorization={checkAuthorization}
             toogleLoginForm={toogleLoginForm}
           />

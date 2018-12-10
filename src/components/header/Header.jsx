@@ -3,7 +3,7 @@ import User from "./User";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-export default class Header extends React.PureComponent {
+export class Header extends React.PureComponent {
   static propTypes = {
     toogleLoginForm: PropTypes.func.isRequired,
     user: PropTypes.object

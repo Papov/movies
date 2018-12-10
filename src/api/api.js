@@ -30,7 +30,7 @@ export const fetchUrl = (url, body = {}) => {
   });
 };
 
-export default class CallApi {
+export class CallApi {
   static get(url, options = {}) {
     const { params = {} } = options;
     const queryParams = {

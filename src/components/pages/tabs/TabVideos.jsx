@@ -1,9 +1,9 @@
 import React from "react";
-import CallApi from "../../../api/api";
+import { CallApi } from "../../../api/api";
 import { Loader } from "../../ui/UILoader";
 import { NoData } from "../../ui/UINoData";
 
-export default class TabVideos extends React.Component {
+export class TabVideos extends React.Component {
   state = {
     isLoading: true
   };

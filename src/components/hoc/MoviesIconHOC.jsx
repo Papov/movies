@@ -1,8 +1,8 @@
 import React from "react";
-import CallApi from "../../api/api";
+import { CallApi } from "../../api/api";
 import PropTypes from "prop-types";
 
-const IconContainer = (Component, type) =>
+export const MovieIconHOC = (Component, type) =>
   class IconMoviesHOC extends React.Component {
     static defaultProps = {
       [type]: []
@@ -64,5 +64,3 @@ const IconContainer = (Component, type) =>
       );
     }
   };
-
-export default IconContainer;

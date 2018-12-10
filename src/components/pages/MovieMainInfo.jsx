@@ -2,7 +2,7 @@ import React from "react";
 import FavoriteIcon from "../movies/FavoriteIcon";
 import WatchlistIcon from "../movies/WatchlistIcon";
 
-class MovieMainInfo extends React.PureComponent {
+export class MovieMainInfo extends React.PureComponent {
   render() {
     const { movieData } = this.props;
     return (
@@ -72,5 +72,3 @@ class MovieMainInfo extends React.PureComponent {
     );
   }
 }
-
-export default MovieMainInfo;
