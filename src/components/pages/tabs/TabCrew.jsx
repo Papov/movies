@@ -34,12 +34,9 @@ export default class TabCrew extends React.Component {
     }
     return (
       <div className="d-flex flex-wrap justify-content-center pt-4 pb-4">
-        {persons.map(person => {
-          if (!person.profile_path) {
-            return false;
-          }
-          return <Crew key={`crew${person.credit_id}`} person={person} />;
-        })}
+        {persons.map(person => (
+          <Crew key={`crew${person.credit_id}`} person={person} />
+        ))}
       </div>
     );
   }
