@@ -1,16 +1,16 @@
 import React from "react";
-import Header from "./Header/Header";
-import CallApi from "../api/api";
-import LoginModal from "../components/Modals/LoginModal";
-import MoviesPage from "../pages/MoviesPage";
-import MoviePage from "../pages/MoviePage";
+import { Header } from "./header/Header";
+import { CallApi } from "../api/api";
+import { LoginModal } from "../components/modals/LoginModal";
+import MoviesPage from "./pages/MoviesPage";
+import MoviePage from "./pages/MoviePage";
 import Cookies from "universal-cookie";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 const cookies = new Cookies();
 export const AppContext = React.createContext();
 
-export default class App extends React.Component {
+export class App extends React.Component {
   state = {
     user: null,
     session_id: null,
@@ -19,21 +19,32 @@ export default class App extends React.Component {
     watchlist: []
   };
 
-  updateAddedMovie = async listName => {
+  updateAddedMovie = listName => {
     const { user, session_id } = this.state;
-    const responseApi = await CallApi.get(
-      `/account/${user.id}/${listName}/movies`,
-      {
-        params: {
-          language: "ru-RU",
-          session_id: session_id
+    const moviesId = [];
+    let page = 1;
+    const getAddedMovies = async () => {
+      const responseApi = await CallApi.get(
+        `/account/${user.id}/${listName}/movies`,
+        {
+          params: {
+            language: "ru-RU",
+            session_id: session_id,
+            page: page
+          }
         }
+      );
+      moviesId.push(...responseApi.results.map(item => item.id));
+      if (responseApi.total_pages > page) {
+        page++;
+        getAddedMovies();
+      } else {
+        this.setState({
+          [listName]: moviesId
+        });
       }
-    );
-    const moviesId = responseApi.results.map(item => item.id);
-    this.setState({
-      [listName]: moviesId
-    });
+    };
+    getAddedMovies();
   };
 
   updateUser = user => {
@@ -69,14 +80,31 @@ export default class App extends React.Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.user !== this.state.user && !!this.state.user) {
-      this.updateAddedMovie("watchlist");
-      this.updateAddedMovie("favorite");
+    if (prevState.user !== this.state.user) {
+      if (this.state.user) {
+        this.updateAddedMovie("watchlist");
+        this.updateAddedMovie("favorite");
+      } else if (!this.state.user) {
+        this.setState({
+          favorite: [],
+          watchlist: []
+        });
+      }
     }
-    if (prevState.user !== this.state.user && !this.state.user) {
+  }
+
+  async componentDidMount() {
+    console.log("componentDidMount");
+    const session_id = cookies.get("session_id");
+    if (session_id) {
+      const user = await CallApi.get("/account", {
+        params: {
+          session_id: session_id
+        }
+      });
       this.setState({
-        favorite: [],
-        watchlist: []
+        user,
+        session_id
       });
     }
   }
@@ -95,8 +123,7 @@ export default class App extends React.Component {
             toogleLoginForm: this.toogleLoginForm,
             updateAddedMovie: this.updateAddedMovie,
             watchlist: watchlist,
-            favorite: favorite,
-            cookies: cookies
+            favorite: favorite
           }}
         >
           <Header user={user} toogleLoginForm={this.toogleLoginForm} />
@@ -111,20 +138,5 @@ export default class App extends React.Component {
         </AppContext.Provider>
       </Router>
     );
-  }
-
-  async componentDidMount() {
-    const session_id = cookies.get("session_id");
-    if (session_id) {
-      const user = await CallApi.get("/account", {
-        params: {
-          session_id: session_id
-        }
-      });
-      this.setState({
-        user,
-        session_id
-      });
-    }
   }
 }

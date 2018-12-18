@@ -30,25 +30,22 @@ export const fetchUrl = (url, body = {}) => {
   });
 };
 
-export default class CallApi {
+export class CallApi {
   static get(url, options = {}) {
     const { params = {} } = options;
     const queryParams = {
       api_key: API_KEY_3,
       ...params
     };
-    return fetchUrl(
-      `${API_URL}${url}?${queryString.stringify(queryParams)}`,
-      {
-        mode: "cors",
-        headers: {
-          "Content-type": "application/json;charset=utf-8"
-        }
+    return fetchUrl(`${API_URL}${url}?${queryString.stringify(queryParams)}`, {
+      mode: "cors",
+      headers: {
+        "Content-type": "application/json;charset=utf-8"
       }
-    );
+    });
   }
-  static post(url, options = {}){
-    const {params = {}, body = {}} = options;
+  static post(url, options = {}) {
+    const { params = {}, body = {} } = options;
     const queryParams = {
       api_key: API_KEY_3,
       ...params
@@ -62,8 +59,8 @@ export default class CallApi {
       body: JSON.stringify(body)
     });
   }
-  static delete(url, options = {}){
-    const {params = {}, body = {}} = options;
+  static delete(url, options = {}) {
+    const { params = {}, body = {} } = options;
     const queryParams = {
       api_key: API_KEY_3,
       ...params

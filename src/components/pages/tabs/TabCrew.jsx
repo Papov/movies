@@ -1,0 +1,43 @@
+import React from "react";
+import { CallApi } from "../../../api/api";
+import { Loader } from "../../ui/UILoader";
+import { NoData } from "../../ui/UINoData";
+import { Crew } from "./credits/Crew";
+
+export class TabCrew extends React.Component {
+  state = {
+    isLoading: true
+  };
+
+  async componentDidMount() {
+    const response = await CallApi.get(
+      `/movie/${this.props.match.params.id}/credits`,
+      {
+        params: {
+          language: "ru-RU"
+        }
+      }
+    );
+    // console.log("crew", response);
+    this.setState({
+      persons: response.crew,
+      isLoading: false
+    });
+  }
+
+  render() {
+    const { isLoading, persons } = this.state;
+    if (isLoading) {
+      return <Loader />;
+    } else if (!persons.length) {
+      return <NoData />;
+    }
+    return (
+      <div className="d-flex flex-wrap justify-content-center pt-4 pb-4">
+        {persons.map(person => (
+          <Crew key={`crew${person.credit_id}`} person={person} />
+        ))}
+      </div>
+    );
+  }
+}
