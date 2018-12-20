@@ -9,7 +9,7 @@ export const MovieIconHOC = (Component, type) =>
     };
 
     state = {
-      isAdd: this.props[type].includes(this.props.movieId)
+      isAdd: false
     };
 
     static propTypes = {
