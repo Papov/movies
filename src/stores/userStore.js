@@ -1,0 +1,105 @@
+import { observable, action, reaction } from "mobx";
+import { CallApi } from "../api/api";
+import Cookies from "universal-cookie";
+const cookies = new Cookies();
+
+class UserStore {
+  @observable
+  user = null;
+
+  @observable
+  session_id = null;
+
+  @observable
+  showLoginForm = false;
+
+  @observable
+  favorite = [];
+
+  @observable
+  watchlist = [];
+
+  @action
+  updateAddedMovie = listName => {
+    const { user, session_id } = this;
+    const moviesId = [];
+    let page = 1;
+    const getAddedMovies = async () => {
+      const responseApi = await CallApi.get(
+        `/account/${user.id}/${listName}/movies`,
+        {
+          params: {
+            language: "ru-RU",
+            session_id: session_id,
+            page: page
+          }
+        }
+      );
+      moviesId.push(...responseApi.results.map(item => item.id));
+      if (responseApi.total_pages > page) {
+        page++;
+        getAddedMovies();
+      } else {
+        this[listName] = moviesId;
+      }
+    };
+    getAddedMovies();
+  };
+
+  @action
+  updateUser = user => {
+    this.user = user;
+  };
+
+  @action
+  onLogOut = () => {
+    cookies.remove("session_id", {
+      path: "/"
+    });
+    this.user = null;
+    this.session_id = null;
+  };
+
+  @action
+  toogleLoginForm = () => {
+    this.showLoginForm = !this.showLoginForm;
+  };
+
+  @action
+  updateSessionId = session_id => {
+    this.session_id = session_id;
+    cookies.set("session_id", session_id, {
+      path: "/",
+      expires: new Date(Date.now() + 2592000)
+    });
+  };
+
+  @action
+  getUserFromCookie = async () => {
+    const session_id = cookies.get("session_id");
+    if (session_id) {
+      const user = await CallApi.get("/account", {
+        params: {
+          session_id: session_id
+        }
+      });
+      this.session_id = session_id;
+      this.user = user;
+    }
+  };
+}
+
+export const userStore = new UserStore();
+
+reaction(
+  () => userStore.user,
+  user => {
+    if (user) {
+      userStore.updateAddedMovie("watchlist");
+      userStore.updateAddedMovie("favorite");
+    } else if (!user) {
+      userStore.favorite = [];
+      userStore.watchlist = [];
+    }
+  }
+);

@@ -34,10 +34,11 @@ export const MovieIconHOC = (Component, type) =>
               media_id: movieId,
               [type]: this.state.isAdd
             };
-            await CallApi.post(`/account/${user.id}/${type}`, {
+            const response = await CallApi.post(`/account/${user.id}/${type}`, {
               params: queryParams,
               body: body
             });
+            console.log(response);
             this.props.updateAddedMovie(type);
           }
         );

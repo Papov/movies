@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { CallApi } from "../../api/api";
 
 export const UserHOC = Component =>
-  class UserHOC extends React.PureComponent {
+  class UserHOC extends React.Component {
     static propTypes = {
       onLogOut: PropTypes.func.isRequired,
       user: PropTypes.object
