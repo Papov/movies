@@ -1,49 +1,34 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { CallApi } from "../../api/api";
+import { observer, inject } from "mobx-react";
 
-export const UserHOC = Component =>
+const UserHOC = Component => {
+  @inject(({ userStore }) => ({
+    user: userStore.user,
+    popovnerOpen: userStore.popovnerOpen,
+    exitFromAccount: userStore.exitFromAccount,
+    toggleMenu: userStore.toggleMenu
+  }))
+  @observer
   class UserHOC extends React.Component {
     static propTypes = {
       onLogOut: PropTypes.func.isRequired,
       user: PropTypes.object
     };
 
-    state = {
-      popovnerOpen: false
-    };
-
-    toggleMenu = () => {
-      this.setState({
-        popovnerOpen: !this.state.popovnerOpen
-      });
-    };
-
-    exitFromAccount = bool => async () => {
-      const { session_id } = this.props;
-      if (bool) {
-        await CallApi.delete("/authentication/session", {
-          body: {
-            session_id: session_id
-          }
-        });
-        console.log("EXIT IS SUCCESS");
-        this.props.onLogOut(null);
-      } else {
-        this.toggleMenu();
-      }
-    };
-
     render() {
-      const { popovnerOpen } = this.state;
-      const { user } = this.props;
+      const { user, popovnerOpen, exitFromAccount, toggleMenu } = this.props;
       return (
         <Component
           popovnerOpen={popovnerOpen}
-          exitFromAccount={this.exitFromAccount}
-          toggleMenu={this.toggleMenu}
+          exitFromAccount={exitFromAccount}
+          toggleMenu={toggleMenu}
           user={user}
         />
       );
     }
-  };
+  }
+  return UserHOC;
+};
+
+export { UserHOC };

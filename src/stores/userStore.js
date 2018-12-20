@@ -8,6 +8,9 @@ class UserStore {
   user = null;
 
   @observable
+  popovnerOpen = false;
+
+  @observable
   session_id = null;
 
   @observable
@@ -18,6 +21,27 @@ class UserStore {
 
   @observable
   watchlist = [];
+
+  @action
+  toggleMenu = () => {
+    this.popovnerOpen = !this.popovnerOpen;
+  };
+
+  @action
+  exitFromAccount = bool => async () => {
+    const { session_id } = this;
+    if (bool) {
+      await CallApi.delete("/authentication/session", {
+        body: {
+          session_id: session_id
+        }
+      });
+      console.log("EXIT IS SUCCESS");
+      this.onLogOut();
+    } else {
+      this.toggleMenu();
+    }
+  };
 
   @action
   updateAddedMovie = listName => {

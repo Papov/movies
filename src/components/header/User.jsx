@@ -1,7 +1,6 @@
 import React from "react";
 import { Popover, PopoverBody } from "reactstrap";
 import PropTypes from "prop-types";
-import { AppConsumer } from "../hoc/AppConsumer";
 import { UserHOC } from "../hoc/UserHOC";
 
 const User = ({ user, popovnerOpen, exitFromAccount, toggleMenu }) => {
@@ -48,4 +47,4 @@ User.propTypes = {
   toggleMenu: PropTypes.func.isRequired
 };
 
-export default AppConsumer(UserHOC(User));
+export default UserHOC(User);
