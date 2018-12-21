@@ -1,7 +1,14 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { observer, inject } from "mobx-react";
 
-export class Pagination extends React.PureComponent {
+@inject(({ movieStore }) => ({
+  page: movieStore.page,
+  total_pages: movieStore.total_pages,
+  onChangePage: movieStore.onChangePage
+}))
+@observer
+class Pagination extends React.Component {
   static propTypes = {
     onChangePage: PropTypes.func.isRequired,
     page: PropTypes.number,
@@ -36,3 +43,5 @@ export class Pagination extends React.PureComponent {
     );
   }
 }
+
+export { Pagination };

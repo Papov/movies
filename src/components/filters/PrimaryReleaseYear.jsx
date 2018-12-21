@@ -1,11 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { UISelect } from "../ui/UISelect";
+import { observer, inject } from "mobx-react";
 
-export class PrimaryReleaseYear extends React.PureComponent {
+@inject(({ movieStore }) => ({
+  onChangeFilters: movieStore.onChangeFilters,
+  primary_release_year: movieStore.filters.primary_release_year
+}))
+@observer
+class PrimaryReleaseYear extends React.Component {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired,
-    filters: PropTypes.object.isRequired
+    primary_release_year: PropTypes.string.isRequired
   };
 
   static defaultProps = {
@@ -42,11 +48,7 @@ export class PrimaryReleaseYear extends React.PureComponent {
   };
 
   render() {
-    const {
-      years,
-      filters: { primary_release_year },
-      onChangeFilters
-    } = this.props;
+    const { years, primary_release_year, onChangeFilters } = this.props;
     //console.log("year");
     return (
       <UISelect
@@ -65,3 +67,5 @@ export class PrimaryReleaseYear extends React.PureComponent {
     );
   }
 }
+
+export { PrimaryReleaseYear };

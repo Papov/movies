@@ -29,6 +29,7 @@ class Genres extends React.Component {
       checkedGenges,
       with_genres
     } = this.props;
+    console.log("genres");
     return (
       <Fragment>
         <button

@@ -1,11 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { UISelect } from "../ui/UISelect";
+import { observer, inject } from "mobx-react";
 
-export class SortBy extends React.PureComponent {
+@inject(({ movieStore }) => ({
+  sort_by: movieStore.filters.sort_by,
+  onChangeFilters: movieStore.onChangeFilters
+}))
+@observer
+class SortBy extends React.Component {
   static propTypes = {
     onChangeFilters: PropTypes.func.isRequired,
-    filters: PropTypes.object.isRequired
+    sort_by: PropTypes.string.isRequired
   };
 
   static defaultProps = {
@@ -30,11 +36,7 @@ export class SortBy extends React.PureComponent {
   };
 
   render() {
-    const {
-      onChangeFilters,
-      filters: { sort_by },
-      options
-    } = this.props;
+    const { onChangeFilters, sort_by, options } = this.props;
     //console.log("sortBy");
     return (
       <UISelect
@@ -53,3 +55,5 @@ export class SortBy extends React.PureComponent {
     );
   }
 }
+
+export { SortBy };

@@ -90,20 +90,15 @@ class MovieStore {
     const value = event.target.checked
       ? [...with_genres, event.target.value]
       : with_genres.filter(genre => genre !== event.target.value);
-    this.onChangeFilters({
-      target: {
-        name: "with_genres",
-        value: value
-      }
-    });
+    this.filters.with_genres = value;
   };
 }
 
 export const movieStore = new MovieStore();
 
 reaction(
-  () => movieStore.filters,
-  filters => {
+  () => Object.values(movieStore.filters),
+  () => {
     movieStore.page = 1;
     movieStore.getMovies();
   }

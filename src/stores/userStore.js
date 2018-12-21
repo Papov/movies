@@ -4,6 +4,27 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 class UserStore {
+  messages = {
+    username: "please, write your login",
+    password: "please, write your password",
+    repeatPassword: "please, write the same password"
+  };
+
+  @observable
+  username = "vlad_link";
+
+  @observable
+  password = "Link0lnpassword";
+
+  @observable
+  repeatPassword = "Link0lnpassword";
+
+  @observable
+  errors = {};
+
+  @observable
+  submitAwait = false;
+
   @observable
   user = null;
 
@@ -21,6 +42,109 @@ class UserStore {
 
   @observable
   watchlist = [];
+
+  @action
+  checkErrorsOnBlur = name => () => {
+    let length = this[name].length === 0;
+    let { password, repeatPassword, messages } = this;
+    let errors = {};
+    if (length) {
+      switch (name) {
+        case "username":
+          errors.username = messages.username;
+          break;
+        case "password":
+          errors.password = messages.password;
+          break;
+        case "repeatPassword":
+          if (password !== repeatPassword) {
+            errors.repeatPassword = messages.repeatPassword;
+          }
+          break;
+        default:
+          break;
+      }
+      if (Object.keys(errors).length) {
+        this.errors = errors;
+      }
+    }
+  };
+
+  @action
+  checkAllErrors = () => {
+    const { username, password, repeatPassword, messages } = this;
+    const errors = {};
+    if (username === "") {
+      errors.username = messages.username;
+    }
+    if (password === "") {
+      errors.password = messages.password;
+    }
+    if (password !== repeatPassword) {
+      errors.repeatPassword = messages.repeatPassword;
+    }
+    if (Object.keys(errors).length) {
+      this.errors = errors;
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  @action
+  onHandleChange = name => event => {
+    const { value } = event.target;
+    this[name] = value;
+    this.errors[name] = null;
+  };
+
+  @action
+  onSubmit = async () => {
+    const { username, password } = this;
+    //this.submitAwait = true;
+    try {
+      const firstDataToken = await CallApi.get("/authentication/token/new");
+      const validateLoginToken = await CallApi.post(
+        "/authentication/token/validate_with_login",
+        {
+          body: {
+            username: username,
+            password: password,
+            request_token: firstDataToken.request_token
+          }
+        }
+      );
+      const { session_id } = await CallApi.post("/authentication/session/new", {
+        body: {
+          request_token: validateLoginToken.request_token
+        }
+      });
+      this.session_id = session_id;
+      cookies.set("session_id", session_id, {
+        path: "/",
+        expires: new Date(Date.now() + 2592000)
+      });
+      const user = await CallApi.get("/account", {
+        params: {
+          session_id: session_id
+        }
+      });
+      //this.submitAwait = false;
+      this.user = user;
+      this.showLoginForm = !this.showLoginForm;
+    } catch (error) {
+      // this.submitAwait = false
+    }
+  };
+
+  @action
+  onSubmitClick = event => {
+    event.preventDefault();
+    const valid = this.checkAllErrors();
+    if (valid) {
+      this.onSubmit();
+    }
+  };
 
   @action
   toggleMenu = () => {
@@ -71,11 +195,6 @@ class UserStore {
   };
 
   @action
-  updateUser = user => {
-    this.user = user;
-  };
-
-  @action
   onLogOut = () => {
     cookies.remove("session_id", {
       path: "/"
@@ -90,15 +209,6 @@ class UserStore {
   };
 
   @action
-  updateSessionId = session_id => {
-    this.session_id = session_id;
-    cookies.set("session_id", session_id, {
-      path: "/",
-      expires: new Date(Date.now() + 2592000)
-    });
-  };
-
-  @action
   getSessionIdFromCookie = async () => {
     const session_id = cookies.get("session_id");
     if (session_id) {
@@ -109,6 +219,36 @@ class UserStore {
       });
       this.session_id = session_id;
       this.user = user;
+    }
+  };
+
+  @action
+  addToMyList = type => () => {
+    const { user, movieId, session_id } = this;
+    if (session_id) {
+      this.setState(
+        prevState => ({
+          isAdd: !prevState.isAdd
+        }),
+        async () => {
+          const queryParams = {
+            session_id: session_id
+          };
+          const body = {
+            media_type: "movie",
+            media_id: movieId,
+            [type]: this.state.isAdd
+          };
+          const response = await CallApi.post(`/account/${user.id}/${type}`, {
+            params: queryParams,
+            body: body
+          });
+          console.log(response);
+          this.updateAddedMovie(type);
+        }
+      );
+    } else {
+      this.showLoginForm = !this.showLoginForm;
     }
   };
 }
