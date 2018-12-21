@@ -1,14 +1,26 @@
 import React, { Fragment } from "react";
-import { GenresHOC } from "../hoc/GenresHOC";
 import PropTypes from "prop-types";
+import { observer, inject } from "mobx-react";
 
-class Genres extends React.PureComponent {
+@inject(({ movieStore }) => ({
+  genresList: movieStore.genresList,
+  showAllGenres: movieStore.showAllGenres,
+  with_genres: movieStore.filters.with_genres,
+  checkedGenges: movieStore.checkedGenges,
+  genresDidMount: movieStore.genresDidMount
+}))
+@observer
+class Genres extends React.Component {
   static propTypes = {
     showAllGenres: PropTypes.func.isRequired,
     genresList: PropTypes.array.isRequired,
     checkedGenges: PropTypes.func.isRequired,
     with_genres: PropTypes.array.isRequired
   };
+
+  componentDidMount() {
+    this.props.genresDidMount();
+  }
 
   render() {
     const {
@@ -35,7 +47,7 @@ class Genres extends React.PureComponent {
               value={genre.id}
               id={`id${genre.id}`}
               onChange={checkedGenges}
-              checked={with_genres.indexOf(String(genre.id)) !== -1}
+              checked={~with_genres.indexOf(String(genre.id))}
             />
             <label htmlFor={`id${genre.id}`}>{genre.name}</label>
           </div>
@@ -45,4 +57,4 @@ class Genres extends React.PureComponent {
   }
 }
 
-export default GenresHOC(Genres);
+export default Genres;

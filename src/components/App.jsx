@@ -19,12 +19,12 @@ export const AppContext = React.createContext();
   onLogOut: userStore.onLogOut,
   toogleLoginForm: userStore.toogleLoginForm,
   updateAddedMovie: userStore.updateAddedMovie,
-  getUserFromCookie: userStore.getUserFromCookie
+  getSessionIdFromCookie: userStore.getSessionIdFromCookie
 }))
 @observer
 class App extends React.Component {
   componentDidMount() {
-    this.props.getUserFromCookie();
+    this.props.getSessionIdFromCookie();
   }
 
   render() {

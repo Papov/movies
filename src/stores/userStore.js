@@ -99,7 +99,7 @@ class UserStore {
   };
 
   @action
-  getUserFromCookie = async () => {
+  getSessionIdFromCookie = async () => {
     const session_id = cookies.get("session_id");
     if (session_id) {
       const user = await CallApi.get("/account", {

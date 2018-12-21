@@ -1,41 +1,56 @@
 import React from "react";
 import { MovieItem } from "./MovieItem";
 import { PropTypes } from "prop-types";
-import { MoviesHOC } from "../hoc/MoviesHOC";
+import { observer, inject } from "mobx-react";
 
-const MoviesList = ({ movies, isLoading }) => (
-  <React.Fragment>
-    {isLoading ? (
-      <div className="preloader">
-        <div className="page-loader-circle" />
-      </div>
-    ) : (
-      <div className="row">
-        {movies.length === 0 && !isLoading ? (
-          <h3 className="h3 text-center" style={{ width: "100%" }}>
-            Нету фильмов
-          </h3>
+@inject(({ movieStore }) => ({
+  movies: movieStore.movies,
+  isLoading: movieStore.isLoading,
+  getMovies: movieStore.getMovies
+}))
+@observer
+class MoviesList extends React.Component {
+  static propTypes = {
+    movies: PropTypes.array.isRequired,
+    isLoading: PropTypes.bool.isRequired
+  };
+
+  static defaultProps = {
+    movies: []
+  };
+
+  componentDidMount() {
+    this.props.getMovies();
+  }
+
+  render() {
+    const { movies, isLoading } = this.props;
+    return (
+      <React.Fragment>
+        {isLoading ? (
+          <div className="preloader">
+            <div className="page-loader-circle" />
+          </div>
         ) : (
-          movies.map(movie => {
-            return (
-              <div key={movie.id} className="col-6 mb-4">
-                <MovieItem item={movie} />
-              </div>
-            );
-          })
+          <div className="row">
+            {movies.length === 0 && !isLoading ? (
+              <h3 className="h3 text-center" style={{ width: "100%" }}>
+                Нету фильмов
+              </h3>
+            ) : (
+              movies.map(movie => {
+                return (
+                  <div key={movie.id} className="col-6 mb-4">
+                    <MovieItem item={movie} />
+                  </div>
+                );
+              })
+            )}
+          </div>
         )}
-      </div>
-    )}
-  </React.Fragment>
-);
+      </React.Fragment>
+    );
+  }
+}
 
-MoviesList.propTypes = {
-  movies: PropTypes.array.isRequired,
-  isLoading: PropTypes.bool.isRequired
-};
-
-MoviesList.defaultProps = {
-  movies: []
-};
-
-export default MoviesHOC(MoviesList);
+export default MoviesList;
