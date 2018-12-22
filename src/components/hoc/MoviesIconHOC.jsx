@@ -1,8 +1,16 @@
 import React from "react";
 import { CallApi } from "../../api/api";
 import PropTypes from "prop-types";
+import { observer, inject } from "mobx-react";
 
-export const MovieIconHOC = (Component, type) =>
+const MovieIconHOC = (Component, type) => {
+  @inject(({ userStore }) => ({
+    user: userStore.user,
+    toogleLoginForm: userStore.toogleLoginForm,
+    session_id: userStore.session_id,
+    updateAddedMovie: userStore.updateAddedMovie
+  }))
+  @observer
   class IconMoviesHOC extends React.Component {
     static defaultProps = {
       [type]: []
@@ -19,7 +27,13 @@ export const MovieIconHOC = (Component, type) =>
     };
 
     addToMyList = () => {
-      const { user, toogleLoginForm, movieId, session_id } = this.props;
+      const {
+        user,
+        toogleLoginForm,
+        movieId,
+        session_id,
+        updateAddedMovie
+      } = this.props;
       if (session_id) {
         this.setState(
           prevState => ({
@@ -39,7 +53,7 @@ export const MovieIconHOC = (Component, type) =>
               body: body
             });
             console.log(response);
-            this.props.updateAddedMovie(type);
+            updateAddedMovie(type);
           }
         );
       } else {
@@ -64,4 +78,7 @@ export const MovieIconHOC = (Component, type) =>
         <Component isAdd={this.state.isAdd} addToMyList={this.addToMyList} />
       );
     }
-  };
+  }
+  return IconMoviesHOC;
+};
+export { MovieIconHOC };

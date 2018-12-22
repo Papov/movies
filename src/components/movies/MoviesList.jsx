@@ -33,7 +33,7 @@ class MoviesList extends React.Component {
           </div>
         ) : (
           <div className="row">
-            {movies.length === 0 && !isLoading ? (
+            {movies.length === 0 ? (
               <h3 className="h3 text-center" style={{ width: "100%" }}>
                 Нету фильмов
               </h3>

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const noImageUrl =
   "https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png";
 
-export class MovieItem extends React.PureComponent {
+export class MovieItem extends React.Component {
   static propTypes = {
     item: PropTypes.object.isRequired
   };

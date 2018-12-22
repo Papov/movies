@@ -1,19 +1,24 @@
 import React from "react";
 import { Modal, ModalBody } from "reactstrap";
 import LoginFormModal from "../header/login/LoginFormModal";
+import { observer, inject } from "mobx-react";
 
-export class LoginModal extends React.Component {
+@inject(({ userStore }) => ({
+  toogleLoginForm: userStore.toogleLoginForm,
+  checkAuthorization: userStore.checkAuthorization,
+  showLoginForm: userStore.showLoginForm
+}))
+@observer
+class LoginModal extends React.Component {
   render() {
-    const { toogleLoginForm, showLoginForm, checkAuthorization } = this.props;
+    const { toogleLoginForm, showLoginForm } = this.props;
     return (
       <Modal isOpen={showLoginForm} toggle={toogleLoginForm}>
         <ModalBody>
-          <LoginFormModal
-            checkAuthorization={checkAuthorization}
-            toogleLoginForm={toogleLoginForm}
-          />
+          <LoginFormModal toogleLoginForm={toogleLoginForm} />
         </ModalBody>
       </Modal>
     );
   }
 }
+export { LoginModal };

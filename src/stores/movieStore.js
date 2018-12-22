@@ -1,4 +1,4 @@
-import { observable, action, reaction } from "mobx";
+import { observable, action, reaction, flow } from "mobx";
 import { CallApi } from "../api/api";
 
 class MovieStore {
@@ -8,6 +8,9 @@ class MovieStore {
     primary_release_year: "",
     with_genres: []
   };
+
+  @observable
+  movieData = {};
 
   @observable
   movies = [];
@@ -24,26 +27,29 @@ class MovieStore {
   @observable
   total_pages = "";
 
-  @action
-  getMovies = async () => {
-    const { sort_by, primary_release_year, with_genres } = this.filters;
-    let queryParams = {
-      language: "ru-RU",
-      sort_by: sort_by,
-      page: this.page,
-      primary_release_year: primary_release_year
-    };
-    if (with_genres.length > 0) {
-      queryParams.with_genres = with_genres.join(",");
+  getMovies = flow(function*() {
+    movieStore.isLoading = true;
+    try {
+      const { sort_by, primary_release_year, with_genres } = movieStore.filters;
+      let queryParams = {
+        language: "ru-RU",
+        sort_by: sort_by,
+        page: this.page,
+        primary_release_year: primary_release_year
+      };
+      if (with_genres.length > 0) {
+        queryParams.with_genres = with_genres.join(",");
+      }
+      const discover = yield CallApi.get("/discover/movie", {
+        params: queryParams
+      });
+      movieStore.movies.replace(discover.results);
+      movieStore.total_pages = discover.total_pages;
+      movieStore.isLoading = false;
+    } catch (e) {
+      console.log(e);
     }
-    //this.isLoading = true;
-    const discover = await CallApi.get("/discover/movie", {
-      params: queryParams
-    });
-    this.movies = discover.results;
-    //this.isLoading = false;
-    this.total_pages = discover.total_pages;
-  };
+  });
 
   @action
   onChangeFilters = event => {
@@ -60,7 +66,7 @@ class MovieStore {
   onReset = () => {
     this.filters.sort_by = "popularity.desc";
     this.filters.primary_release_year = "";
-    this.filters.with_genres = [];
+    this.filters.with_genres.clear();
     this.page = 1;
   };
 
@@ -71,7 +77,7 @@ class MovieStore {
 
   @action
   showAllGenres = () => {
-    this.filters.with_genres = [];
+    this.filters.with_genres.clear();
   };
 
   @action

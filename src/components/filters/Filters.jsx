@@ -4,36 +4,25 @@ import { Pagination } from "./Pagination";
 import { PrimaryReleaseYear } from "./PrimaryReleaseYear";
 import Genres from "./Genres";
 import PropTypes from "prop-types";
+import { observer, inject } from "mobx-react";
 
-export class Filters extends React.Component {
+@inject(({ movieStore }) => ({
+  onReset: movieStore.onReset
+}))
+@observer
+class Filters extends React.Component {
   static propTypes = {
-    onReset: PropTypes.func.isRequired,
-    onChangeFilters: PropTypes.func.isRequired,
-    filters: PropTypes.object.isRequired
+    onReset: PropTypes.func.isRequired
   };
 
   render() {
-    const {
-      page,
-      onReset,
-      onChangePage,
-      filters,
-      total_pages,
-      onChangeFilters
-    } = this.props;
+    const { onReset } = this.props;
     return (
       <form>
-        <SortBy onChangeFilters={onChangeFilters} filters={filters} />
-        <PrimaryReleaseYear
-          onChangeFilters={onChangeFilters}
-          filters={filters}
-        />
-        <Genres filters={filters} onChangeFilters={onChangeFilters} />
-        <Pagination
-          page={page}
-          onChangePage={onChangePage}
-          total_pages={total_pages}
-        />
+        <SortBy />
+        <PrimaryReleaseYear />
+        <Genres />
+        <Pagination />
         <button
           type="button"
           className="btn btn-light m-auto d-block mt-sm-3"
@@ -45,3 +34,5 @@ export class Filters extends React.Component {
     );
   }
 }
+
+export { Filters };

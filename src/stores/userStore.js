@@ -65,7 +65,7 @@ class UserStore {
           break;
       }
       if (Object.keys(errors).length) {
-        this.errors = errors;
+        this.errors[name] = errors[name];
       }
     }
   };
@@ -130,8 +130,8 @@ class UserStore {
         }
       });
       //this.submitAwait = false;
+      this.toogleLoginForm();
       this.user = user;
-      this.showLoginForm = !this.showLoginForm;
     } catch (error) {
       // this.submitAwait = false
     }
@@ -201,6 +201,7 @@ class UserStore {
     });
     this.user = null;
     this.session_id = null;
+    this.popovnerOpen = false;
   };
 
   @action
@@ -221,36 +222,6 @@ class UserStore {
       this.user = user;
     }
   };
-
-  @action
-  addToMyList = type => () => {
-    const { user, movieId, session_id } = this;
-    if (session_id) {
-      this.setState(
-        prevState => ({
-          isAdd: !prevState.isAdd
-        }),
-        async () => {
-          const queryParams = {
-            session_id: session_id
-          };
-          const body = {
-            media_type: "movie",
-            media_id: movieId,
-            [type]: this.state.isAdd
-          };
-          const response = await CallApi.post(`/account/${user.id}/${type}`, {
-            params: queryParams,
-            body: body
-          });
-          console.log(response);
-          this.updateAddedMovie(type);
-        }
-      );
-    } else {
-      this.showLoginForm = !this.showLoginForm;
-    }
-  };
 }
 
 export const userStore = new UserStore();
@@ -261,9 +232,9 @@ reaction(
     if (user) {
       userStore.updateAddedMovie("watchlist");
       userStore.updateAddedMovie("favorite");
-    } else if (!user) {
-      userStore.favorite = [];
-      userStore.watchlist = [];
+    } else {
+      userStore.favorite.clear();
+      userStore.watchlist.clear();
     }
   }
 );
