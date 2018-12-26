@@ -16,8 +16,14 @@ import { observer, inject } from "mobx-react";
 @observer
 class LoginFormModal extends React.Component {
   static propTypes = {
-    updateSessionId: PropTypes.func.isRequired,
-    updateUser: PropTypes.func.isRequired
+    username: PropTypes.string,
+    password: PropTypes.string,
+    repeatPassword: PropTypes.string,
+    errors: PropTypes.object.isRequired,
+    submitAwait: PropTypes.bool.isRequired,
+    onHandleChange: PropTypes.func.isRequired,
+    checkErrorsOnBlur: PropTypes.func.isRequired,
+    onSubmitClick: PropTypes.func.isRequired
   };
 
   render() {

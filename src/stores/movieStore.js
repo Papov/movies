@@ -66,7 +66,7 @@ class MovieStore {
   onReset = () => {
     this.filters.sort_by = "popularity.desc";
     this.filters.primary_release_year = "";
-    this.filters.with_genres.clear();
+    this.filters.with_genres = [];
     this.page = 1;
   };
 
@@ -77,7 +77,7 @@ class MovieStore {
 
   @action
   showAllGenres = () => {
-    this.filters.with_genres.clear();
+    this.filters.with_genres = [];
   };
 
   @action

@@ -1,4 +1,4 @@
-import { observable, action, reaction } from "mobx";
+import { observable, action, reaction, flow } from "mobx";
 import { CallApi } from "../api/api";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
@@ -98,13 +98,12 @@ class UserStore {
     this.errors[name] = null;
   };
 
-  @action
-  onSubmit = async () => {
+  onSubmit = flow(function*() {
     const { username, password } = this;
-    //this.submitAwait = true;
     try {
-      const firstDataToken = await CallApi.get("/authentication/token/new");
-      const validateLoginToken = await CallApi.post(
+      userStore.submitAwait = true;
+      const firstDataToken = yield CallApi.get("/authentication/token/new");
+      const validateLoginToken = yield CallApi.post(
         "/authentication/token/validate_with_login",
         {
           body: {
@@ -114,28 +113,28 @@ class UserStore {
           }
         }
       );
-      const { session_id } = await CallApi.post("/authentication/session/new", {
+      const { session_id } = yield CallApi.post("/authentication/session/new", {
         body: {
           request_token: validateLoginToken.request_token
         }
       });
-      this.session_id = session_id;
+      userStore.session_id = session_id;
       cookies.set("session_id", session_id, {
         path: "/",
         expires: new Date(Date.now() + 2592000)
       });
-      const user = await CallApi.get("/account", {
+      const user = yield CallApi.get("/account", {
         params: {
           session_id: session_id
         }
       });
-      //this.submitAwait = false;
-      this.toogleLoginForm();
-      this.user = user;
+      userStore.submitAwait = false;
+      userStore.toogleLoginForm();
+      userStore.user = user;
     } catch (error) {
-      // this.submitAwait = false
+      userStore.submitAwait = false;
     }
-  };
+  });
 
   @action
   onSubmitClick = event => {
@@ -233,8 +232,8 @@ reaction(
       userStore.updateAddedMovie("watchlist");
       userStore.updateAddedMovie("favorite");
     } else {
-      userStore.favorite.clear();
-      userStore.watchlist.clear();
+      userStore.favorite = [];
+      userStore.watchlist = [];
     }
   }
 );
