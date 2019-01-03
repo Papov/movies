@@ -12,7 +12,8 @@ import { observer, inject } from "mobx-react";
 class MoviesList extends React.Component {
   static propTypes = {
     movies: PropTypes.array.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    getMovies: PropTypes.func.isRequired
   };
 
   static defaultProps = {

@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 
-@inject(({ userStore }) => ({
+@inject(({ userStore, loginFormStore }) => ({
   user: userStore.user,
-  toogleLoginForm: userStore.toogleLoginForm
+  toogleLoginForm: loginFormStore.toogleLoginForm
 }))
 @observer
 class Header extends React.Component {

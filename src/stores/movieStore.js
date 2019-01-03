@@ -112,7 +112,7 @@ reaction(
 
 reaction(
   () => movieStore.page,
-  page => {
+  () => {
     movieStore.getMovies();
   }
 );

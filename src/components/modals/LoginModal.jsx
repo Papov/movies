@@ -3,10 +3,10 @@ import { Modal, ModalBody } from "reactstrap";
 import LoginFormModal from "../header/login/LoginFormModal";
 import { observer, inject } from "mobx-react";
 
-@inject(({ userStore }) => ({
-  toogleLoginForm: userStore.toogleLoginForm,
+@inject(({ userStore, loginFormStore }) => ({
+  toogleLoginForm: loginFormStore.toogleLoginForm,
   checkAuthorization: userStore.checkAuthorization,
-  showLoginForm: userStore.showLoginForm
+  showLoginForm: loginFormStore.showLoginForm
 }))
 @observer
 class LoginModal extends React.Component {

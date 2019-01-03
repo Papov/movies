@@ -3,15 +3,15 @@ import { UIInput } from "../../ui/UIInput";
 import PropTypes from "prop-types";
 import { observer, inject } from "mobx-react";
 
-@inject(({ userStore }) => ({
-  username: userStore.username,
-  password: userStore.password,
-  repeatPassword: userStore.repeatPassword,
-  errors: userStore.errors,
-  submitAwait: userStore.submitAwait,
-  onHandleChange: userStore.onHandleChange,
-  checkErrorsOnBlur: userStore.checkErrorsOnBlur,
-  onSubmitClick: userStore.onSubmitClick
+@inject(({ loginFormStore }) => ({
+  username: loginFormStore.username,
+  password: loginFormStore.password,
+  repeatPassword: loginFormStore.repeatPassword,
+  errors: loginFormStore.errors,
+  submitAwait: loginFormStore.submitAwait,
+  onHandleChange: loginFormStore.onHandleChange,
+  checkErrorsOnBlur: loginFormStore.checkErrorsOnBlur,
+  onSubmitClick: loginFormStore.onSubmitClick
 }))
 @observer
 class LoginFormModal extends React.Component {

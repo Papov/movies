@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import { observer, inject } from "mobx-react";
 
 const MovieIconHOC = (Component, type) => {
-  @inject(({ userStore }) => ({
+  @inject(({ userStore, loginFormStore }) => ({
     user: userStore.user,
-    toogleLoginForm: userStore.toogleLoginForm,
+    toogleLoginForm: loginFormStore.toogleLoginForm,
     session_id: userStore.session_id,
     updateAddedMovie: userStore.updateAddedMovie
   }))

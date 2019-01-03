@@ -6,8 +6,8 @@ import MoviePage from "./pages/MoviePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
-@inject(({ userStore }) => ({
-  showLoginForm: userStore.showLoginForm,
+@inject(({ userStore, loginFormStore }) => ({
+  showLoginForm: loginFormStore.showLoginForm,
   getSessionIdFromCookie: userStore.getSessionIdFromCookie
 }))
 @observer
