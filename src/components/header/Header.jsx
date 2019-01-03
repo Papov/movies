@@ -1,5 +1,5 @@
 import React from "react";
-import User from "./User";
+import { User } from "./User";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { observer, inject } from "mobx-react";

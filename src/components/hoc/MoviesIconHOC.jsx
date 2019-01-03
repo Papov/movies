@@ -8,7 +8,8 @@ const MovieIconHOC = (Component, type) => {
     user: userStore.user,
     toogleLoginForm: loginFormStore.toogleLoginForm,
     session_id: userStore.session_id,
-    updateAddedMovie: userStore.updateAddedMovie
+    updateAddedMovie: userStore.updateAddedMovie,
+    [type]: userStore[type]
   }))
   @observer
   class IconMoviesHOC extends React.Component {

@@ -44,10 +44,7 @@ class User extends React.Component {
           <PopoverBody className="p-0">
             <div className="nav-tabs nav-menu p-1">избранное</div>
             <div className="nav-tabs nav-menu p-1">список просмотра</div>
-            <div
-              className="nav-tabs nav-menu p-1"
-              onClick={exitFromAccount(true)}
-            >
+            <div className="nav-tabs nav-menu p-1" onClick={exitFromAccount}>
               выйти
             </div>
           </PopoverBody>
@@ -57,4 +54,4 @@ class User extends React.Component {
   }
 }
 
-export default User;
+export { User };

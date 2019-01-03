@@ -1,4 +1,4 @@
-import { observable, action, reaction } from "mobx";
+import { observable, action, reaction, computed } from "mobx";
 import { CallApi } from "../api/api";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
@@ -14,6 +14,9 @@ class UserStore {
   session_id = null;
 
   @observable
+  moviesId = 0;
+
+  @observable
   favorite = [];
 
   @observable
@@ -25,19 +28,15 @@ class UserStore {
   };
 
   @action
-  exitFromAccount = bool => async () => {
+  exitFromAccount = async () => {
     const { session_id } = this;
-    if (bool) {
-      await CallApi.delete("/authentication/session", {
-        body: {
-          session_id: session_id
-        }
-      });
-      console.log("EXIT IS SUCCESS");
-      this.onLogOut();
-    } else {
-      this.toggleMenu();
-    }
+    await CallApi.delete("/authentication/session", {
+      body: {
+        session_id: session_id
+      }
+    });
+    console.log("EXIT IS SUCCESS");
+    this.onLogOut();
   };
 
   @action
