@@ -1,7 +1,7 @@
 import { observable, action, reaction, flow } from "mobx";
 import { CallApi } from "../api/api";
 
-class MovieStore {
+class MoviesStore {
   @observable
   filters = {
     sort_by: "popularity.desc",
@@ -28,9 +28,13 @@ class MovieStore {
   total_pages = "";
 
   getMovies = flow(function*() {
-    movieStore.isLoading = true;
+    moviesStore.isLoading = true;
     try {
-      const { sort_by, primary_release_year, with_genres } = movieStore.filters;
+      const {
+        sort_by,
+        primary_release_year,
+        with_genres
+      } = moviesStore.filters;
       let queryParams = {
         language: "ru-RU",
         sort_by: sort_by,
@@ -43,9 +47,9 @@ class MovieStore {
       const discover = yield CallApi.get("/discover/movie", {
         params: queryParams
       });
-      movieStore.movies.replace(discover.results);
-      movieStore.total_pages = discover.total_pages;
-      movieStore.isLoading = false;
+      moviesStore.movies.replace(discover.results);
+      moviesStore.total_pages = discover.total_pages;
+      moviesStore.isLoading = false;
     } catch (e) {
       console.log(e);
     }
@@ -100,19 +104,19 @@ class MovieStore {
   };
 }
 
-export const movieStore = new MovieStore();
+export const moviesStore = new MoviesStore();
 
 reaction(
-  () => Object.values(movieStore.filters),
+  () => Object.values(moviesStore.filters),
   () => {
-    movieStore.page = 1;
-    movieStore.getMovies();
+    moviesStore.page = 1;
+    moviesStore.getMovies();
   }
 );
 
 reaction(
-  () => movieStore.page,
+  () => moviesStore.page,
   () => {
-    movieStore.getMovies();
+    moviesStore.getMovies();
   }
 );

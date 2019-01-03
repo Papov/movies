@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { UISelect } from "../ui/UISelect";
 import { observer, inject } from "mobx-react";
 
-@inject(({ movieStore }) => ({
-  onChangeFilters: movieStore.onChangeFilters,
-  primary_release_year: movieStore.filters.primary_release_year
+@inject(({ moviesStore }) => ({
+  onChangeFilters: moviesStore.onChangeFilters,
+  primary_release_year: moviesStore.filters.primary_release_year
 }))
 @observer
 class PrimaryReleaseYear extends React.Component {

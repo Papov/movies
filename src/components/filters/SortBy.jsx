@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { UISelect } from "../ui/UISelect";
 import { observer, inject } from "mobx-react";
 
-@inject(({ movieStore }) => ({
-  sort_by: movieStore.filters.sort_by,
-  onChangeFilters: movieStore.onChangeFilters
+@inject(({ moviesStore }) => ({
+  sort_by: moviesStore.filters.sort_by,
+  onChangeFilters: moviesStore.onChangeFilters
 }))
 @observer
 class SortBy extends React.Component {

@@ -6,8 +6,8 @@ import Genres from "./Genres";
 import PropTypes from "prop-types";
 import { observer, inject } from "mobx-react";
 
-@inject(({ movieStore }) => ({
-  onReset: movieStore.onReset
+@inject(({ moviesStore }) => ({
+  onReset: moviesStore.onReset
 }))
 @observer
 class Filters extends React.Component {

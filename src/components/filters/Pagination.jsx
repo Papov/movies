@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { observer, inject } from "mobx-react";
 
-@inject(({ movieStore }) => ({
-  page: movieStore.page,
-  total_pages: movieStore.total_pages,
-  onChangePage: movieStore.onChangePage
+@inject(({ moviesStore }) => ({
+  page: moviesStore.page,
+  total_pages: moviesStore.total_pages,
+  onChangePage: moviesStore.onChangePage
 }))
 @observer
 class Pagination extends React.Component {

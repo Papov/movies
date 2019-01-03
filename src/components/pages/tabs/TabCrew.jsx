@@ -1,43 +1,41 @@
 import React from "react";
-import { CallApi } from "../../../api/api";
 import { Loader } from "../../ui/UILoader";
 import { NoData } from "../../ui/UINoData";
 import { Crew } from "./credits/Crew";
+import { inject, observer } from "mobx-react";
+import PropTypes from "prop-types";
 
-export class TabCrew extends React.Component {
-  state = {
-    isLoading: true
+@inject(({ movieDetailStore }) => ({
+  getMovieCrew: movieDetailStore.getMovieCrew,
+  isLoadingTabs: movieDetailStore.isLoadingTabs,
+  crew: movieDetailStore.crew
+}))
+@observer
+class TabCrew extends React.Component {
+  static propTypes = {
+    getMovieCrew: PropTypes.func.isRequired,
+    isLoadingTabs: PropTypes.bool.isRequired,
+    crew: PropTypes.array.isRequired
   };
-
-  async componentDidMount() {
-    const response = await CallApi.get(
-      `/movie/${this.props.match.params.id}/credits`,
-      {
-        params: {
-          language: "ru-RU"
-        }
-      }
-    );
-    // console.log("crew", response);
-    this.setState({
-      persons: response.crew,
-      isLoading: false
-    });
+  componentDidMount() {
+    this.props.getMovieCrew();
   }
 
   render() {
-    const { isLoading, persons } = this.state;
-    if (isLoading) {
+    const { isLoadingTabs, crew } = this.props;
+    if (isLoadingTabs) {
       return <Loader />;
-    } else if (!persons.length) {
+    } else if (!crew.length) {
       return <NoData />;
     }
     return (
       <div className="d-flex flex-wrap justify-content-center pt-4 pb-4">
-        {persons.map(person => (
+        {crew.map(person => (
           <Crew key={`crew${person.credit_id}`} person={person} />
         ))}
       </div>
     );
   }
 }
+
+export { TabCrew };

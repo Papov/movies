@@ -3,10 +3,10 @@ import { MovieItem } from "./MovieItem";
 import { PropTypes } from "prop-types";
 import { observer, inject } from "mobx-react";
 
-@inject(({ movieStore }) => ({
-  movies: movieStore.movies,
-  isLoading: movieStore.isLoading,
-  getMovies: movieStore.getMovies
+@inject(({ moviesStore }) => ({
+  movies: moviesStore.movies,
+  isLoading: moviesStore.isLoading,
+  getMovies: moviesStore.getMovies
 }))
 @observer
 class MoviesList extends React.Component {

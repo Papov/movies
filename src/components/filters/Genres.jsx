@@ -2,12 +2,12 @@ import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { observer, inject } from "mobx-react";
 
-@inject(({ movieStore }) => ({
-  genresList: movieStore.genresList,
-  showAllGenres: movieStore.showAllGenres,
-  with_genres: movieStore.filters.with_genres,
-  checkedGenges: movieStore.checkedGenges,
-  genresDidMount: movieStore.genresDidMount
+@inject(({ moviesStore }) => ({
+  genresList: moviesStore.genresList,
+  showAllGenres: moviesStore.showAllGenres,
+  with_genres: moviesStore.filters.with_genres,
+  checkedGenges: moviesStore.checkedGenges,
+  genresDidMount: moviesStore.genresDidMount
 }))
 @observer
 class Genres extends React.Component {

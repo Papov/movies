@@ -2,34 +2,31 @@ import React from "react";
 import FavoriteIcon from "../../movies/FavoriteIcon";
 import WatchlistIcon from "../../movies/WatchlistIcon";
 import { Link } from "react-router-dom";
-import { CallApi } from "../../../api/api";
 import { Loader } from "../../ui/UILoader";
 import { NoData } from "../../ui/UINoData";
+import { observer, inject } from "mobx-react";
+import PropTypes from "prop-types";
 
-export class TabSimilarMovies extends React.Component {
-  state = {
-    isLoading: true
+@inject(({ movieDetailStore }) => ({
+  getSimilarMovies: movieDetailStore.getSimilarMovies,
+  isLoadingTabs: movieDetailStore.isLoadingTabs,
+  similarMovies: movieDetailStore.similarMovies
+}))
+@observer
+class TabSimilarMovies extends React.Component {
+  static propTypes = {
+    getSimilarMovies: PropTypes.func.isRequired,
+    isLoadingTabs: PropTypes.bool.isRequired,
+    similarMovies: PropTypes.array.isRequired
   };
 
-  async componentDidMount() {
-    const similarMovies = await CallApi.get(
-      `/movie/${this.props.match.params.id}/similar`,
-      {
-        params: {
-          language: "ru-RU"
-        }
-      }
-    );
-    // console.log(similarMovies);
-    this.setState({
-      isLoading: false,
-      similarMovies: similarMovies.results
-    });
+  componentDidMount() {
+    this.props.getSimilarMovies();
   }
 
   render() {
-    const { similarMovies, isLoading } = this.state;
-    if (isLoading) {
+    const { similarMovies, isLoadingTabs } = this.props;
+    if (isLoadingTabs) {
       return <Loader />;
     } else if (!similarMovies.length) {
       return <NoData />;
@@ -65,3 +62,5 @@ export class TabSimilarMovies extends React.Component {
     );
   }
 }
+
+export { TabSimilarMovies };

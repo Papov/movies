@@ -1,32 +1,29 @@
 import React from "react";
-import { CallApi } from "../../../api/api";
 import { Loader } from "../../ui/UILoader";
 import { NoData } from "../../ui/UINoData";
+import { observer, inject } from "mobx-react";
+import PropTypes from "prop-types";
 
-export class TabVideos extends React.Component {
-  state = {
-    isLoading: true
+@inject(({ movieDetailStore }) => ({
+  isLoadingTabs: movieDetailStore.isLoadingTabs,
+  getMovieVideo: movieDetailStore.getMovieVideo,
+  videos: movieDetailStore.videos
+}))
+@observer
+class TabVideos extends React.Component {
+  static propTypes = {
+    isLoadingTabs: PropTypes.bool.isRequired,
+    getMovieVideo: PropTypes.func.isRequired,
+    videos: PropTypes.array.isRequired
   };
 
-  async componentDidMount() {
-    const response = await CallApi.get(
-      `/movie/${this.props.match.params.id}/videos`,
-      {
-        params: {
-          language: "ru-RU"
-        }
-      }
-    );
-    // console.log("video", response);
-    this.setState({
-      videos: response.results,
-      isLoading: false
-    });
+  componentDidMount() {
+    this.props.getMovieVideo();
   }
 
   render() {
-    const { isLoading, videos } = this.state;
-    if (isLoading) {
+    const { isLoadingTabs, videos } = this.props;
+    if (isLoadingTabs) {
       return <Loader />;
     } else if (!videos.length) {
       return <NoData />;
@@ -54,3 +51,5 @@ export class TabVideos extends React.Component {
     );
   }
 }
+
+export { TabVideos };
