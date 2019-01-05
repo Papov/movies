@@ -1,8 +1,13 @@
 import React from "react";
 import { Table } from "reactstrap";
 import { Loader } from "../../ui/UILoader";
+import { inject, observer } from "mobx-react";
 
-export class TabDetail extends React.Component {
+@inject(({ movieDetailStore }) => ({
+  movieData: movieDetailStore.movieData
+}))
+@observer
+class TabDetail extends React.Component {
   render() {
     const { movieData } = this.props;
     if (!movieData) {
@@ -87,3 +92,5 @@ export class TabDetail extends React.Component {
     );
   }
 }
+
+export { TabDetail };

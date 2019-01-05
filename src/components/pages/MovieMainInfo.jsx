@@ -1,8 +1,13 @@
 import React from "react";
 import FavoriteIcon from "../movies/FavoriteIcon";
 import WatchlistIcon from "../movies/WatchlistIcon";
+import { observer, inject } from "mobx-react";
 
-export class MovieMainInfo extends React.PureComponent {
+@inject(({ movieDetailStore }) => ({
+  movieData: movieDetailStore.movieData
+}))
+@observer
+class MovieMainInfo extends React.PureComponent {
   render() {
     const { movieData } = this.props;
     return (
@@ -72,3 +77,5 @@ export class MovieMainInfo extends React.PureComponent {
     );
   }
 }
+
+export { MovieMainInfo };

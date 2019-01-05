@@ -1,4 +1,4 @@
-import { observable, action, reaction, computed } from "mobx";
+import { observable, action, reaction } from "mobx";
 import { CallApi } from "../api/api";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
