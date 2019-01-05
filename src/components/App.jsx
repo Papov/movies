@@ -1,8 +1,8 @@
 import React from "react";
 import { Header } from "./header/Header";
 import { LoginModal } from "../components/modals/LoginModal";
-import MoviesPage from "./pages/MoviesPage";
-import MoviePage from "./pages/MoviePage";
+import { MoviesPage } from "./pages/MoviesPage";
+import { MoviePage } from "./pages/MoviePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 

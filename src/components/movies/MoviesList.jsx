@@ -54,4 +54,4 @@ class MoviesList extends React.Component {
   }
 }
 
-export default MoviesList;
+export { MoviesList };

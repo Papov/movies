@@ -1,4 +1,4 @@
-import { observable, action, reaction, flow } from "mobx";
+import { observable, action, reaction, flow, values } from "mobx";
 import { CallApi } from "../api/api";
 
 class MoviesStore {
@@ -107,7 +107,7 @@ class MoviesStore {
 export const moviesStore = new MoviesStore();
 
 reaction(
-  () => Object.values(moviesStore.filters),
+  () => values(moviesStore.filters),
   () => {
     moviesStore.page = 1;
     moviesStore.getMovies();

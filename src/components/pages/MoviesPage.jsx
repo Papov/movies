@@ -1,6 +1,6 @@
 import React from "react";
 import { Filters } from "../filters/Filters";
-import MoviesList from "../movies/MoviesList";
+import { MoviesList } from "../movies/MoviesList";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faBookmark as solidFaBookmark,
@@ -32,4 +32,4 @@ class MoviesPage extends React.Component {
   }
 }
 
-export default MoviesPage;
+export { MoviesPage };
