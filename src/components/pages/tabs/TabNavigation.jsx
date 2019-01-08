@@ -1,8 +1,9 @@
 import React from "react";
 import { Nav, NavItem } from "reactstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
+@withRouter
 @inject(({ movieDetailStore }) => ({
   movieData: movieDetailStore.movieData
 }))

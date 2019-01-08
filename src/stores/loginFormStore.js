@@ -8,7 +8,8 @@ class LoginFormStore {
   messages = {
     username: "please, write your login",
     password: "please, write your password",
-    repeatPassword: "please, write the same password"
+    repeatPassword: "please, write the same password",
+    base: "login or password is uncorrect"
   };
 
   @observable
@@ -75,7 +76,10 @@ class LoginFormStore {
       errors.repeatPassword = messages.repeatPassword;
     }
     if (Object.keys(errors).length) {
-      this.errors = errors;
+      Object.keys(errors).map(key => {
+        this.errors[key] = errors[key];
+        return false;
+      });
       return false;
     } else {
       return true;
@@ -87,6 +91,7 @@ class LoginFormStore {
     const { value } = event.target;
     this[name] = value;
     this.errors[name] = null;
+    this.errors.base = null;
   };
 
   onSubmit = flow(function*() {
@@ -124,6 +129,7 @@ class LoginFormStore {
       userStore.user = user;
     } catch (error) {
       loginFormStore.submitAwait = false;
+      this.errors.base = this.messages.base;
     }
   });
 

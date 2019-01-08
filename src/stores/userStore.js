@@ -14,9 +14,6 @@ class UserStore {
   session_id = null;
 
   @observable
-  moviesId = 0;
-
-  @observable
   favorite = [];
 
   @observable
@@ -60,7 +57,7 @@ class UserStore {
         page++;
         getAddedMovies();
       } else {
-        this[listName] = moviesId;
+        this[listName].replace(moviesId);
       }
     };
     getAddedMovies();
@@ -100,8 +97,8 @@ reaction(
       userStore.updateAddedMovie("watchlist");
       userStore.updateAddedMovie("favorite");
     } else {
-      userStore.favorite = [];
-      userStore.watchlist = [];
+      userStore.favorite.clear();
+      userStore.watchlist.clear();
     }
   }
 );

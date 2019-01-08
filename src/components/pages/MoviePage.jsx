@@ -12,9 +12,6 @@ import { observer, inject } from "mobx-react";
 class MoviePage extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.setState({
-        isLoading: true
-      });
       this.props.getMovieData();
     }
   }

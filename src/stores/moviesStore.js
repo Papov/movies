@@ -58,6 +58,7 @@ class MoviesStore {
   @action
   onChangeFilters = event => {
     const { name, value } = event.target;
+    this.page = 1;
     this.filters[name] = value;
   };
 
@@ -70,7 +71,7 @@ class MoviesStore {
   onReset = () => {
     this.filters.sort_by = "popularity.desc";
     this.filters.primary_release_year = "";
-    this.filters.with_genres = [];
+    this.filters.with_genres.clear();
     this.page = 1;
   };
 
@@ -81,7 +82,7 @@ class MoviesStore {
 
   @action
   showAllGenres = () => {
-    this.filters.with_genres = [];
+    this.filters.with_genres.clear();
   };
 
   @action
@@ -91,7 +92,7 @@ class MoviesStore {
         language: "ru-RU"
       }
     });
-    this.genresList = data.genres;
+    this.genresList.replace(data.genres);
   };
 
   @action
@@ -105,6 +106,14 @@ class MoviesStore {
 }
 
 export const moviesStore = new MoviesStore();
+
+reaction(
+  () => moviesStore.filters.with_genres.length,
+  () => {
+    moviesStore.page = 1;
+    moviesStore.getMovies();
+  }
+);
 
 reaction(
   () => values(moviesStore.filters),

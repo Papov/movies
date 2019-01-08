@@ -78,6 +78,9 @@ class LoginFormModal extends React.Component {
         >
           Вход
         </button>
+        {errors.base && (
+          <div className="invalid-feedback float-left">{errors.base}</div>
+        )}
       </form>
     );
   }

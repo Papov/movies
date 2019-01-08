@@ -23,6 +23,7 @@ class Genres extends React.Component {
   }
 
   render() {
+    console.log("genres render");
     const {
       showAllGenres,
       genresList,

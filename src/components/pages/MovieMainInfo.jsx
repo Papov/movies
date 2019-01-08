@@ -7,8 +7,10 @@ import { observer, inject } from "mobx-react";
   movieData: movieDetailStore.movieData
 }))
 @observer
-class MovieMainInfo extends React.PureComponent {
+class MovieMainInfo extends React.Component {
   render() {
+    console.log("render");
+
     const { movieData } = this.props;
     return (
       // background-image
