@@ -7,18 +7,14 @@ import { TabSimilarMovies } from "./TabSimilarMovies";
 import { Route, Switch } from "react-router-dom";
 import { TabsNavigation } from "./TabNavigation";
 
-export class TabApp extends React.Component {
+class TabApp extends React.Component {
   render() {
-    const { movieData } = this.props;
     return (
       <React.Fragment>
-        <TabsNavigation movieData={movieData} />
+        <TabsNavigation />
         <div className="tab-content">
           <Switch>
-            <Route
-              path="/movie/:id/detail"
-              render={props => <TabDetail {...props} movieData={movieData} />}
-            />
+            <Route path="/movie/:id/detail" component={TabDetail} />
             <Route path="/movie/:id/videos" component={TabVideos} />
             <Route path="/movie/:id/credits" component={TabActors} />
             <Route path="/movie/:id/crew" component={TabCrew} />
@@ -29,3 +25,5 @@ export class TabApp extends React.Component {
     );
   }
 }
+
+export { TabApp };

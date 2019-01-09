@@ -6,16 +6,12 @@ import { observer, inject } from "mobx-react";
 
 @inject(({ movieDetailStore }) => ({
   isLoading: movieDetailStore.isLoading,
-  movieData: movieDetailStore.movieData,
   getMovieData: movieDetailStore.getMovieData
 }))
 @observer
 class MoviePage extends React.Component {
   componentDidUpdate(prevProps) {
     if (this.props.match.params.id !== prevProps.match.params.id) {
-      this.setState({
-        isLoading: true
-      });
       this.props.getMovieData();
     }
   }
@@ -25,14 +21,14 @@ class MoviePage extends React.Component {
   }
 
   render() {
-    const { movieData, isLoading } = this.props;
+    const { isLoading } = this.props;
     if (isLoading) {
       return <Loader />;
     }
     return (
       <React.Fragment>
-        <MovieMainInfo movieData={movieData} />
-        <TabApp movieData={movieData} />
+        <MovieMainInfo />
+        <TabApp />
       </React.Fragment>
     );
   }

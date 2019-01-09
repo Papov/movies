@@ -1,8 +1,14 @@
 import React from "react";
 import { Nav, NavItem } from "reactstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
+import { inject, observer } from "mobx-react";
 
-export class TabsNavigation extends React.Component {
+@withRouter
+@inject(({ movieDetailStore }) => ({
+  movieData: movieDetailStore.movieData
+}))
+@observer
+class TabsNavigation extends React.Component {
   render() {
     const { movieData } = this.props;
     return (
@@ -56,3 +62,5 @@ export class TabsNavigation extends React.Component {
     );
   }
 }
+
+export { TabsNavigation };

@@ -1,13 +1,31 @@
 import React from "react";
 import { UIIcon } from "../ui/UIIcon";
-import { MovieIconHOC } from "../hoc/MoviesIconHOC";
+import { observer, inject } from "mobx-react";
 
-class WatchlistIcon extends React.PureComponent {
+@inject(({ userStore }) => ({
+  userStore
+}))
+@observer
+class WatchlistIcon extends React.Component {
   render() {
     // console.log("watchlist");
-    const { isAdd, addToMyList } = this.props;
-    return <UIIcon type="bookmark" isAdd={isAdd} onClick={addToMyList} />;
+    const {
+      userStore: { addToMyList, watchlist },
+      movieId
+    } = this.props;
+    const isAdd = watchlist.includes(movieId);
+    return (
+      <UIIcon
+        type="bookmark"
+        isAdd={isAdd}
+        onClick={addToMyList({
+          type: "watchlist",
+          isAdd,
+          movieId
+        })}
+      />
+    );
   }
 }
 
-export default MovieIconHOC(WatchlistIcon, "watchlist");
+export { WatchlistIcon };
