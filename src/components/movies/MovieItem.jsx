@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import FavoriteIcon from "./FavoriteIcon";
-import WatchlistIcon from "./WatchlistIcon";
+import { FavoriteIcon } from "./FavoriteIcon";
+import { WatchlistIcon } from "./WatchlistIcon";
 import { Link } from "react-router-dom";
 
 const noImageUrl =

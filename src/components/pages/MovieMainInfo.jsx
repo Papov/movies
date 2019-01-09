@@ -1,6 +1,6 @@
 import React from "react";
-import FavoriteIcon from "../movies/FavoriteIcon";
-import WatchlistIcon from "../movies/WatchlistIcon";
+import { FavoriteIcon } from "../movies/FavoriteIcon";
+import { WatchlistIcon } from "../movies/WatchlistIcon";
 import { observer, inject } from "mobx-react";
 
 @inject(({ movieDetailStore }) => ({
@@ -9,8 +9,6 @@ import { observer, inject } from "mobx-react";
 @observer
 class MovieMainInfo extends React.Component {
   render() {
-    console.log("render");
-
     const { movieData } = this.props;
     return (
       // background-image

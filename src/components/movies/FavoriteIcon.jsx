@@ -1,13 +1,30 @@
 import React from "react";
 import { UIIcon } from "../ui/UIIcon";
-import { MovieIconHOC } from "../hoc/MoviesIconHOC";
+import { observer, inject } from "mobx-react";
 
+@inject(({ userStore }) => ({
+  userStore
+}))
+@observer
 class FavoriteIcon extends React.Component {
   render() {
-    // console.log("favorite");
-    const { isAdd, addToMyList } = this.props;
-    return <UIIcon isAdd={isAdd} type="heart" onClick={addToMyList} />;
+    const {
+      userStore: { addToMyList, favorite },
+      movieId
+    } = this.props;
+    const isAdd = favorite.includes(movieId);
+    return (
+      <UIIcon
+        isAdd={isAdd}
+        type="heart"
+        onClick={addToMyList({
+          type: "favorite",
+          isAdd,
+          movieId
+        })}
+      />
+    );
   }
 }
 
-export default MovieIconHOC(FavoriteIcon, "favorite");
+export { FavoriteIcon };

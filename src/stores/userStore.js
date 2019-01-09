@@ -1,5 +1,6 @@
 import { observable, action, reaction } from "mobx";
 import { CallApi } from "../api/api";
+import { loginFormStore } from "./loginFormStore";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
@@ -57,7 +58,7 @@ class UserStore {
         page++;
         getAddedMovies();
       } else {
-        this[listName].replace(moviesId);
+        this[listName] = moviesId;
       }
     };
     getAddedMovies();
@@ -86,6 +87,31 @@ class UserStore {
       this.user = user;
     }
   };
+
+  @action
+  addToMyList = data => async () => {
+    if (this.session_id) {
+      const queryParams = {
+        session_id: this.session_id
+      };
+      const body = {
+        media_type: "movie",
+        media_id: data.movieId,
+        [data.type]: !data.isAdd
+      };
+      const response = await CallApi.post(
+        `/account/${this.user.id}/${data.type}`,
+        {
+          params: queryParams,
+          body: body
+        }
+      );
+      console.log(response);
+      this.updateAddedMovie(data.type);
+    } else {
+      loginFormStore.toogleLoginForm();
+    }
+  };
 }
 
 export const userStore = new UserStore();
@@ -97,8 +123,8 @@ reaction(
       userStore.updateAddedMovie("watchlist");
       userStore.updateAddedMovie("favorite");
     } else {
-      userStore.favorite.clear();
-      userStore.watchlist.clear();
+      userStore.favorite = [];
+      userStore.watchlist = [];
     }
   }
 );

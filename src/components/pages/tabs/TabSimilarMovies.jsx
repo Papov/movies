@@ -1,6 +1,6 @@
 import React from "react";
-import FavoriteIcon from "../../movies/FavoriteIcon";
-import WatchlistIcon from "../../movies/WatchlistIcon";
+import { FavoriteIcon } from "../../movies/FavoriteIcon";
+import { WatchlistIcon } from "../../movies/WatchlistIcon";
 import { Link } from "react-router-dom";
 import { Loader } from "../../ui/UILoader";
 import { NoData } from "../../ui/UINoData";
