@@ -8,20 +8,18 @@ import { observer, inject } from "mobx-react";
 @observer
 class WatchlistIcon extends React.Component {
   render() {
-    // console.log("watchlist");
     const {
-      userStore: { addToMyList, watchlist },
-      movieId
+      userStore: { addToMyList },
+      movie: { id, watchlist }
     } = this.props;
-    const isAdd = watchlist.includes(movieId);
     return (
       <UIIcon
         type="bookmark"
-        isAdd={isAdd}
+        isAdd={watchlist}
         onClick={addToMyList({
           type: "watchlist",
-          isAdd,
-          movieId
+          movieId: id,
+          isAdd: watchlist
         })}
       />
     );

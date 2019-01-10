@@ -52,8 +52,8 @@ class TabSimilarMovies extends React.Component {
                 Рейтинг: {similarMovie.vote_average}
               </div>
               <div className="card-img d-flex justify-content-end">
-                <FavoriteIcon movieId={similarMovie.id} />
-                <WatchlistIcon movieId={similarMovie.id} />
+                <FavoriteIcon movie={similarMovie} />
+                <WatchlistIcon movie={similarMovie} />
               </div>
             </div>
           </div>

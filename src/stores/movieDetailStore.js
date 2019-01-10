@@ -1,4 +1,5 @@
 import { observable, flow } from "mobx";
+import { userStore } from "./userStore";
 import { CallApi } from "../api/api";
 
 class MovieDetailStore {
@@ -91,7 +92,13 @@ class MovieDetailStore {
         }
       );
       movieDetailStore.isLoadingTabs = false;
-      movieDetailStore.similarMovies.replace(similarMovies.results);
+      movieDetailStore.similarMovies.replace(
+        similarMovies.results.map(movie => ({
+          ...movie,
+          favorite: userStore.favorite.includes(movie.id),
+          watchlist: userStore.watchlist.includes(movie.id)
+        }))
+      );
     } catch {
       console.log("error in TabSimilarMovies.jsx");
     }
@@ -100,14 +107,16 @@ class MovieDetailStore {
   getMovieData = flow(function*() {
     try {
       movieDetailStore.isLoading = true;
-      movieDetailStore.movieData = yield CallApi.get(
-        `/movie/${this.match.params.id}`,
-        {
-          params: {
-            language: "ru-RU"
-          }
+      const movieData = yield CallApi.get(`/movie/${this.match.params.id}`, {
+        params: {
+          language: "ru-RU"
         }
-      );
+      });
+      movieDetailStore.movieData = {
+        ...movieData,
+        favorite: userStore.favorite.includes(movieData.id),
+        watchlist: userStore.watchlist.includes(movieData.id)
+      };
       movieDetailStore.isLoading = false;
     } catch {
       console.log("error in movieDetailStore.js");

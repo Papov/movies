@@ -1,5 +1,6 @@
 import { observable, action, reaction, flow, values } from "mobx";
 import { CallApi } from "../api/api";
+import { userStore } from "./userStore";
 
 class MoviesStore {
   @observable
@@ -47,7 +48,13 @@ class MoviesStore {
       const discover = yield CallApi.get("/discover/movie", {
         params: queryParams
       });
-      moviesStore.movies.replace(discover.results);
+      moviesStore.movies.replace(
+        discover.results.map(movie => ({
+          ...movie,
+          favorite: userStore.favorite.includes(movie.id),
+          watchlist: userStore.watchlist.includes(movie.id)
+        }))
+      );
       moviesStore.total_pages = discover.total_pages;
       moviesStore.isLoading = false;
     } catch (e) {
@@ -103,6 +110,12 @@ class MoviesStore {
       : with_genres.filter(genre => genre !== event.target.value);
     this.filters.with_genres = value;
   };
+
+  // @action
+  // updateMovieByAdd = ({id, isAdd, type}) => {
+  //   const movie = this.movies.find(movie => movie.id === id)
+  //   movie[type]
+  // }
 }
 
 export const moviesStore = new MoviesStore();

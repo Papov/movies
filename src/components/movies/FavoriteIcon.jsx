@@ -9,18 +9,17 @@ import { observer, inject } from "mobx-react";
 class FavoriteIcon extends React.Component {
   render() {
     const {
-      userStore: { addToMyList, favorite },
-      movieId
+      userStore: { addToMyList },
+      movie: { id, favorite }
     } = this.props;
-    const isAdd = favorite.includes(movieId);
     return (
       <UIIcon
-        isAdd={isAdd}
+        isAdd={favorite}
         type="heart"
         onClick={addToMyList({
           type: "favorite",
-          isAdd,
-          movieId
+          movieId: id,
+          isAdd: favorite
         })}
       />
     );

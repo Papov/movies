@@ -48,10 +48,10 @@ class MovieMainInfo extends React.Component {
                     {movieData.vote_average}
                   </p>
                   <span className="rounded-circle icon-effect">
-                    <FavoriteIcon movieId={movieData.id} />
+                    <FavoriteIcon movie={movieData} />
                   </span>
                   <span className="rounded-circle icon-effect">
-                    <WatchlistIcon movieId={movieData.id} />
+                    <WatchlistIcon movie={movieData} />
                   </span>
                 </div>
                 {/*слоган*/}

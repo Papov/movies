@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { FavoriteIcon } from "./FavoriteIcon";
 import { WatchlistIcon } from "./WatchlistIcon";
 import { Link } from "react-router-dom";
+import { observer } from "mobx-react";
 
 const noImageUrl =
   "https://upload.wikimedia.org/wikipedia/commons/7/75/No_image_available.png";
 
-export class MovieItem extends React.Component {
+@observer
+class MovieItem extends React.Component {
   static propTypes = {
     item: PropTypes.object.isRequired
   };
@@ -38,11 +40,13 @@ export class MovieItem extends React.Component {
           </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
           <div className="card-img d-flex justify-content-end">
-            <FavoriteIcon movieId={item.id} />
-            <WatchlistIcon movieId={item.id} />
+            <FavoriteIcon movie={item} />
+            <WatchlistIcon movie={item} />
           </div>
         </div>
       </div>
     );
   }
 }
+
+export { MovieItem };

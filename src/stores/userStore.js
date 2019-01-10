@@ -1,6 +1,7 @@
-import { observable, action, reaction } from "mobx";
+import { observable, action, reaction, values } from "mobx";
 import { CallApi } from "../api/api";
 import { loginFormStore } from "./loginFormStore";
+import { moviesStore } from "./moviesStore";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
@@ -58,7 +59,7 @@ class UserStore {
         page++;
         getAddedMovies();
       } else {
-        this[listName] = moviesId;
+        this[listName].replace(moviesId);
       }
     };
     getAddedMovies();
@@ -89,25 +90,21 @@ class UserStore {
   };
 
   @action
-  addToMyList = data => async () => {
+  addToMyList = ({ movieId, type, isAdd }) => async () => {
     if (this.session_id) {
       const queryParams = {
         session_id: this.session_id
       };
       const body = {
         media_type: "movie",
-        media_id: data.movieId,
-        [data.type]: !data.isAdd
+        media_id: movieId,
+        [type]: !isAdd
       };
-      const response = await CallApi.post(
-        `/account/${this.user.id}/${data.type}`,
-        {
-          params: queryParams,
-          body: body
-        }
-      );
-      console.log(response);
-      this.updateAddedMovie(data.type);
+      await CallApi.post(`/account/${this.user.id}/${type}`, {
+        params: queryParams,
+        body: body
+      });
+      this.updateAddedMovie(type);
     } else {
       loginFormStore.toogleLoginForm();
     }
@@ -123,8 +120,26 @@ reaction(
       userStore.updateAddedMovie("watchlist");
       userStore.updateAddedMovie("favorite");
     } else {
-      userStore.favorite = [];
-      userStore.watchlist = [];
+      userStore.favorite.clear();
+      userStore.watchlist.clear();
     }
+  }
+);
+
+reaction(
+  () => values(userStore.favorite),
+  favorite => {
+    moviesStore.movies.forEach(movie => {
+      movie.favorite = favorite.includes(movie.id);
+    });
+  }
+);
+
+reaction(
+  () => values(userStore.watchlist),
+  watchlist => {
+    moviesStore.movies.forEach(movie => {
+      movie.watchlist = watchlist.includes(movie.id);
+    });
   }
 );
