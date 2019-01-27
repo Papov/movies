@@ -89,25 +89,21 @@ class UserStore {
   };
 
   @action
-  addToMyList = data => async () => {
+  addToMyList = ({ type, isAdd, movieId }) => async () => {
     if (this.session_id) {
       const queryParams = {
         session_id: this.session_id
       };
       const body = {
         media_type: "movie",
-        media_id: data.movieId,
-        [data.type]: !data.isAdd
+        media_id: movieId,
+        [type]: !isAdd
       };
-      const response = await CallApi.post(
-        `/account/${this.user.id}/${data.type}`,
-        {
-          params: queryParams,
-          body: body
-        }
-      );
-      console.log(response);
-      this.updateAddedMovie(data.type);
+      await CallApi.post(`/account/${this.user.id}/${type}`, {
+        params: queryParams,
+        body: body
+      });
+      this.updateAddedMovie(type);
     } else {
       loginFormStore.toogleLoginForm();
     }
